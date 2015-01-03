@@ -1,133 +1,166 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1343\cocoasubrtf140
-{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\fonttbl\f0\fnil\fcharset0 Menlo-Bold;\f1\fnil\fcharset0 Menlo-Regular;}
 {\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
 \margl1440\margr1440\vieww9000\viewh8400\viewkind0
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
-\f0\fs24 \cf0 Changes from Atomulator Linux 1.14\
+\f0\b\fs22 \cf0 Changes from Atomulator Linux 1.14
+\f1\b0 \CocoaLigature0 \
 \
-No changes to these files:\
-atom.h\
-8271.h \
-8271.c\
+
+\f0\b \CocoaLigature1 No changes to these files:
+\f1\b0 \CocoaLigature0 \
 6522via.c\
-roms.h\
-uef.c\
+8271.c\
+8271.h \
+atom.h\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f1\fs22 \cf0 \CocoaLigature0 debugger.h
-\f0\fs24 \CocoaLigature1 \
-
-\f1\fs22 \CocoaLigature0 debugger.c
-\f0\fs24 \CocoaLigature1 \
-
-\f1\fs22 \CocoaLigature0 debugger.c
-\f0\fs24 \CocoaLigature1 \
-fdi.c\
-ssd.c\
-
-\f1\fs22 \CocoaLigature0 resid.cc		\
-atommc.c		\
-fdi.c			\
-resources.h		\
+\cf0 atommc.c		\
 atommc.h		\
-fdi2raw.c
-\f0\fs24 \CocoaLigature1 \
-
-\f1\fs22 \CocoaLigature0 fdi2raw.h		\
-roms.h			\
 csw.c			\
-sid_atom.h\
+debugger.c\
+debugger.h\
+fdi.c			\
+fdi2raw.c\
+fdi2raw.h\
+resid.cc		\
+resources.h		\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 roms.h\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 sid_atom.h\
 sidtypes.h\
+ssd.c\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 uef.c\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 
-\f0\fs24 \cf0 \CocoaLigature1 \
-Not used:\
+\f0\b \cf0 \CocoaLigature1 Not used (not compiled in project):
+\f1\b0 \CocoaLigature0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f1\fs22 \cf0 \CocoaLigature0 win.c\
-Makefile.win		\
-Makefile	\
+\cf0 atom.rc	\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 atommc/ff.c\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 Makefile	\
+Makefile.win	\
 win-keydefine.c\
-atom.rc	\
+win.c\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
 
-\f0\fs24 \cf0 \CocoaLigature1 \
+\f0\b \CocoaLigature1 New to this version
+\f1\b0 \CocoaLigature0 \
+Changes.rtf\
+Info.plist\
+rlog.txt\
 \
-Changes required to run under OSX:\
-\
+
+\f0\b \CocoaLigature1 Changes required to compile/run under OSX:
+\f1\b0 \CocoaLigature0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f1\fs22 \cf0 \CocoaLigature0 6502.c\
+\cf0 6502.c\
 \pard\tx529\pardeftab529\pardirnatural
-
-\f0\fs24 \cf0 \CocoaLigature1 Change the definition of the getsw() to static inline from just inline.\
-More details here : {\field{\*\fldinst{HYPERLINK "http://clang.llvm.org/compatibility.html#inline"}}{\fldrslt http://clang.llvm.org/compatibility.html#inline}}	
-\f1\fs22 \CocoaLigature0 		\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-\cf0 I think this will continue to work fine on other platforms.\
-\
+\cf0 Change the definition of the getsw() to static inline from just inline.\
+More details here : {\field{\*\fldinst{HYPERLINK "http://clang.llvm.org/compatibility.html#inline"}}{\fldrslt http://clang.llvm.org/compatibility.html#inline}}			\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
-
-\f0\fs24 \cf0 \CocoaLigature1 \
-ff_emudir.c\
-In validSFN() beforedot and afterdot have to be initialised on creation.\
-\
-\
-Changes required for Allegro 5:\
-\
+\cf0 \
 8255.c\
 Changes for Allegro5 keyboard handling \
 \
+atommc/ff_emu.c\
+Had to include <unistd.h> to use lseek()\
+Had to change f_read() and f_write() so that they always returned a value\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+atommc/ff_emudir.c\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 In validSFN() beforedot and afterdot have to be initialised on creation.\
+In findclose() check for NULL dir to avoid runtime error.  Always return a value.\
+In get_fat_attribs() change to always return a value.\
+\
+resid-fp/siddefs-fp.h\
+In definition of resid_version_string had to change macro VERSION to __VERSION__ to compile under OSX.\
+\
 
-\f1\fs22 \cf0 \CocoaLigature0 ddnoise.c\
-Changes for sound in Allegro 5\
-
-\f0\fs24 \CocoaLigature1 \
-
-\f1\fs22 \CocoaLigature0 soundopenal.c\
-Changed include files
-\f0\fs24 \CocoaLigature1 \
+\f0\b \CocoaLigature1 Changes required for Allegro 5:
+\f1\b0 \CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 atom.c\
+Moved most of Allegro setup calls to linuxgui.c, exception being call to rand()\
+Moved F12 (rest) handling\
+Moved changetimerspeed() to linuxgui.c\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0 \
+atommc/atmmc2core.c\
+Commented out routines for joystick (on todo list)\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f1\fs22 \cf0 \CocoaLigature0 disc.c
-\f0\fs24 \CocoaLigature1 \
-\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
-\cf0 Added in replacement for Allegro 4 get_extension()\
-\
-\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
-
-\f1\fs22 \cf0 \CocoaLigature0 config.c\
+\cf0 \
+config.c\
 Extensive changes to move to Allegro5 API\
 Added in the ability to read (but not save) default window size for Atom screen from config file\
 Move setting default write protection to this file from linux.c\
-\
-atom.c\
-Moved most of Allegro setup calls, exception being call to rand()\
-Moved F12 (rest) handling\
-\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 ddnoise.c\
+Changes for sound in Allegro 5 .. two lines that I think do the sound mixing are commented out, so this function will not work.  I got to these lines and then realised a better way to do this would probably be via using Allegro5 sound mixers, e.g. https://www.allegro.cc/forums/thread/614208\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 disc.c\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 Added in replacement for Allegro 4 get_extension()\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+linux-gui.c\
+Major changes (!)\
+	\
+linux-keydefine.c\
+Mainly commented out.  Function not yet implemented.\
+	\
 linux.c\
-linux-gui.c	\
-video.c			\
-linux-keydefine.c	\
+Push new Allegro function into new functions in linux-gui.c\
+Implemented new Allegro5 game loop. Potential to change further: put ddnoise into allegro sound mixer, put screen refresh and atom into their own separate timers. Implement screen display snow (or not) by optionally locking the allegro bit map. Not sure if the display chip in the original atom always refreshed the screen at 50/60Hz or was somehow tied to the processor execution state as it is in the software. On the to do list. \
+Removed Fullscreen mode - OSX handles this natively, may have to add back when compiled for Windows or Linux.\
 \
+soundopenal.c\
+Changed include files alut.h not available under OSX. Commented out for now.\
 \
-TO DO\
-MMC - *MENU hangs\
-Check whether ctrl, shift, rept etc are keymapped correctly eg in STARGATE\
-Sound\
-Speed change freezes atom\
-Document major changes to last 4 files\
-\
-get working on linux and windows\
-document build process\
-merge with rasp pi version (check what bug fixes in that version)\
+video.c	\
+Many changes for allegro5:\
+No palettes - solution here isn't so elegant\
+New screen refresh code using al_flip_display()\
+Use of al_put_pixel() to paint into the bitmap		\
 \
 
-\f0\fs24 \CocoaLigature1 \
+\f0\b \CocoaLigature1 TO DO
+\f1\b0 \CocoaLigature0 \
+\pard\tx220\tx720\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\li720\fi-720\pardirnatural
+\ls1\ilvl0\cf0 \CocoaLigature1 {\listtext	1.	}\CocoaLigature0 MMC - *MENU hangs\
+\ls1\ilvl0\CocoaLigature1 {\listtext	2.	}\CocoaLigature0 Check whether ctrl, shift, rept etc are keymapped correctly eg in STARGATE\
+\ls1\ilvl0\CocoaLigature1 {\listtext	3.	}\CocoaLigature0 Sound - Commented out pollsound() in 6502.c. Calling this function currently crashes the emulator.\
+\ls1\ilvl0\CocoaLigature1 {\listtext	4.	}\CocoaLigature0 ddsound - implement via Allegro5 sound mixers ?\
+\ls1\ilvl0\CocoaLigature1 {\listtext	5.	}\CocoaLigature0 Implement separate atom and display refresh timers. (Careful - have to check that we can implement snow).\
+\ls1\ilvl0\CocoaLigature1 {\listtext	6.	}\CocoaLigature0 Speed changes - work out why allegro function to reset the timer hangs the emulator. Work out more realistic timings (or whether I have broken this, eg 500% is actually more like double not x5).\
+\ls1\ilvl0\CocoaLigature1 {\listtext	7.	}Review video.c and the way palettes are implemented.\
+{\listtext	8.	}See if the code will compile against Linux and Windows\
+{\listtext	9.	}Review Optima code and see what bugs have been fixed\
+{\listtext	10.	}Compare against later version (1.19?) and see what has changed.\
+{\listtext	11.	}Put code into github.\
+{\listtext	12.	}Document the build process\
+{\listtext	13.	}Do a search for all "HACK" strings and make sure they are on the todo list\
+{\listtext	14.	}Joystick - code commented out in \CocoaLigature0 atommc/atmmc2core.c\
+\ls1\ilvl0\CocoaLigature1 {\listtext	15.	}\CocoaLigature0 Hardcoded ROM directory in 6502.c\
+\ls1\ilvl0\CocoaLigature1 {\listtext	16.	}Work out how to package the emulator as an OSX bundle including icon, mmc files etc.\
+{\listtext	17.	}Close out the 43 warning messages Xcode gives on compilation.\CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0  \
 }
