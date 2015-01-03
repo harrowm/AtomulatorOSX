@@ -1,0 +1,133 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1343\cocoasubrtf140
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 Changes from Atomulator Linux 1.14\
+\
+No changes to these files:\
+atom.h\
+8271.h \
+8271.c\
+6522via.c\
+roms.h\
+uef.c\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 debugger.h
+\f0\fs24 \CocoaLigature1 \
+
+\f1\fs22 \CocoaLigature0 debugger.c
+\f0\fs24 \CocoaLigature1 \
+
+\f1\fs22 \CocoaLigature0 debugger.c
+\f0\fs24 \CocoaLigature1 \
+fdi.c\
+ssd.c\
+
+\f1\fs22 \CocoaLigature0 resid.cc		\
+atommc.c		\
+fdi.c			\
+resources.h		\
+atommc.h		\
+fdi2raw.c
+\f0\fs24 \CocoaLigature1 \
+
+\f1\fs22 \CocoaLigature0 fdi2raw.h		\
+roms.h			\
+csw.c			\
+sid_atom.h\
+sidtypes.h\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \CocoaLigature1 \
+Not used:\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 win.c\
+Makefile.win		\
+Makefile	\
+win-keydefine.c\
+atom.rc	\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \CocoaLigature1 \
+\
+Changes required to run under OSX:\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 6502.c\
+\pard\tx529\pardeftab529\pardirnatural
+
+\f0\fs24 \cf0 \CocoaLigature1 Change the definition of the getsw() to static inline from just inline.\
+More details here : {\field{\*\fldinst{HYPERLINK "http://clang.llvm.org/compatibility.html#inline"}}{\fldrslt http://clang.llvm.org/compatibility.html#inline}}	
+\f1\fs22 \CocoaLigature0 		\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 I think this will continue to work fine on other platforms.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \CocoaLigature1 \
+ff_emudir.c\
+In validSFN() beforedot and afterdot have to be initialised on creation.\
+\
+\
+Changes required for Allegro 5:\
+\
+8255.c\
+Changes for Allegro5 keyboard handling \
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 ddnoise.c\
+Changes for sound in Allegro 5\
+
+\f0\fs24 \CocoaLigature1 \
+
+\f1\fs22 \CocoaLigature0 soundopenal.c\
+Changed include files
+\f0\fs24 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 disc.c
+\f0\fs24 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 Added in replacement for Allegro 4 get_extension()\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 config.c\
+Extensive changes to move to Allegro5 API\
+Added in the ability to read (but not save) default window size for Atom screen from config file\
+Move setting default write protection to this file from linux.c\
+\
+atom.c\
+Moved most of Allegro setup calls, exception being call to rand()\
+Moved F12 (rest) handling\
+\
+linux.c\
+linux-gui.c	\
+video.c			\
+linux-keydefine.c	\
+\
+\
+TO DO\
+MMC - *MENU hangs\
+Check whether ctrl, shift, rept etc are keymapped correctly eg in STARGATE\
+Sound\
+Speed change freezes atom\
+Document major changes to last 4 files\
+\
+get working on linux and windows\
+document build process\
+merge with rasp pi version (check what bug fixes in that version)\
+\
+
+\f0\fs24 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0  \
+}
