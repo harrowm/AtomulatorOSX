@@ -16,6 +16,21 @@ extern void allegro_process_events();
 
 int quited = 0;
 
+
+#include <CoreFoundation/CoreFoundation.h>
+char *getPath(char *file)
+{
+    // Search for the file in the main bundle - look in all directories
+    CFURLRef fileURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), CFStringCreateWithCString(NULL, file, kCFStringEncodingUTF8), NULL, NULL);
+    
+    // return NULL if not found
+    if (fileURL == NULL)
+        return NULL;
+    
+    // Convert the string reference into a C string
+    return (char*) CFStringGetCStringPtr(CFURLCopyFileSystemPath(fileURL, kCFURLPOSIXPathStyle), CFStringGetSystemEncoding());
+}
+
 void startblit()
 {
 }

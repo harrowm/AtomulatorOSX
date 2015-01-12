@@ -205,6 +205,8 @@ void writememl(uint16_t addr, uint8_t val);
 
 extern int winsizex, winsizey;
 
+// Flag to say whether we want to show the emulator speed onscreen
+int showspeed;
 
 void redefinekeys();
 extern int keylookup[128];

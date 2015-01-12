@@ -103,6 +103,8 @@
 #define MENU_gui_speed10        74
 #define MENU_gui_scrshot        75
 
+#define MENU_gui_showspeed      76
+
 int timerspeeds[] 	= { 5, 12, 25, 38, 50, 75, 85, 100, 150, 200, 250 };
 int frameskips[] 	= { 0,  0,  0,  0,  0,  0,  0,   1,   2,   3,   4 };
 int emuspeed = 4;
@@ -127,6 +129,7 @@ extern int quited;
 int windx = 512, windy = 384;
 extern int dcol;
 extern int ddtype, ddvol, sndddnoise;
+extern int showspeed;
 
 ALLEGRO_KEYBOARD_STATE keybd;
 ALLEGRO_TIMER *timer;
@@ -158,8 +161,8 @@ void updatelinuxgui()
     al_set_menu_item_flags(menu, MENU_gui_ramromdsk_en, (RR_jumpers & RAMROM_FLAG_DISKROM) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
     al_set_menu_item_flags(menu, MENU_gui_internalsnd, (spon) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_tnoise, (sndatomsid) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_atomsid, (tpon) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, MENU_gui_tnoise, (tpon) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, MENU_gui_atomsid, (sndatomsid) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
     al_set_menu_item_flags(menu, MENU_gui_sidtype1, (cursid == SID_MODEL_6581) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, MENU_gui_sidtype2, (cursid == SID_MODEL_8580) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
@@ -200,6 +203,8 @@ void updatelinuxgui()
     al_set_menu_item_flags(menu, MENU_gui_speed8, (emuspeed == 7) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, MENU_gui_speed9, (emuspeed == 8) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, MENU_gui_speed10, (emuspeed == 9) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    
+    al_set_menu_item_flags(menu, MENU_gui_showspeed, (showspeed) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
 }
 
 // Cannot hash define this function because needs to be a member of the array of functions
@@ -666,6 +671,12 @@ void gui_speed10()
     changetimerspeed(timerspeeds[emuspeed]);
 }
 
+void gui_showspeed()
+{
+    showspeed = !showspeed;
+    updatelinuxgui();
+}
+
 void gui_scrshot()
 {
     ALLEGRO_FILECHOOSER *fc;
@@ -769,7 +780,8 @@ func MENU_fn[] =
     gui_speed8,         // MENU_gui_speed8
     gui_speed9,         // MENU_gui_speed9
     gui_speed10,        // MENU_gui_speed10
-    gui_scrshot         // MENU_gui_scrshot
+    gui_scrshot,        // MENU_gui_scrshot
+    gui_showspeed       // MENU_gui_showspeed
 };
 
 ALLEGRO_MENU_INFO menu_info[] = {
@@ -870,10 +882,13 @@ ALLEGRO_MENU_INFO menu_info[] = {
             { "400%", MENU_gui_speed9, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
             { "500%", MENU_gui_speed10, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
         ALLEGRO_END_OF_MENU,
+        { "Show emulator speed", MENU_gui_showspeed, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
         { "Save screenshot", MENU_gui_scrshot, 0, NULL },
     ALLEGRO_END_OF_MENU,
     ALLEGRO_END_OF_MENU
 };
+
+extern char* CreatePathByExpandingTildePath();
 
 bool allegro_init()
 {
@@ -884,13 +899,8 @@ bool allegro_init()
         return false;
     }
     
-    // used as the directory to write logfiles, read sound files etc
-    ALLEGRO_PATH *e = al_get_standard_path(ALLEGRO_EXENAME_PATH);
-    strcpy(exedir, al_path_cstr(e, ALLEGRO_NATIVE_PATH_SEP));
-    
-    //HACK - the returned directory during dev doesnt have write permission - fix for the moment
-    strcpy(exedir, "/Users/malcolm/Desktop/");
-
+    strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
+           
     // HACK - so I need this ?
     al_install_audio();
 
@@ -951,32 +961,34 @@ bool allegro_create_timer_and_events()
 
 void allegro_process_events()
 {
-    al_wait_for_event(events, &event);
-    switch (event.type)
+    if (al_get_next_event(events, &event))
     {
-        case ALLEGRO_EVENT_KEY_DOWN:
-            if (event.keyboard.keycode == ALLEGRO_KEY_F12)
-                atom_reset(0);
-            break;
-            
-        case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            quited = true;
-            break;
-            
-        case ALLEGRO_EVENT_DISPLAY_RESIZE:
-            winsizex = al_get_display_width(event.display.source);
-            winsizey = al_get_display_height(event.display.source);
-            al_acknowledge_resize(event.display.source);
-            break;
-            
-        case ALLEGRO_EVENT_MENU_CLICK:
-            (*MENU_fn[event.user.data1])();
-            break;
-            
-        case ALLEGRO_EVENT_TIMER:
-            if (al_is_event_queue_empty(events))
-                scrupdate();
-            break;
+        switch (event.type)
+        {
+            case ALLEGRO_EVENT_KEY_DOWN:
+                if (event.keyboard.keycode == ALLEGRO_KEY_F12)
+                    atom_reset(0);
+                break;
+                
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:
+                quited = true;
+                break;
+                
+            case ALLEGRO_EVENT_DISPLAY_RESIZE:
+                winsizex = al_get_display_width(event.display.source);
+                winsizey = al_get_display_height(event.display.source);
+                al_acknowledge_resize(event.display.source);
+                break;
+                
+            case ALLEGRO_EVENT_MENU_CLICK:
+                (*MENU_fn[event.user.data1])();
+                break;
+                
+            case ALLEGRO_EVENT_TIMER:
+                //if (al_is_event_queue_empty(events))
+                    scrupdate();
+                break;
+        }
     }
 }
 

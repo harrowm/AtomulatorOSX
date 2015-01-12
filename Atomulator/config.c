@@ -48,6 +48,9 @@
 #define LABEL_SCREEN_X  "winsizex"
 #define LABEL_SCREEN_Y  "winsizey"
 
+// Show emulator speed
+#define LABEL_SHOWSPEED "showspeed"
+
 int snow;
 int defaultwriteprot;
 char discfns[2][260];
@@ -99,12 +102,38 @@ void load_config_string(char *label,
         dest[0] = 0;
 }
 
+
+#include <glob.h>
+
+char* CreatePathByExpandingTildePath(char* path)
+{
+    glob_t globbuf;
+    char **v;
+    char *expandedPath = NULL, *result = NULL;
+    
+    assert(path != NULL);
+    
+    if (glob(path, GLOB_TILDE, NULL, &globbuf) == 0) //success
+    {
+        v = globbuf.gl_pathv; //list of matched pathnames
+        expandedPath = v[0]; //number of matched pathnames, gl_pathc == 1
+        
+        result = (char*)calloc(1, strlen(expandedPath) + 1); //the extra char is for the null-termination
+        if(result)
+            strncpy(result, expandedPath, strlen(expandedPath) + 1); //copy the null-termination as well
+        
+        globfree(&globbuf);
+    }
+    
+    return result;
+}
+
 void loadconfig()
 {
 	int c;
 	char s[256];
 
-	sprintf(s, "%satom.cfg", exedir);
+    sprintf(s, "%satom.cfg", exedir);
 	atom_config = al_load_config_file(s);
     
     if (atom_config == NULL)
@@ -116,11 +145,13 @@ void loadconfig()
 	load_config_string(LABEL_DISC0, discfns[0]);
     load_config_string(LABEL_DISC1, discfns[1]);
     load_config_string(LABEL_MMC_PATH, BaseMMCPath);
-
-	// check to see if the mmc path is valid and exists, else set to
+    
+    strcpy(BaseMMCPath, CreatePathByExpandingTildePath(BaseMMCPath));
+    
+    // check to see if the mmc path is valid and exists, else set to
 	// the default.
 	if((0==strlen(BaseMMCPath)) || (!dir_exists(BaseMMCPath)))
-		sprintf(BaseMMCPath,"%s%s",exedir,DEF_MMC_DIR);
+		sprintf(BaseMMCPath,"%s",CreatePathByExpandingTildePath(DEF_MMC_DIR));
 	
 	colourboard 	= get_config_int(NULL, LABEL_COLOUR, 1);
 	bbcmode 		= get_config_int(NULL, LABEL_BBCBASIC, 0);
@@ -152,6 +183,9 @@ void loadconfig()
     winsizex        = get_config_int(NULL, LABEL_SCREEN_X, 512);
     winsizey        = get_config_int(NULL, LABEL_SCREEN_Y, 384);
     
+    // Show emulator speed
+    showspeed       = get_config_int(NULL, LABEL_SHOWSPEED, 0);
+    
 	for (c = 0; c < 128; c++)
 	{
 		sprintf(s, "%s%03i", LABEL_KEY_DEF, c);
@@ -167,7 +201,9 @@ void saveconfig()
 
 	al_set_config_value(atom_config, NULL, LABEL_DISC0, discfns[0]);
 	al_set_config_value(atom_config, NULL, LABEL_DISC1, discfns[1]);
-	al_set_config_value(atom_config, NULL, LABEL_MMC_PATH,BaseMMCPath);
+	
+    // dont lose the tilde .. HACK
+    // al_set_config_value(atom_config, NULL, LABEL_MMC_PATH,BaseMMCPath);
 
     set_config_int(NULL, LABEL_COLOUR, colourboard);
     set_config_int(NULL, LABEL_BBCBASIC, bbcmode);
@@ -193,6 +229,8 @@ void saveconfig()
 	set_config_int(NULL, LABEL_DEBUG_BRK, debug_on_brk);
 
     // Not going to save window size
+    // but will save show emulator speed
+    set_config_int(NULL, LABEL_SHOWSPEED, showspeed);
     
 	for (c = 0; c < 128; c++)
 	{

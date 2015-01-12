@@ -7,7 +7,7 @@ void    sid_reset();
 void    sid_settype(int resamp, int model);
 uint8_t sid_read(uint16_t addr);
 void    sid_write(uint16_t addr, uint8_t val);
-void 	sid_fillbuf(int16_t *buf, int len);
+void 	sid_fillbuf(int16_t *buf);
 
 extern int cursid;
 extern int sidmethod;

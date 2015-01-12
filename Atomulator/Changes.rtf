@@ -69,9 +69,6 @@ rlog.txt\
 More details here : {\field{\*\fldinst{HYPERLINK "http://clang.llvm.org/compatibility.html#inline"}}{\fldrslt http://clang.llvm.org/compatibility.html#inline}}			\
 \pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
 \cf0 \
-8255.c\
-Changes for Allegro5 keyboard handling \
-\
 atommc/ff_emu.c\
 Had to include <unistd.h> to use lseek()\
 Had to change f_read() and f_write() so that they always returned a value\
@@ -87,8 +84,11 @@ resid-fp/siddefs-fp.h\
 In definition of resid_version_string had to change macro VERSION to __VERSION__ to compile under OSX.\
 \
 
-\f0\b \CocoaLigature1 Changes required for Allegro 5:
-\f1\b0 \CocoaLigature0 \
+\f0\b \CocoaLigature1 Changes required for Allegro 5:\
+
+\f1\b0 \CocoaLigature0 8255.c\
+Changes for Allegro5 keyboard handling \
+\
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 \cf0 atom.c\
 Moved most of Allegro setup calls to linuxgui.c, exception being call to rand()\
@@ -151,13 +151,12 @@ Use of al_put_pixel() to paint into the bitmap		\
 {\listtext	8.	}See if the code will compile against Linux and Windows\
 {\listtext	9.	}Review Optima code and see what bugs have been fixed\
 {\listtext	10.	}Compare against later version (1.19?) and see what has changed.\
-{\listtext	11.	}Put code into github.\
-{\listtext	12.	}Document the build process\
-{\listtext	13.	}Do a search for all "HACK" strings and make sure they are on the todo list\
-{\listtext	14.	}Joystick - code commented out in \CocoaLigature0 atommc/atmmc2core.c\
-\ls1\ilvl0\CocoaLigature1 {\listtext	15.	}\CocoaLigature0 Hardcoded ROM directory in 6502.c\
-\ls1\ilvl0\CocoaLigature1 {\listtext	16.	}Work out how to package the emulator as an OSX bundle including icon, mmc files etc.\
-{\listtext	17.	}Close out the 43 warning messages Xcode gives on compilation.\CocoaLigature0 \
+{\listtext	11.	}Document the build process\
+{\listtext	12.	}Do a search for all "HACK" strings and make sure they are on the todo list\
+{\listtext	13.	}Joystick - code commented out in \CocoaLigature0 atommc/atmmc2core.c\
+\ls1\ilvl0\CocoaLigature1 {\listtext	14.	}\CocoaLigature0 Hardcoded ROM directory in 6502.c\
+\ls1\ilvl0\CocoaLigature1 {\listtext	15.	}Work out how to package the emulator as an OSX bundle including icon, mmc files etc.\
+{\listtext	16.	}Close out the 43 warning messages Xcode gives on compilation.\CocoaLigature0 \
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
 \cf0 \
 \

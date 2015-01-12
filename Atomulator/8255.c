@@ -84,14 +84,14 @@ void write8255(uint16_t addr, uint8_t val)
 	case 2:
 		css = (val & 8) >> 2;
 		speaker = val & 4;
-//		rpclog("Speaker %i\n", (val & 4) >> 2);
+		//rpclog("Speaker case 2 %i\n", (val & 4) >> 2);
 		break;
 	case 3:
 		switch (val & 0xE)
 		{
 		case 0x4: 
 			speaker = val & 1;                 
-			//rpclog("Speaker %i\n", (val & 4) >> 2); 
+		//	rpclog("Speaker case 3 %i\n", (val & 4) >> 2);
 			break;
 			
 		case 0x6: 
@@ -228,7 +228,9 @@ void pollsound()
 	if (sndatomsid)
 	{
 //		sid_fillbuf(&sndbuffer[sndpos << 1],2);
-		sid_fillbuf(&temp,2);
+        temp=0;
+		sid_fillbuf(&temp);
+//        printf("SID: %d\n", temp);
 	}
 
 	if (spon)

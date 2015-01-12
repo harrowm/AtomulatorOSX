@@ -93,16 +93,18 @@ void load_rom(char	*Name,
 		rpclog("Loading %s failed !\n",Name);
 }
 
-void loadroms() // HACK
+extern char* getPath();
+
+void loadroms()
 {
-	load_rom("/Users/malcolm/Desktop/roms/akernel.rom",			ROM_SIZE_ATOM,          ROM_OFS_AKERNEL);
-	load_rom("/Users/malcolm/Desktop/roms/dosrom.rom",             ROM_SIZE_ATOM,          ROM_OFS_DOSROM);
-	load_rom("/Users/malcolm/Desktop/roms/afloat.rom",             ROM_SIZE_ATOM,          ROM_OFS_AFLOAT);
-	load_rom("/Users/malcolm/Desktop/roms/abasic.rom",             ROM_SIZE_ATOM,          ROM_OFS_ABASIC);
-	load_rom("/Users/malcolm/Desktop/roms/axr1.rom",               ROM_SIZE_ATOM,          ROM_OFS_UTILITY);
-	load_rom("/Users/malcolm/Desktop/roms/atom_bbc_basic_os.rom",  ROM_SIZE_ATOM,          ROM_OFS_BBC_OS);
-	load_rom("/Users/malcolm/Desktop/roms/basic1.rom",             ROM_SIZE_BBC_BASIC, 	ROM_OFS_BBC_BASIC);
-	load_rom("/Users/malcolm/Desktop/roms/ramrom.rom",             RAM_ROM_SIZE,           ROM_OFS_RAMROM);
+	load_rom(getPath("akernel.rom"),            ROM_SIZE_ATOM,      ROM_OFS_AKERNEL);
+	load_rom(getPath("dosrom.rom"),             ROM_SIZE_ATOM,      ROM_OFS_DOSROM);
+	load_rom(getPath("afloat.rom"),             ROM_SIZE_ATOM,      ROM_OFS_AFLOAT);
+	load_rom(getPath("abasic.rom"),             ROM_SIZE_ATOM,      ROM_OFS_ABASIC);
+	load_rom(getPath("axr1.rom"),               ROM_SIZE_ATOM,      ROM_OFS_UTILITY);
+	load_rom(getPath("atom_bbc_basic_os.rom"),  ROM_SIZE_ATOM,      ROM_OFS_BBC_OS);
+	load_rom(getPath("basic1.rom"),             ROM_SIZE_BBC_BASIC, ROM_OFS_BBC_BASIC);
+	load_rom(getPath("ramrom.rom"),             RAM_ROM_SIZE,       ROM_OFS_RAMROM);
 }
 
 void set_rr_ptrs()
@@ -590,7 +592,7 @@ void exec6502(int linenum, int cpl)
 		lns = lines;
 		if (lines < 262 || lines == 311)
 			drawline(lines);
-//        pollsound();
+        pollsound();
 		cycles += cpl;
 //                badline=0;
 		while (cycles > 0)

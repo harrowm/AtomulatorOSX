@@ -6,7 +6,7 @@
 
 #ifndef __ATOMMC__
 
-#define DEF_MMC_DIR	"mmc"
+#define DEF_MMC_DIR	"~/Documents/Atomulator/mmc"
 
 extern char BaseMMCPath[MAXPATH+1];
 

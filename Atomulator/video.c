@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <allegro.h>
 #include <allegro_primitives.h>  // for drawing rectangles
+#include <allegro5/allegro_font.h>
+
+extern char* getPath();
 
 #include "atom.h"
 
@@ -201,10 +204,21 @@ ALLEGRO_BITMAP *b2;
 #define ATOM_SCREEN_WIDTH 256.0
 #define ATOM_SCREEN_HEIGHT 192.0
 
+ALLEGRO_FONT *font;
+
 void initvideo()
 {
     al_set_new_bitmap_format(0); // MH let the system decide the best format for the bitmaps
 	b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
+    
+    al_init_font_addon();
+    
+    font = al_load_font(getPath("fixed_font.tga"), 0, 0);
+    if (!font)
+    {
+        printf("failed to load font.\n");
+        return;
+    }
 }
 
 
@@ -214,6 +228,15 @@ int cy = 0, sy = 0;
 int tapeon;
 int frmcount;
 int fskipcount = 0;
+
+// For onscreen speed display
+int totalframes = 0;
+int old_totalframes = 0;
+extern int totcyc; // from 6502.c
+int old_totalcycles = 0;
+double old_time = 0;
+double new_time = 0;
+char hudbuf[256];
 
 char scrshotname[260];
 int savescrshot = 0;
@@ -226,10 +249,10 @@ void drawline(int line)
     ALLEGRO_COLOR acol;
 	int x, xx;
 	uint8_t temp;
-
+    
 	if (!line)
 		vbl = cy = sy = 0;
-    
+
     ALLEGRO_STATE state;
     al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
     al_set_target_bitmap(b2);
@@ -490,11 +513,6 @@ void drawline(int line)
 			al_save_bitmap(scrshotname, b2);
         }
 
-        ALLEGRO_BITMAP *screen;
-        
-        // get the screen bitmap
-        screen = al_get_target_bitmap();
-
 		if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
 		{
 			fskipcount = 0;
@@ -504,10 +522,26 @@ void drawline(int line)
 				al_draw_filled_rectangle(ATOM_SCREEN_WIDTH - 12, 0, ATOM_SCREEN_WIDTH, 4, al_map_rgb(255, 0, 0));
             }
             
+            totalframes++;
+            new_time = al_get_time();
+            
+            if (showspeed && ((new_time-old_time)>1.0))
+            {
+                sprintf(hudbuf,"MHz %2.2f FPS %3.1f", (totcyc-old_totalcycles)/((new_time - old_time)*1000000), (totalframes-old_totalframes)/(new_time - old_time));
+
+                old_time = new_time;
+                old_totalframes = totalframes;
+                old_totalcycles = totcyc;
+            }
+                
             // draw a pattern on the screen and scale to max
             al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
+
+            if (showspeed) al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
+
             al_flip_display();
 			frmcount = 0;
+
 		}
 		endblit();
 	}
