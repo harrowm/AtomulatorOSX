@@ -7,6 +7,7 @@
 #include "roms.h"
 #include "8271.h"
 #include "atommc.h"
+#include "sid_atom.h"
 
 int tapeon;
 int totcyc = 0;
@@ -84,7 +85,7 @@ void load_rom(char	*Name,
 	RomFile = fopen(Name, "rb");
 	if(RomFile!=NULL)
 	{
-		bytes = fread(&rom[Offset], 1, Size, RomFile);
+		bytes = (int)fread(&rom[Offset], 1, Size, RomFile);
 		fclose(RomFile);
 
 		rpclog("bytes read %X\n", bytes);

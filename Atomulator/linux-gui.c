@@ -8,11 +8,14 @@
 #include <stdbool.h>
 #include <allegro.h>
 #include <allegro_native_dialog.h>
+#include <allegro_primitives.h>  // for drawing rectangles
+#include <allegro_image.h>
 
 #include "atom.h"
 #include "roms.h"
 #include "resources.h"
 #include "sidtypes.h"
+#include "sid_atom.h"
 
 #undef printf
 
@@ -140,7 +143,7 @@ ALLEGRO_MENU *menu;
 
 extern void scrupdate();
 
-int gui_keydefine();
+void gui_keydefine();
 
 void updatelinuxgui()
 {
@@ -898,7 +901,7 @@ extern char* CreatePathByExpandingTildePath();
 
 bool allegro_init()
 {
-    // initialize allegro and required addons
+    // initialize allegro and required addons -
     if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick()))
     {
         printf("Can't initialize Allegro - quiting!\n");
@@ -925,9 +928,6 @@ bool allegro_init()
     
     
     strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
-           
-    // HACK - so I need this ?
-    al_install_audio();
 
     return true;
 }

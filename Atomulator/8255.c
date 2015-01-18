@@ -3,6 +3,7 @@
 #include <string.h>
 #include <allegro.h>
 #include "atom.h"
+#include "sid_atom.h"
 
 extern ALLEGRO_KEYBOARD_STATE keybd; // used in the keyboard routines
 

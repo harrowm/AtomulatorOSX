@@ -184,7 +184,7 @@ char *key_names[] =
 //};
 //
 //
-int gui_keydefine()
+void gui_keydefine()
 {
 //	DIALOG_PLAYER *dp;
 //	BITMAP *b;
@@ -225,6 +225,6 @@ int gui_keydefine()
 //		d[x].y -= (d[0].h / 2) - (256 / 2);
 //		x++;
 //	}
-	return D_O_K;
+	
 }
 #endif
