@@ -894,6 +894,7 @@ ALLEGRO_MENU_INFO menu_info[] = {
 };
 
 extern char* CreatePathByExpandingTildePath();
+# include <sys/stat.h> // mkdir
 
 bool allegro_init()
 {
@@ -903,6 +904,25 @@ bool allegro_init()
         printf("Can't initialize Allegro - quiting!\n");
         return false;
     }
+    
+    
+    if (CreatePathByExpandingTildePath("~/Documents/Atomulator/") == NULL)
+    {
+        char t[256];
+        
+        strcpy(t, CreatePathByExpandingTildePath("~"));
+        strcat(t, "/Documents");
+        (void)mkdir(t, 0755);
+        
+        strcat(t, "/Atomulator");
+        (void)mkdir(t, 0755);
+        
+        strcpy(exedir, t);
+        
+        rpclog("Created default Atomulator log file directory at %s\n", t);
+    }
+
+    
     
     strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
            
