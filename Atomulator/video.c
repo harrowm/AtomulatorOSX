@@ -208,8 +208,11 @@ ALLEGRO_FONT *font;
 
 void initvideo()
 {
-    al_set_new_bitmap_format(0); // MH let the system decide the best format for the bitmaps
-	b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
+    // MH - Make sure that the bitmap for the Atom screen is held in memory
+    int flags = al_get_new_bitmap_flags();
+    al_set_new_bitmap_flags(flags | ALLEGRO_MEMORY_BITMAP);
+    b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
+    al_set_new_bitmap_flags(flags);
     
     al_init_font_addon();
     
@@ -256,7 +259,7 @@ void drawline(int line)
     ALLEGRO_STATE state;
     al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
     al_set_target_bitmap(b2);
-    al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+    // MH - dont need this now b2 is in memory al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
     
 	if (line < 192)
 	{
@@ -498,7 +501,7 @@ void drawline(int line)
 		}
 	}
     
-    al_unlock_bitmap(b2);
+    // MH - dont need this now b2 is in memory al_unlock_bitmap(b2);
     al_restore_state(&state);
 
 	if (line == 192)

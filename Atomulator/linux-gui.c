@@ -689,8 +689,13 @@ void gui_scrshot()
         {
             memcpy(scrshotname, al_get_native_file_dialog_path(fc, 0), 260);
             savescrshot = 1;
+            
+            char* ext = strrchr(scrshotname, '.');
+            if (!ext)
+                strcat(scrshotname, ".bmp");
+            
         }
-
+        printf("screen shot %s\n", scrshotname);
     }
 }
 

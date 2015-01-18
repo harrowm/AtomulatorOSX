@@ -11,12 +11,13 @@
 		D40299691A63F9C600E016E9 /* afloat.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299601A63F9C600E016E9 /* afloat.rom */; };
 		D402996A1A63F9C600E016E9 /* akernel.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299611A63F9C600E016E9 /* akernel.rom */; };
 		D402996B1A63F9C600E016E9 /* atom_bbc_basic_os.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299621A63F9C600E016E9 /* atom_bbc_basic_os.rom */; };
-		D402996C1A63F9C600E016E9 /* atom.cfg in Resources */ = {isa = PBXBuildFile; fileRef = D40299631A63F9C600E016E9 /* atom.cfg */; };
 		D402996D1A63F9C600E016E9 /* axr1.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299641A63F9C600E016E9 /* axr1.rom */; };
 		D402996E1A63F9C600E016E9 /* basic1.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299651A63F9C600E016E9 /* basic1.rom */; };
 		D402996F1A63F9C600E016E9 /* dosrom.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299661A63F9C600E016E9 /* dosrom.rom */; };
 		D40299701A63F9C600E016E9 /* ramrom.rom in Resources */ = {isa = PBXBuildFile; fileRef = D40299671A63F9C600E016E9 /* ramrom.rom */; };
 		D40299721A63FA0200E016E9 /* fixed_font.tga in Resources */ = {isa = PBXBuildFile; fileRef = D40299711A63FA0200E016E9 /* fixed_font.tga */; };
+		D40299761A64793F00E016E9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D49387181A408FFF002F9DF9 /* libz.dylib */; };
+		D40299781A6B910100E016E9 /* atom.cfg in Resources */ = {isa = PBXBuildFile; fileRef = D40299771A6B910100E016E9 /* atom.cfg */; };
 		D49386411A3D8F37002F9DF9 /* liballegro_acodec-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D493862F1A3D8F37002F9DF9 /* liballegro_acodec-static.a */; };
 		D49386421A3D8F37002F9DF9 /* liballegro_audio-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49386301A3D8F37002F9DF9 /* liballegro_audio-static.a */; };
 		D49386431A3D8F37002F9DF9 /* liballegro_color-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D49386311A3D8F37002F9DF9 /* liballegro_color-static.a */; };
@@ -42,7 +43,6 @@
 		D493865E1A3D9124002F9DF9 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D493865A1A3D9124002F9DF9 /* IOKit.framework */; };
 		D493865F1A3D9124002F9DF9 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D493865B1A3D9124002F9DF9 /* OpenAL.framework */; };
 		D49386601A3D9124002F9DF9 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D493865C1A3D9124002F9DF9 /* OpenGL.framework */; };
-		D49386621A3D9172002F9DF9 /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D49386611A3D9172002F9DF9 /* libfreetype.6.dylib */; };
 		D493866A1A3D93C4002F9DF9 /* 6502.c in Sources */ = {isa = PBXBuildFile; fileRef = D49386631A3D93C4002F9DF9 /* 6502.c */; };
 		D493866B1A3D93C4002F9DF9 /* 6522via.c in Sources */ = {isa = PBXBuildFile; fileRef = D49386641A3D93C4002F9DF9 /* 6522via.c */; };
 		D493866C1A3D93C4002F9DF9 /* 8255.c in Sources */ = {isa = PBXBuildFile; fileRef = D49386651A3D93C4002F9DF9 /* 8255.c */; };
@@ -69,23 +69,22 @@
 		D49387111A3D96D8002F9DF9 /* ff_emu.c in Sources */ = {isa = PBXBuildFile; fileRef = D49387001A3D96D8002F9DF9 /* ff_emu.c */; };
 		D49387121A3D96D8002F9DF9 /* ff_emudir.c in Sources */ = {isa = PBXBuildFile; fileRef = D49387011A3D96D8002F9DF9 /* ff_emudir.c */; };
 		D49387161A3D96D8002F9DF9 /* wildcard.c in Sources */ = {isa = PBXBuildFile; fileRef = D493870C1A3D96D8002F9DF9 /* wildcard.c */; };
-		D49387191A408FFF002F9DF9 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D49387181A408FFF002F9DF9 /* libz.dylib */; };
 		D49388021A4A6F25002F9DF9 /* Allegro.xcodeproj in Resources */ = {isa = PBXBuildFile; fileRef = D49388011A4A6F25002F9DF9 /* Allegro.xcodeproj */; };
 		D4CC86271A628F6F00603921 /* libsidplayfp-residfp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4CC86261A628F6F00603921 /* libsidplayfp-residfp.a */; };
 		D4F143101A56D41600098CCD /* Changes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D4F1430F1A56D41600098CCD /* Changes.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D402995F1A63F9C600E016E9 /* abasic.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = abasic.rom; sourceTree = "<group>"; };
-		D40299601A63F9C600E016E9 /* afloat.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = afloat.rom; sourceTree = "<group>"; };
-		D40299611A63F9C600E016E9 /* akernel.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = akernel.rom; sourceTree = "<group>"; };
-		D40299621A63F9C600E016E9 /* atom_bbc_basic_os.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = atom_bbc_basic_os.rom; sourceTree = "<group>"; };
-		D40299631A63F9C600E016E9 /* atom.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = atom.cfg; sourceTree = "<group>"; };
-		D40299641A63F9C600E016E9 /* axr1.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = axr1.rom; sourceTree = "<group>"; };
-		D40299651A63F9C600E016E9 /* basic1.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = basic1.rom; sourceTree = "<group>"; };
-		D40299661A63F9C600E016E9 /* dosrom.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = dosrom.rom; sourceTree = "<group>"; };
-		D40299671A63F9C600E016E9 /* ramrom.rom */ = {isa = PBXFileReference; lastKnownFileType = file; path = ramrom.rom; sourceTree = "<group>"; };
-		D40299711A63FA0200E016E9 /* fixed_font.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = fixed_font.tga; sourceTree = "<group>"; };
+		D402995F1A63F9C600E016E9 /* abasic.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = abasic.rom; path = ../Desktop/Atomulator/Resources/Roms/abasic.rom; sourceTree = "<group>"; };
+		D40299601A63F9C600E016E9 /* afloat.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = afloat.rom; path = ../Desktop/Atomulator/Resources/Roms/afloat.rom; sourceTree = "<group>"; };
+		D40299611A63F9C600E016E9 /* akernel.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = akernel.rom; path = ../Desktop/Atomulator/Resources/Roms/akernel.rom; sourceTree = "<group>"; };
+		D40299621A63F9C600E016E9 /* atom_bbc_basic_os.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = atom_bbc_basic_os.rom; path = ../Desktop/Atomulator/Resources/Roms/atom_bbc_basic_os.rom; sourceTree = "<group>"; };
+		D40299641A63F9C600E016E9 /* axr1.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = axr1.rom; path = ../Desktop/Atomulator/Resources/Roms/axr1.rom; sourceTree = "<group>"; };
+		D40299651A63F9C600E016E9 /* basic1.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = basic1.rom; path = ../Desktop/Atomulator/Resources/Roms/basic1.rom; sourceTree = "<group>"; };
+		D40299661A63F9C600E016E9 /* dosrom.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = dosrom.rom; path = ../Desktop/Atomulator/Resources/Roms/dosrom.rom; sourceTree = "<group>"; };
+		D40299671A63F9C600E016E9 /* ramrom.rom */ = {isa = PBXFileReference; lastKnownFileType = file; name = ramrom.rom; path = ../Desktop/Atomulator/Resources/Roms/ramrom.rom; sourceTree = "<group>"; };
+		D40299711A63FA0200E016E9 /* fixed_font.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = fixed_font.tga; path = ../Desktop/Atomulator/Resources/Fonts/fixed_font.tga; sourceTree = "<group>"; };
+		D40299771A6B910100E016E9 /* atom.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = atom.cfg; path = ../Desktop/Atomulator/Resources/atom.cfg; sourceTree = "<group>"; };
 		D493860C1A3D8D8C002F9DF9 /* Allegro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Allegro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D49386101A3D8D8C002F9DF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D493862F1A3D8F37002F9DF9 /* liballegro_acodec-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liballegro_acodec-static.a"; path = "/usr/local/lib/liballegro_acodec-static.a"; sourceTree = "<absolute>"; };
@@ -174,9 +173,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D40299761A64793F00E016E9 /* libz.dylib in Frameworks */,
 				D4CC86271A628F6F00603921 /* libsidplayfp-residfp.a in Frameworks */,
-				D49387191A408FFF002F9DF9 /* libz.dylib in Frameworks */,
-				D49386621A3D9172002F9DF9 /* libfreetype.6.dylib in Frameworks */,
 				D493865D1A3D9124002F9DF9 /* CoreFoundation.framework in Frameworks */,
 				D493865E1A3D9124002F9DF9 /* IOKit.framework in Frameworks */,
 				D493865F1A3D9124002F9DF9 /* OpenAL.framework in Frameworks */,
@@ -211,6 +209,7 @@
 		D402993C1A63E59E00E016E9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D40299771A6B910100E016E9 /* atom.cfg */,
 				D40299401A63F47F00E016E9 /* Roms */,
 				D402993D1A63E5AD00E016E9 /* Fonts */,
 			);
@@ -232,7 +231,6 @@
 				D40299601A63F9C600E016E9 /* afloat.rom */,
 				D40299611A63F9C600E016E9 /* akernel.rom */,
 				D40299621A63F9C600E016E9 /* atom_bbc_basic_os.rom */,
-				D40299631A63F9C600E016E9 /* atom.cfg */,
 				D40299641A63F9C600E016E9 /* axr1.rom */,
 				D40299651A63F9C600E016E9 /* basic1.rom */,
 				D40299661A63F9C600E016E9 /* dosrom.rom */,
@@ -453,8 +451,8 @@
 				D40299701A63F9C600E016E9 /* ramrom.rom in Resources */,
 				D402996B1A63F9C600E016E9 /* atom_bbc_basic_os.rom in Resources */,
 				D402996E1A63F9C600E016E9 /* basic1.rom in Resources */,
-				D402996C1A63F9C600E016E9 /* atom.cfg in Resources */,
 				D4F143101A56D41600098CCD /* Changes.rtf in Resources */,
+				D40299781A6B910100E016E9 /* atom.cfg in Resources */,
 				D40299691A63F9C600E016E9 /* afloat.rom in Resources */,
 				D40299681A63F9C600E016E9 /* abasic.rom in Resources */,
 				D402996D1A63F9C600E016E9 /* axr1.rom in Resources */,
@@ -542,10 +540,10 @@
 					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -585,9 +583,9 @@
 					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Release;
 		};
