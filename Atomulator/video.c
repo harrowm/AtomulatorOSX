@@ -201,6 +201,8 @@ ALLEGRO_COLOR grcol(int c)
 
 
 ALLEGRO_BITMAP *b2;
+ALLEGRO_STATE state;
+
 #define ATOM_SCREEN_WIDTH 256.0
 #define ATOM_SCREEN_HEIGHT 192.0
 
@@ -208,11 +210,7 @@ ALLEGRO_FONT *font;
 
 void initvideo()
 {
-    // MH - Make sure that the bitmap for the Atom screen is held in memory
-    int flags = al_get_new_bitmap_flags();
-    al_set_new_bitmap_flags(flags | ALLEGRO_MEMORY_BITMAP);
     b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
-    al_set_new_bitmap_flags(flags);
     
     al_init_font_addon();
     
@@ -222,6 +220,10 @@ void initvideo()
         printf("failed to load font.\n");
         return;
     }
+    
+    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+    al_set_target_bitmap(b2);
+    al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
 
@@ -255,12 +257,7 @@ void drawline(int line)
     
 	if (!line)
 		vbl = cy = sy = 0;
-
-    ALLEGRO_STATE state;
-    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-    al_set_target_bitmap(b2);
-    // MH - dont need this now b2 is in memory al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
-    
+  
 	if (line < 192)
 	{
         //printf(" In draw with gfxmode %d\n", gfxmode);
@@ -501,9 +498,7 @@ void drawline(int line)
 		}
 	}
     
-    // MH - dont need this now b2 is in memory al_unlock_bitmap(b2);
-    al_restore_state(&state);
-
+    
 	if (line == 192)
 	{
 		startblit();
@@ -518,6 +513,9 @@ void drawline(int line)
 
 		if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
 		{
+            al_unlock_bitmap(b2);
+            al_restore_state(&state);
+
 			fskipcount = 0;
             
 			if (tapeon)
@@ -544,7 +542,10 @@ void drawline(int line)
 
             al_flip_display();
 			frmcount = 0;
-
+            
+            al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+            al_set_target_bitmap(b2);
+            al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 		}
 		endblit();
 	}

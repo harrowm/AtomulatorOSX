@@ -1010,7 +1010,7 @@ void allegro_process_events()
                 break;
                 
             case ALLEGRO_EVENT_TIMER:
-                //if (al_is_event_queue_empty(events))
+                if (al_is_event_queue_empty(events))
                     scrupdate();
                 break;
         }
