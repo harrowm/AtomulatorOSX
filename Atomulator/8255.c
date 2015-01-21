@@ -229,8 +229,7 @@ void pollsound()
 	if (sndatomsid)
 	{
 //		sid_fillbuf(&sndbuffer[sndpos << 1],2);
-        temp=0;
-		sid_fillbuf(&temp);
+// TEMPORARY HACK UNCOMMENT THIS LINE		sid_fillbuf(&temp,2);
 //        printf("SID: %d\n", temp);
 	}
 
