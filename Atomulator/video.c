@@ -238,7 +238,7 @@ void drawline(int line)
 					chr <<= ((sy >> 2) << 1);
 					chr = (chr >> 4) & 3;
 					if (chr & 2)
-						col = semigrcol[((temp >> 6) | (css << 1))+1];
+						col = semigrcol[((temp >> 6) | (css << 1))];
 					else
 						col = black;
                     
@@ -248,7 +248,7 @@ void drawline(int line)
                     *ptr++ = col;
                     
 					if (chr & 1)
-						col = semigrcol[((temp >> 6) | (css << 1))+1];
+						col = semigrcol[((temp >> 6) | (css << 1))];
 					else
 						col = black;
 
@@ -265,7 +265,6 @@ void drawline(int line)
 						for (xx = 0; xx < 8; xx++)
 						{
 	                        *ptr++ = textcol[(((fontdata[chr] >> (xx ^ 7)) & 1) ^ 1) | css];
-                            
 						}
 					}
 					else
@@ -464,8 +463,15 @@ void drawline(int line)
 
 		if (savescrshot)
 		{
-			savescrshot = 0;
+            al_unlock_bitmap(b2);
+            al_restore_state(&state);
+
+            savescrshot = 0;
 			al_save_bitmap(scrshotname, b2);
+            
+            al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+            al_set_target_bitmap(b2);
+            lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
         }
 
 		if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
