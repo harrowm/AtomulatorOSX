@@ -986,34 +986,31 @@ bool allegro_create_timer_and_events()
 
 void allegro_process_events()
 {
-    if (al_get_next_event(events, &event))
+    al_wait_for_event(events, &event);
+    switch (event.type)
     {
-        switch (event.type)
-        {
-            case ALLEGRO_EVENT_KEY_DOWN:
-                if (event.keyboard.keycode == ALLEGRO_KEY_F12)
-                    atom_reset(0);
-                break;
-                
-            case ALLEGRO_EVENT_DISPLAY_CLOSE:
-                quited = true;
-                break;
-                
-            case ALLEGRO_EVENT_DISPLAY_RESIZE:
-                winsizex = al_get_display_width(event.display.source);
-                winsizey = al_get_display_height(event.display.source);
-                al_acknowledge_resize(event.display.source);
-                break;
-                
-            case ALLEGRO_EVENT_MENU_CLICK:
-                (*MENU_fn[event.user.data1])();
-                break;
-                
-            case ALLEGRO_EVENT_TIMER:
-                if (al_is_event_queue_empty(events))
-                    scrupdate();
-                break;
-        }
+        case ALLEGRO_EVENT_TIMER:
+            scrupdate();
+            break;
+            
+        case ALLEGRO_EVENT_KEY_DOWN:
+            if (event.keyboard.keycode == ALLEGRO_KEY_F12)
+                atom_reset(0);
+            break;
+            
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            quited = true;
+            break;
+            
+        case ALLEGRO_EVENT_DISPLAY_RESIZE:
+            winsizex = al_get_display_width(event.display.source);
+            winsizey = al_get_display_height(event.display.source);
+            al_acknowledge_resize(event.display.source);
+            break;
+            
+        case ALLEGRO_EVENT_MENU_CLICK:
+            (*MENU_fn[event.user.data1])();
+            break;
     }
 }
 
