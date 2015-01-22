@@ -389,6 +389,7 @@ void gui_snow()
 void gui_colour()
 {
     colourboard = !colourboard;
+    updatepal();
 }
 
 void gui_bbc()

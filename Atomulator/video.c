@@ -81,127 +81,84 @@ uint8_t fontdata[] =
 	0x00, 0x00, 0x00, 0x18, 0x24, 0x04, 0x08, 0x08, 0x00, 0x08, 0x00, 0x00,
 };
 
-ALLEGRO_COLOR convertcolor(int c)
+int *textcol;
+int *semigrcol;
+int *grcol;
+int black;
+
+int textcols[2][4] = {
+    {
+        0xff202020,
+        0xffe0e0e0,
+        0xff202020,
+        0xffe0e0e0,
+    },
+    {
+        0xff000000,
+        0xff00ff00,
+        0xff000000,
+        0xff007fff
+    }
+};
+
+
+int semigrcols[2][8] = {
+    {
+        0xffe0e0e0,
+        0xffffffff,
+        0xff808080,
+        0xff808080,
+        0xffffffff,
+        0xffe0e0e0,
+        0xffe0e0e0,
+        0xffe0e0e0,
+    },
+    {
+        0xff00ff00,
+        0xff00ffff,
+        0xffff0000,
+        0xff0000ff,
+        0xffffffff,
+        0xffffff00,
+        0xffff00ff,
+        0xff007fff
+    }
+};
+
+int grcols[2][4] = {
+    {
+        0xff202020,
+        0xffe0e0e0,
+        0xff202020,
+        0xffffffff
+    },
+    {
+        0xff000000,
+        0xff00ff00,
+        0xff000000,
+        0xffffffff
+    }
+};
+
+
+
+int blacks[2] = {
+    0xff202020,
+    0xff000000
+};
+
+
+void updatepal()
 {
-    if (colourboard)
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            case 1:
-                return al_map_rgb(0, 63, 0); /*Green*/
-            case 2:
-                return al_map_rgb(63, 63, 0); /*Yellow*/
-            case 3:
-                return al_map_rgb(0, 0, 63); /*Blue*/
-            case 4:
-                return al_map_rgb(63, 0, 0); /*Red*/
-            case 5:
-                return al_map_rgb(63, 63, 63); /*Buff*/
-            case 6:
-                return al_map_rgb(0, 63, 63); /*Cyan*/
-            case 7:
-                return al_map_rgb(63, 0, 63); /*Magenta*/
-            default:
-                return al_map_rgb(63, 0, 0); /*Orange - actually red on the Atom*/
-
-        }
-    }
-    else
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(8, 8, 8); /*Black*/
-            case 1:
-                return al_map_rgb(55, 55, 55); /*Green*/
-            case 2:
-                return al_map_rgb(63, 63, 63); /*Yellow*/
-            case 3:
-                return al_map_rgb(32, 32, 32); /*Blue*/
-            case 4:
-                return al_map_rgb(32, 32, 32); /*Red*/
-            case 5:
-                return al_map_rgb(63, 63, 63); /*Buff*/
-            case 6:
-                return al_map_rgb(55, 55, 55); /*Cyan*/
-            case 7:
-                return al_map_rgb(55, 55, 55); /*Magenta*/
-            default:
-                return al_map_rgb(55, 55, 55); /*Orange - actually red on the Atom*/
-        }
-
-    }
+    textcol = textcols[colourboard];
+    semigrcol = semigrcols[colourboard];
+    grcol = grcols[colourboard];
+    black = blacks[colourboard];
 }
-                                  
-ALLEGRO_COLOR textcol(int c)
-{
-    if (colourboard)
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            case 1:
-                return al_map_rgb(0, 63, 0); /*Green*/
-            case 2:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            default:
-                return al_map_rgb(63, 0, 0); /*Orange - actually red on the Atom*/
-        }
-    }
-    else
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            case 1:
-                return al_map_rgb(55, 55, 55); /*Green*/
-            case 2:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            default:
-                return al_map_rgb(55, 55, 55); /*Orange - actually red on the Atom*/
-        }
-    }
-}
-
-ALLEGRO_COLOR grcol(int c)
-{
-    if (colourboard)
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            case 1:
-                return al_map_rgb(0, 63, 0); /*Green*/
-            case 2:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            default:
-                return al_map_rgb(63, 63, 63); /*Buff*/
-        }
-    }
-    else
-    {
-        switch(c)
-        {
-            case 0:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            case 1:
-                return al_map_rgb(55, 55, 55); /*Green*/
-            case 2:
-                return al_map_rgb(0, 0, 0); /*Black*/
-            default:
-                return al_map_rgb(63, 63, 63); /*Buff*/
-        }
-    }
-}
-
 
 ALLEGRO_BITMAP *b2;
 ALLEGRO_STATE state;
+ALLEGRO_LOCKED_REGION *lr;
 
 #define ATOM_SCREEN_WIDTH 256.0
 #define ATOM_SCREEN_HEIGHT 192.0
@@ -220,10 +177,12 @@ void initvideo()
         printf("failed to load font.\n");
         return;
     }
+
+    updatepal();
     
     al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
     al_set_target_bitmap(b2);
-    al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+    lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
 
@@ -251,7 +210,7 @@ uint8_t fetcheddat[32];
 void drawline(int line)
 {
 	int addr, chr, col;
-    ALLEGRO_COLOR acol;
+    
 	int x, xx;
 	uint8_t temp;
     
@@ -261,6 +220,9 @@ void drawline(int line)
 	if (line < 192)
 	{
         //printf(" In draw with gfxmode %d\n", gfxmode);
+        
+        unsigned int *ptr = (unsigned int *)(lr->data + lr->pitch * line);
+        
         switch (gfxmode)
 		{
 		case 0: case 2: case 4: case 6:         /*Text mode*/
@@ -276,27 +238,24 @@ void drawline(int line)
 					chr <<= ((sy >> 2) << 1);
 					chr = (chr >> 4) & 3;
 					if (chr & 2)
-						col = ((temp >> 6) | (css << 1))+1;
+						col = semigrcol[((temp >> 6) | (css << 1))+1];
 					else
-						col = 0;
-                    acol = convertcolor(col);
+						col = black;
                     
-                    al_put_pixel(x, line, acol);
-                    al_put_pixel(x+1, line, acol);
-                    al_put_pixel(x+2, line, acol);
-                    al_put_pixel(x+3, line, acol);
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
                     
 					if (chr & 1)
-						col = ((temp >> 6) | (css << 1))+1;
+						col = semigrcol[((temp >> 6) | (css << 1))+1];
 					else
-						col = 0;
-                    acol = convertcolor(col);
+						col = black;
 
-                    al_put_pixel(x+4, line, acol);
-                    al_put_pixel(x+5, line, acol);
-                    al_put_pixel(x+6, line, acol);
-                    al_put_pixel(x+7, line, acol);
-                    
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
 				}
 				else
 				{
@@ -305,14 +264,15 @@ void drawline(int line)
 					{
 						for (xx = 0; xx < 8; xx++)
 						{
-							al_put_pixel(x + xx, line, textcol((((fontdata[chr] >> (xx ^ 7)) & 1) ^ 1) | css));
+	                        *ptr++ = textcol[(((fontdata[chr] >> (xx ^ 7)) & 1) ^ 1) | css];
+                            
 						}
 					}
 					else
 					{
 						for (xx = 0; xx < 8; xx++)
 						{
-							al_put_pixel(x + xx, line, textcol(((fontdata[chr] >> (xx ^ 7)) & 1) | css));
+	                        *ptr++ = textcol[((fontdata[chr] >> (xx ^ 7)) & 1) | css];
 						}
 					}
 				}
@@ -335,11 +295,11 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
 				for (xx = 0; xx < 16; xx += 4)
 				{
-                    acol = convertcolor((temp >> 6) | (css << 1));
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
-                    al_put_pixel(x+xx+2, line, acol);
-                    al_put_pixel(x+xx+3, line, acol);
+                    col = semigrcol[(temp >> 6) | (css << 1)];
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 2;
 				}
 			}
@@ -356,10 +316,9 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
 				for (xx = 0; xx < 16; xx += 2)
 				{
-                    acol = (temp & 0x80) ? grcol(css | 1) : grcol(css);
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
-
+                    col = (temp & 0x80) ? grcol[css | 1] : grcol[css];
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 1;
 				}
 			}
@@ -377,10 +336,10 @@ void drawline(int line)
 			{
 				temp = fetcheddat[x >> 3];
                 for (xx = 0; xx < 8; xx += 2)
-				{
-                    acol = convertcolor((temp >> 6) |(css << 1));
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
+                {
+                    col = semigrcol[(temp >> 6) |(css << 1)];
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 2;
 				}
 			}
@@ -398,9 +357,9 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
                 for (xx = 0; xx < 16; xx += 2)
 				{
-                    acol = (temp & 0x80) ? grcol(css | 1) : grcol(css);
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
+                    col = (temp & 0x80) ? grcol[css | 1] : grcol[css];;
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 1;
 				}
 			}
@@ -417,9 +376,9 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
 				for (xx = 0; xx < 8; xx += 2)
 				{
-                    acol = convertcolor((temp >> 6) |(css << 1));
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
+                    col = semigrcol[(temp >> 6) | (css << 1)];
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 2;
 				}
 			}
@@ -437,9 +396,9 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
 				for (xx = 0; xx < 16; xx += 2)
 				{
-                    acol = (temp & 0x80) ? grcol(css | 1) : grcol(css);
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
+                    col = (temp & 0x80) ? grcol[css | 1] : grcol[css];
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 1;
 				}
 			}
@@ -456,9 +415,9 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
                 for (xx = 0; xx < 8; xx += 2)
 				{
-                    acol = convertcolor((temp >> 6) |(css << 1));
-                    al_put_pixel(x+xx, line, acol);
-                    al_put_pixel(x+xx+1, line, acol);
+                    col = semigrcol[(temp >> 6) | (css << 1)];
+                    *ptr++ = col;
+                    *ptr++ = col;
 					temp <<= 2;
 				}
 			}
@@ -476,9 +435,7 @@ void drawline(int line)
 				temp = fetcheddat[x >> 3];
 				for (xx = 0; xx < 8; xx++)
 				{
-                    acol = (temp & 0x80) ? grcol(css | 1) : grcol(css);
-                    al_put_pixel(x+xx, line, acol);
-
+				    *ptr++ = (temp & 0x80) ? grcol[css | 1] : grcol[css];
 					temp <<= 1;
 				}
 			}
@@ -545,7 +502,7 @@ void drawline(int line)
             
             al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
             al_set_target_bitmap(b2);
-            al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+            lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 		}
 		endblit();
 	}
