@@ -165,6 +165,19 @@ ALLEGRO_LOCKED_REGION *lr;
 
 ALLEGRO_FONT *font;
 
+void lockAtomScreen()
+{
+    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+    al_set_target_bitmap(b2);
+    lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+}
+
+void unlockAtomScreen()
+{
+    al_unlock_bitmap(b2);
+    al_restore_state(&state);
+}
+
 void initvideo()
 {
     b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
@@ -179,10 +192,7 @@ void initvideo()
     }
 
     updatepal();
-    
-    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-    al_set_target_bitmap(b2);
-    lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+    lockAtomScreen();
 }
 
 
@@ -463,21 +473,17 @@ void drawline(int line)
 
 		if (savescrshot)
 		{
-            al_unlock_bitmap(b2);
-            al_restore_state(&state);
+            unlockAtomScreen();
 
             savescrshot = 0;
 			al_save_bitmap(scrshotname, b2);
             
-            al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-            al_set_target_bitmap(b2);
-            lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+            lockAtomScreen();
         }
 
 		if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
 		{
-            al_unlock_bitmap(b2);
-            al_restore_state(&state);
+            unlockAtomScreen();
 
 			fskipcount = 0;
             
@@ -506,9 +512,7 @@ void drawline(int line)
             al_flip_display();
 			frmcount = 0;
             
-            al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-            al_set_target_bitmap(b2);
-            lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+            lockAtomScreen();
 		}
 		endblit();
 	}
