@@ -73,6 +73,8 @@
 		D4B4CD861A7313BF00003686 /* fastsid_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD7F1A7313BF00003686 /* fastsid_wrapper.c */; };
 		D4B4CD871A7313BF00003686 /* fixpoint.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD801A7313BF00003686 /* fixpoint.c */; };
 		D4B4CD8B1A73178500003686 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8A1A73178500003686 /* Media.xcassets */; };
+		D4B4CD8E1A731CB900003686 /* atomulator-icon-32.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */; };
+		D4B4CD901A731E0A00003686 /* atomulator-logo-128.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */; };
 		D4F143101A56D41600098CCD /* Changes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D4F1430F1A56D41600098CCD /* Changes.rtf */; };
 /* End PBXBuildFile section */
 
@@ -172,6 +174,8 @@
 		D4B4CD831A7313BF00003686 /* wave6581.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave6581.h; sourceTree = "<group>"; };
 		D4B4CD841A7313BF00003686 /* wave8580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave8580.h; sourceTree = "<group>"; };
 		D4B4CD8A1A73178500003686 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atomulator-icon-32.png"; sourceTree = "<group>"; };
+		D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atomulator-logo-128.png"; sourceTree = "<group>"; };
 		D4CC86261A628F6F00603921 /* libsidplayfp-residfp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsidplayfp-residfp.a"; path = "../../../../usr/local/lib/libsidplayfp-residfp.a"; sourceTree = "<group>"; };
 		D4F1430F1A56D41600098CCD /* Changes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Changes.rtf; path = Atomulator/Changes.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,8 +221,9 @@
 			isa = PBXGroup;
 			children = (
 				D40299771A6B910100E016E9 /* atom.cfg */,
-				D40299401A63F47F00E016E9 /* Roms */,
 				D402993D1A63E5AD00E016E9 /* Fonts */,
+				D4B4CD8C1A731CB900003686 /* Icons */,
+				D40299401A63F47F00E016E9 /* Roms */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -398,6 +403,15 @@
 			path = fastsid;
 			sourceTree = "<group>";
 		};
+		D4B4CD8C1A731CB900003686 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */,
+				D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */,
+			);
+			path = Icons;
+			sourceTree = "<group>";
+		};
 		D4DDAB511A6F9A9500624603 /* Products */ = {
 			isa = PBXGroup;
 			name = Products;
@@ -467,6 +481,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D402996A1A63F9C600E016E9 /* akernel.rom in Resources */,
+				D4B4CD901A731E0A00003686 /* atomulator-logo-128.png in Resources */,
 				D40299721A63FA0200E016E9 /* fixed_font.tga in Resources */,
 				D4B4CD8B1A73178500003686 /* Media.xcassets in Resources */,
 				D402996F1A63F9C600E016E9 /* dosrom.rom in Resources */,
@@ -475,6 +490,7 @@
 				D402996E1A63F9C600E016E9 /* basic1.rom in Resources */,
 				D4F143101A56D41600098CCD /* Changes.rtf in Resources */,
 				D40299781A6B910100E016E9 /* atom.cfg in Resources */,
+				D4B4CD8E1A731CB900003686 /* atomulator-icon-32.png in Resources */,
 				D40299691A63F9C600E016E9 /* afloat.rom in Resources */,
 				D40299681A63F9C600E016E9 /* abasic.rom in Resources */,
 				D402996D1A63F9C600E016E9 /* axr1.rom in Resources */,
@@ -527,6 +543,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -575,6 +592,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
