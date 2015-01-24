@@ -910,7 +910,6 @@ bool allegro_init()
         return false;
     }
     
-    
     if (CreatePathByExpandingTildePath("~/Documents/Atomulator/") == NULL)
     {
         char t[256];
@@ -924,13 +923,16 @@ bool allegro_init()
         
         strcpy(exedir, t);
         
-        rpclog("Created default Atomulator log file directory at %s\n", t);
+        strcat(t, "/mmc");
+        (void)mkdir(t, 0755);
+        
+        rpclog("Created default Atomulator log file and mmc directories at %s\n", exedir);
     }
-
+    else
+    {
+        strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
+    }
     
-    
-    strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
-
     return true;
 }
 

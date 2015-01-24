@@ -78,7 +78,7 @@ int get_config_int(char *section, char *name, int def)
     if (s == NULL)
         return def;
     else
-        return (int)strtol(s, &s, 10);
+        return (int)atoi(s);
 }
 
 
@@ -128,65 +128,52 @@ char* CreatePathByExpandingTildePath(char* path)
     return result;
 }
 
-
-#include <sys/stat.h> // mkdir
 extern char *getPath();
+
+bool copyConfigFile(char *from, char* to)
+{
+    FILE *fp1;
+    FILE *fp2;
+    char buffer[BUFSIZ];
+    size_t n;
+    
+    fp1 = fopen(from, "r");
+    fp2 = fopen(to, "w");
+    
+    while ((n = fread(buffer, sizeof(char), sizeof(buffer), fp1)) > 0)
+    {
+        if (fwrite(buffer, sizeof(char), n, fp2) != n)
+        {
+            fclose(fp1);
+            fclose(fp2);
+            return false;
+        }
+    }
+    fclose(fp1);
+    fclose(fp2);
+    return true;
+}
+
 
 void loadconfig()
 {
 	int c;
 	char s[256];
     
-    sprintf(s, "%satom.cfg", exedir);
+    sprintf(s, "%s/atom.cfg", exedir);
     atom_config = al_load_config_file(s);
     
     if (atom_config == NULL)
     {
-        // Copy the config file from the bundle
-        FILE *fp1;
-        FILE *fp2;
-        char buffer[BUFSIZ];
-        size_t n;
-        
-        fp1 = fopen(getPath("atom.cfg"), "r");
-        
-        if (CreatePathByExpandingTildePath("~") != NULL)
-        {
-            char t[256];
-            
-            strcpy(t, CreatePathByExpandingTildePath("~"));
-            sprintf(s, "%s/Documents", t);
-            (void)mkdir(s, 0755);
-            
-            sprintf(s, "%s/Documents/Atomulator", t);
-            (void)mkdir(s, 0755);
-            
-            rpclog("Created default atom.cfg directory at %s\n", s);
-        }
-        else
-        {
-            rpclog("Cannot create a atom.cfg file. Please create ~/Documents/Atomulator/atom.cfg\n");
-        }
-        
-        sprintf(s, "%s/Documents/Atomulator/atom.cfg", CreatePathByExpandingTildePath("~"));
-        fp2 = fopen(s, "w");
-        
-        while ((n = fread(buffer, sizeof(char), sizeof(buffer), fp1)) > 0)
-        {
-            if (fwrite(buffer, sizeof(char), n, fp2) != n)
-                rpclog("Error copying atom.cfg file from bundle. Please create a atom.cfg file in ~/Documents/Atomulator\n");
-        }
+        if (!copyConfigFile(getPath("atom.cfg"), s))
+            rpclog("Error copying atom.cfg file from bundle. Please create a atom.cfg file in ~/Documents/Atomulator\n");
+
         atom_config = al_load_config_file(s);
         if (atom_config == NULL)
-        {
             rpclog("Error copying atom.cfg file from bundle. Please create a atom.cfg file in ~/Documents/Atomulator\n");
-        }
-        fclose(fp1);
-        fclose(fp2);
         
         rpclog("Created default atom.cfg file at %s\n", s);
     }
-    
     
     load_config_string(LABEL_DISC0, discfns[0]);
     load_config_string(LABEL_DISC1, discfns[1]);
@@ -199,28 +186,7 @@ void loadconfig()
     }
     else
     {
-        if (CreatePathByExpandingTildePath("~") != NULL)
-        {
-            char t[256];
-            
-            strcpy(t, CreatePathByExpandingTildePath("~"));
-            sprintf(s, "%s/Documents", t);
-            (void)mkdir(s, 0755);
-            
-            sprintf(s, "%s/Documents/Atomulator", t);
-            (void)mkdir(s, 0755);
-            
-            sprintf(s, "%s/Documents/Atomulator/mmc", t);
-            (void)mkdir(s, 0755);
-            
-            strcpy(BaseMMCPath, s);
-            
-            rpclog("Created default MMC directory at %s\n", s);
-        }
-        else
-        {
-            rpclog("Cannot create a MMC directory. Please create ~/Documents/Atomulator/mmc\n");
-        }
+        rpclog("Cannot see the MMC directory. Please create ~/Documents/Atomulator/mmc\n");
     }
 
 	colourboard 	= get_config_int(NULL, LABEL_COLOUR, 1);
@@ -307,6 +273,6 @@ void saveconfig()
 		set_config_int(LABEL_USER_KBD, s, keylookup[c]);
 	}
     
-    sprintf(s, "%satom.cfg", exedir);
+    sprintf(s, "%s/atom.cfg", exedir);
     al_save_config_file(s, atom_config);
 }
