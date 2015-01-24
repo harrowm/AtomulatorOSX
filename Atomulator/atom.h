@@ -19,6 +19,7 @@ int cswpoint;
 //#define printf rpclog
 
 int colourboard;
+int colourboardchoice;
 int bbcmode;
 int fasttape;
 int ramrom_enable;
@@ -229,7 +230,7 @@ void entergui();
 #endif
 
 extern char tapefn[260];
-extern int emuspeed, fskipmax;
+extern int emuspeed;
 extern char scrshotname[260];
 extern int savescrshot;
 

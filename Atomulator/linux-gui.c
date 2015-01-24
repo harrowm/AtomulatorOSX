@@ -50,69 +50,73 @@
 #define MENU_gui_fullscreen     20
 #define MENU_gui_snow           21
 #define MENU_hardmenu           22
+
 #define MENU_gui_colour         23
-#define MENU_gui_bbc            24
-#define MENU_ramrommenu         25
-#define MENU_gui_ramrom_en      26
-#define MENU_gui_ramromdsk_en   27
+#define MENU_gui_mono           24
+#define MENU_gui_colour50       25
+#define MENU_gui_colour60       26
 
-#define MENU_soundmenu          28
-#define MENU_gui_internalsnd    29
-#define MENU_gui_tnoise         30
-#define MENU_gui_atomsid        31
-#define MENU_residmenu          32
-#define MENU_sidtypemenu        33
-#define MENU_gui_sidtype1       34
-#define MENU_gui_sidtype2       35
-#define MENU_gui_sidtype3       36
-#define MENU_gui_sidtype4       37
-#define MENU_gui_sidtype5       38
-#define MENU_gui_sidtype6       39
-#define MENU_gui_sidtype7       40
-#define MENU_gui_sidtype8       41
-#define MENU_gui_sidtype9       42
-#define MENU_gui_sidtype10      43
-#define MENU_gui_sidtype11      44
-#define MENU_gui_sidtype12      45
-#define MENU_gui_sidtype13      46
-#define MENU_gui_sidtype14      47
-#define MENU_methodmenu         48
-#define MENU_gui_method1        49
-#define MENU_gui_method2        50
+#define MENU_gui_bbc            27
+#define MENU_ramrommenu         28
+#define MENU_gui_ramrom_en      29
+#define MENU_gui_ramromdsk_en   30
 
-#define MENU_gui_ddnoise        51
-#define MENU_ddtypemenu         52
-#define MENU_gui_ddtype1        53
-#define MENU_gui_ddtype2        54
-#define MENU_ddvolmenu          55
-#define MENU_gui_ddvol1         56
-#define MENU_gui_ddvol2         57
-#define MENU_gui_ddvol3         58
-#define MENU_keymenu            59
-#define MENU_gui_keydefine      60
-#define MENU_gui_keydefault     61
-#define MENU_gui_joystk_en      62
+#define MENU_soundmenu          31
+#define MENU_gui_internalsnd    32
+#define MENU_gui_tnoise         33
+#define MENU_gui_atomsid        34
+#define MENU_residmenu          35
+#define MENU_sidtypemenu        36
+#define MENU_gui_sidtype1       37
+#define MENU_gui_sidtype2       38
+#define MENU_gui_sidtype3       39
+#define MENU_gui_sidtype4       40
+#define MENU_gui_sidtype5       41
+#define MENU_gui_sidtype6       42
+#define MENU_gui_sidtype7       43
+#define MENU_gui_sidtype8       44
+#define MENU_gui_sidtype9       45
+#define MENU_gui_sidtype10      46
+#define MENU_gui_sidtype11      47
+#define MENU_gui_sidtype12      48
+#define MENU_gui_sidtype13      49
+#define MENU_gui_sidtype14      50
+#define MENU_methodmenu         51
+#define MENU_gui_method1        52
+#define MENU_gui_method2        53
 
-#define MENU_miscmenu           63
-#define MENU_speedmenu          64
-#define MENU_gui_speed1         65
-#define MENU_gui_speed2         66
-#define MENU_gui_speed3         67
-#define MENU_gui_speed4         68
-#define MENU_gui_speed5         69
-#define MENU_gui_speed6         70
-#define MENU_gui_speed7         71
-#define MENU_gui_speed8         72
-#define MENU_gui_speed9         73
-#define MENU_gui_speed10        74
-#define MENU_gui_scrshot        75
+#define MENU_gui_ddnoise        54
+#define MENU_ddtypemenu         55
+#define MENU_gui_ddtype1        56
+#define MENU_gui_ddtype2        57
+#define MENU_ddvolmenu          58
+#define MENU_gui_ddvol1         59
+#define MENU_gui_ddvol2         60
+#define MENU_gui_ddvol3         61
+#define MENU_keymenu            62
+#define MENU_gui_keydefine      63
+#define MENU_gui_keydefault     64
+#define MENU_gui_joystk_en      65
 
-#define MENU_gui_showspeed      76
+#define MENU_miscmenu           66
+#define MENU_speedmenu          67
+#define MENU_gui_speed1         68
+#define MENU_gui_speed2         69
+#define MENU_gui_speed3         70
+#define MENU_gui_speed4         71
+#define MENU_gui_speed5         72
+#define MENU_gui_speed6         73
+#define MENU_gui_speed7         74
+#define MENU_gui_speed8         75
+#define MENU_gui_speed9         76
+#define MENU_gui_speed10        77
+#define MENU_gui_scrshot        78
+
+#define MENU_gui_showspeed      79
 
 int timerspeeds[] 	= { 5, 12, 25, 38, 50, 75, 85, 100, 150, 200, 250 };
-int frameskips[] 	= { 0,  0,  0,  0,  0,  0,  0,   1,   2,   3,   4 };
 int emuspeed = 4;
-int fskipmax = 0;
+
 
 char ejecttext[2][260] = { "Eject disc :0/2", "Eject disc :1/3" };
 
@@ -134,6 +138,7 @@ int windx = 512, windy = 384;
 extern int dcol;
 extern int ddtype, ddvol, sndddnoise;
 extern int showspeed;
+extern int colourboardchoice;
 
 ALLEGRO_KEYBOARD_STATE keybd;
 ALLEGRO_TIMER *timer;
@@ -161,7 +166,10 @@ void updatelinuxgui()
     al_set_menu_item_flags(menu, MENU_gui_fullscreen, (fullscreen) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, MENU_gui_snow, (snow) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
-    al_set_menu_item_flags(menu, MENU_gui_colour, (colourboard) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, MENU_gui_mono, (colourboardchoice == 0) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, MENU_gui_colour50, (colourboardchoice == 1) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, MENU_gui_colour60, (colourboardchoice == 2) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    
     al_set_menu_item_flags(menu, MENU_gui_bbc, (bbcmode) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
     al_set_menu_item_flags(menu, MENU_gui_ramrom_en, (ramrom_enable) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
@@ -390,11 +398,30 @@ void gui_snow()
     updatelinuxgui();
 }
 
-void gui_colour()
+void gui_mono()
 {
-    colourboard = !colourboard;
+    colourboard = 0;
+    colourboardchoice = 0;
+    updatelinuxgui();
     updatepal();
 }
+
+void gui_colour50()
+{
+    colourboard = 1;
+    colourboardchoice = 1;
+    updatelinuxgui();
+    updatepal();
+}
+
+void gui_colour60()
+{
+    colourboard = 1;
+    colourboardchoice = 2;
+    updatelinuxgui();
+    updatepal();
+}
+
 
 void gui_bbc()
 {
@@ -615,7 +642,6 @@ void changetimerspeed(int i)
     }
     al_register_event_source(events, al_get_timer_event_source(timer));
     al_start_timer(timer);
-    fskipmax = frameskips[emuspeed];
     updatelinuxgui();
 }
 
@@ -738,7 +764,12 @@ func MENU_fn[] =
     gui_fullscreen,     // MENU_gui_fullscreen
     gui_snow,           // MENU_gui_snow
     gui_dummy,          // hardmenu
-    gui_colour,         // MENU_gui_colour
+
+    gui_dummy,          // MENU_gui_colour
+    gui_mono,           // MENU_gui_mono
+    gui_colour50,       // MENU_gui_colour50
+    gui_colour60,       // MENU_gui_colour60
+    
     gui_bbc,            // MENU_gui_bbc
     gui_dummy,          // MENU_ramrommenu
     gui_ramrom_en,      // MENU_gui_ramrom_en
@@ -826,11 +857,15 @@ ALLEGRO_MENU_INFO menu_info[] = {
 
     ALLEGRO_START_OF_MENU("&Settings", MENU_settingsmenu),
         ALLEGRO_START_OF_MENU("&Video", MENU_videomenu),
-            { "Fullscreen", MENU_gui_fullscreen,    ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
-            { "Snow",       MENU_gui_snow,          ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
+            { "Fullscreen", MENU_gui_fullscreen,    ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
+            { "Snow",       MENU_gui_snow,          ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
         ALLEGRO_END_OF_MENU,
         ALLEGRO_START_OF_MENU("&Hardware", MENU_hardmenu),
-            { "&Colour board", MENU_gui_colour, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
+            ALLEGRO_START_OF_MENU("Colour board", MENU_gui_colour),
+                { "Mono",               MENU_gui_mono,      ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
+                { "Colour board 50Hz",	MENU_gui_colour50,	ALLEGRO_MENU_ITEM_CHECKBOX,	NULL},
+                { "Colour board 60Hz",	MENU_gui_colour60,	ALLEGRO_MENU_ITEM_CHECKBOX,	NULL},
+            ALLEGRO_END_OF_MENU,
             { "&BBC BASIC",	   MENU_gui_bbc,    ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
         ALLEGRO_END_OF_MENU,
         ALLEGRO_START_OF_MENU("&RamRom", MENU_ramrommenu),
@@ -883,7 +918,7 @@ ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_END_OF_MENU,
 
     ALLEGRO_START_OF_MENU("&Misc", MENU_miscmenu),
-        ALLEGRO_START_OF_MENU("&Speed", MENU_speedmenu),
+        ALLEGRO_START_OF_MENU("Speed", MENU_speedmenu),
             { "10%",  MENU_gui_speed1, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
             { "25%",  MENU_gui_speed2, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
             { "50%",  MENU_gui_speed3, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },

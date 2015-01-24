@@ -189,6 +189,11 @@ void loadconfig()
     }
 
 	colourboard 	= get_config_int(NULL, LABEL_COLOUR, 1);
+    
+    // actually the config file stores colourboardchoice, not colourboard
+    colourboardchoice = colourboard;
+    colourboard = (colourboardchoice == 0) ? 0 : 1;
+    
 	bbcmode 		= get_config_int(NULL, LABEL_BBCBASIC, 0);
 	snow 			= get_config_int(NULL, LABEL_SNOW, 0);
 	ramrom_enable 	= get_config_int(NULL, LABEL_RAMROM, 0);
@@ -239,7 +244,7 @@ void saveconfig()
 	
     al_set_config_value(atom_config, NULL, LABEL_MMC_PATH,BaseMMCPath);
 
-    set_config_int(NULL, LABEL_COLOUR, colourboard);
+    set_config_int(NULL, LABEL_COLOUR, colourboardchoice);
     set_config_int(NULL, LABEL_BBCBASIC, bbcmode);
     set_config_int(NULL, LABEL_SNOW, snow);
     set_config_int(NULL, LABEL_RAMROM, ramrom_enable);

@@ -7,6 +7,9 @@
 #include <allegro5/allegro_font.h>
 
 extern char* getPath();
+extern ALLEGRO_TIMER *displaytimer;
+extern ALLEGRO_EVENT_QUEUE *events;
+extern ALLEGRO_FONT *font;
 
 #include "atom.h"
 
@@ -150,10 +153,25 @@ int blacks[2] = {
 
 void updatepal()
 {
+    int fps;
+    
     textcol = textcols[colourboard];
     semigrcol = semigrcols[colourboard];
     grcol = grcols[colourboard];
     black = blacks[colourboard];
+    
+    // Change the display loop speed
+
+    fps = (colourboardchoice == 1) ? 50 : 60;
+    al_destroy_timer(displaytimer);
+    displaytimer = al_create_timer(1.0/fps);
+    if (displaytimer == NULL)
+    {
+        rpclog("Error creating Allegro timer\n");
+        return ;
+    }
+    al_register_event_source(events, al_get_timer_event_source(displaytimer));
+    al_start_timer(displaytimer);
 }
 
 ALLEGRO_BITMAP *b2;
@@ -163,7 +181,6 @@ ALLEGRO_LOCKED_REGION *lr;
 #define ATOM_SCREEN_WIDTH 256.0
 #define ATOM_SCREEN_HEIGHT 192.0
 
-extern ALLEGRO_FONT *font;
 
 void lockAtomScreen()
 {
@@ -190,8 +207,6 @@ uint8_t *ram;
 int cy = 0, sy = 0;
 
 int tapeon;
-int frmcount;
-int fskipcount = 0;
 
 // For onscreen speed display
 int totalframes = 0;
@@ -210,40 +225,31 @@ uint8_t fetcheddat[32];
 
 void drawAtomScreen()
 {
-    frmcount++;
-    fskipcount++;
+    unlockAtomScreen();
 
-    if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
+    if (tapeon)
+        al_draw_filled_rectangle(ATOM_SCREEN_WIDTH - 12, 0, ATOM_SCREEN_WIDTH, 4, al_map_rgb(255, 0, 0));
+    
+    totalframes++;
+    new_time = al_get_time();
+    
+    if (showspeed && ((new_time-old_time)>1.0))
     {
-        unlockAtomScreen();
+        sprintf(hudbuf,"MHz %2.2f FPS %3.1f", (totcyc-old_totalcycles)/((new_time - old_time)*1000000), (totalframes-old_totalframes)/(new_time - old_time));
         
-        fskipcount = 0;
-        
-        if (tapeon)
-            al_draw_filled_rectangle(ATOM_SCREEN_WIDTH - 12, 0, ATOM_SCREEN_WIDTH, 4, al_map_rgb(255, 0, 0));
-        
-        totalframes++;
-        new_time = al_get_time();
-        
-        if (showspeed && ((new_time-old_time)>1.0))
-        {
-            sprintf(hudbuf,"MHz %2.2f FPS %3.1f", (totcyc-old_totalcycles)/((new_time - old_time)*1000000), (totalframes-old_totalframes)/(new_time - old_time));
-            
-            old_time = new_time;
-            old_totalframes = totalframes;
-            old_totalcycles = totcyc;
-        }
-        
-        al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
-        
-        if (showspeed)
-            al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
-            
-        al_flip_display();
-        frmcount = 0;
-        
-        lockAtomScreen();
+        old_time = new_time;
+        old_totalframes = totalframes;
+        old_totalcycles = totcyc;
     }
+    
+    al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
+    
+    if (showspeed)
+        al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
+        
+    al_flip_display();
+
+    lockAtomScreen();
 }
 
 void drawline(int line)

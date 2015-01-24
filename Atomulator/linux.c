@@ -56,11 +56,11 @@ int main(int argc, char **argv)
     
     if (!allegro_create_display_and_menus())
         return 1;
-
-    atom_init(argc, argv);
 	
     if (!allegro_create_timer_and_events())
         return 1;
+    
+    atom_init(argc, argv);
     
     while (!quited)
     {
