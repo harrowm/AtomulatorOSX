@@ -217,6 +217,45 @@ int savescrshot = 0;
 
 uint8_t fetcheddat[32];
 
+
+void drawAtomScreen()
+{
+    frmcount++;
+    fskipcount++;
+
+    if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
+    {
+        unlockAtomScreen();
+        
+        fskipcount = 0;
+        
+        if (tapeon)
+            al_draw_filled_rectangle(ATOM_SCREEN_WIDTH - 12, 0, ATOM_SCREEN_WIDTH, 4, al_map_rgb(255, 0, 0));
+        
+        totalframes++;
+        new_time = al_get_time();
+        
+        if (showspeed && ((new_time-old_time)>1.0))
+        {
+            sprintf(hudbuf,"MHz %2.2f FPS %3.1f", (totcyc-old_totalcycles)/((new_time - old_time)*1000000), (totalframes-old_totalframes)/(new_time - old_time));
+            
+            old_time = new_time;
+            old_totalframes = totalframes;
+            old_totalcycles = totcyc;
+        }
+        
+        al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
+        
+        if (showspeed)
+            al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
+            
+        al_flip_display();
+        frmcount = 0;
+        
+        lockAtomScreen();
+    }
+}
+
 void drawline(int line)
 {
 	int addr, chr, col;
@@ -467,57 +506,17 @@ void drawline(int line)
     
 	if (line == 192)
 	{
-		startblit();
-		frmcount++;
-		fskipcount++;
-
 		if (savescrshot)
 		{
             unlockAtomScreen();
-
             savescrshot = 0;
 			al_save_bitmap(scrshotname, b2);
-            
             lockAtomScreen();
         }
+        drawAtomScreen();
+    }
 
-		if ((!(tapeon && fasttape) && fskipcount >= fskipmax) || frmcount == 60)
-		{
-            unlockAtomScreen();
-
-			fskipcount = 0;
-            
-			if (tapeon)
-            {
-				al_draw_filled_rectangle(ATOM_SCREEN_WIDTH - 12, 0, ATOM_SCREEN_WIDTH, 4, al_map_rgb(255, 0, 0));
-            }
-            
-            totalframes++;
-            new_time = al_get_time();
-            
-            if (showspeed && ((new_time-old_time)>1.0))
-            {
-                sprintf(hudbuf,"MHz %2.2f FPS %3.1f", (totcyc-old_totalcycles)/((new_time - old_time)*1000000), (totalframes-old_totalframes)/(new_time - old_time));
-
-                old_time = new_time;
-                old_totalframes = totalframes;
-                old_totalcycles = totcyc;
-            }
-                
-            // draw a pattern on the screen and scale to max
-            al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
-
-            if (showspeed) al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
-
-            al_flip_display();
-			frmcount = 0;
-            
-            lockAtomScreen();
-		}
-		endblit();
-	}
-
-	if (line == 200)
+    if (line == 200)
 		vbl = 1;
 
 	if (line == 261)
