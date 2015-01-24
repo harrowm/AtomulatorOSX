@@ -72,6 +72,7 @@
 		D4B4CD851A7313BF00003686 /* fastsid.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD7D1A7313BF00003686 /* fastsid.c */; };
 		D4B4CD861A7313BF00003686 /* fastsid_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD7F1A7313BF00003686 /* fastsid_wrapper.c */; };
 		D4B4CD871A7313BF00003686 /* fixpoint.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD801A7313BF00003686 /* fixpoint.c */; };
+		D4B4CD8B1A73178500003686 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8A1A73178500003686 /* Media.xcassets */; };
 		D4F143101A56D41600098CCD /* Changes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D4F1430F1A56D41600098CCD /* Changes.rtf */; };
 /* End PBXBuildFile section */
 
@@ -170,6 +171,7 @@
 		D4B4CD821A7313BF00003686 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		D4B4CD831A7313BF00003686 /* wave6581.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave6581.h; sourceTree = "<group>"; };
 		D4B4CD841A7313BF00003686 /* wave8580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave8580.h; sourceTree = "<group>"; };
+		D4B4CD8A1A73178500003686 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		D4CC86261A628F6F00603921 /* libsidplayfp-residfp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsidplayfp-residfp.a"; path = "../../../../usr/local/lib/libsidplayfp-residfp.a"; sourceTree = "<group>"; };
 		D4F1430F1A56D41600098CCD /* Changes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Changes.rtf; path = Atomulator/Changes.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -247,6 +249,7 @@
 		D49386031A3D8D8C002F9DF9 = {
 			isa = PBXGroup;
 			children = (
+				D4B4CD8A1A73178500003686 /* Media.xcassets */,
 				D4F1430F1A56D41600098CCD /* Changes.rtf */,
 				D49388031A4A70B5002F9DF9 /* Libraries */,
 				D49388041A4A70CB002F9DF9 /* Frameworks */,
@@ -465,6 +468,7 @@
 			files = (
 				D402996A1A63F9C600E016E9 /* akernel.rom in Resources */,
 				D40299721A63FA0200E016E9 /* fixed_font.tga in Resources */,
+				D4B4CD8B1A73178500003686 /* Media.xcassets in Resources */,
 				D402996F1A63F9C600E016E9 /* dosrom.rom in Resources */,
 				D40299701A63F9C600E016E9 /* ramrom.rom in Resources */,
 				D402996B1A63F9C600E016E9 /* atom_bbc_basic_os.rom in Resources */,
@@ -612,7 +616,6 @@
 		D493862A1A3D8D8C002F9DF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Atomulator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -627,7 +630,6 @@
 		D493862B1A3D8D8C002F9DF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Atomulator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
