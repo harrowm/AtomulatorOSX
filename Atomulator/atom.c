@@ -192,8 +192,6 @@ void atom_run()
             mixddnoise();
         }
     }
-//    else
-//        al_rest(0.000001);
 }
 
 void atom_exit()
