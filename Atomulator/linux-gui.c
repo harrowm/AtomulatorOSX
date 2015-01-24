@@ -136,6 +136,7 @@ extern int showspeed;
 
 ALLEGRO_KEYBOARD_STATE keybd;
 ALLEGRO_TIMER *timer;
+ALLEGRO_TIMER *displaytimer;
 ALLEGRO_EVENT_QUEUE *events;
 ALLEGRO_EVENT event;
 ALLEGRO_DISPLAY *display;
@@ -969,6 +970,13 @@ bool allegro_create_timer_and_events()
         rpclog("Error creating Allegro timer\n");
         return false;
     }
+
+    displaytimer = al_create_timer(1.0/60);
+    if (displaytimer == NULL)
+    {
+        rpclog("Error creating Allegro display timer\n");
+        return false;
+    }
     
     events = al_create_event_queue();
     if (events == NULL)
@@ -979,9 +987,11 @@ bool allegro_create_timer_and_events()
     
     al_register_event_source(events, al_get_keyboard_event_source());
     al_register_event_source(events, al_get_timer_event_source(timer));
+    al_register_event_source(events, al_get_timer_event_source(displaytimer));
     al_register_event_source(events, al_get_display_event_source(display));
     al_register_event_source(events, al_get_default_menu_event_source());
     al_start_timer(timer);
+    al_start_timer(displaytimer);
     return true;
 }
 
@@ -991,7 +1001,10 @@ void allegro_process_events()
     switch (event.type)
     {
         case ALLEGRO_EVENT_TIMER:
-            scrupdate();
+            if(event.timer.source == timer)
+                scrupdate();
+            else
+                drawAtomScreen();
             break;
             
         case ALLEGRO_EVENT_KEY_DOWN:

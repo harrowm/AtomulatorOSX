@@ -513,7 +513,7 @@ void drawline(int line)
 			al_save_bitmap(scrshotname, b2);
             lockAtomScreen();
         }
-        drawAtomScreen();
+        //drawAtomScreen();
     }
 
     if (line == 200)
