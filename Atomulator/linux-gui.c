@@ -10,6 +10,7 @@
 #include <allegro_native_dialog.h>
 #include <allegro_primitives.h>  // for drawing rectangles
 #include <allegro_image.h>
+#include <allegro5/allegro_font.h>
 
 #include "atom.h"
 #include "roms.h"
@@ -141,8 +142,10 @@ ALLEGRO_EVENT_QUEUE *events;
 ALLEGRO_EVENT event;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_MENU *menu;
+ALLEGRO_FONT *font;
 
 extern void scrupdate();
+extern char* getPath();
 
 void gui_keydefine();
 
@@ -904,7 +907,7 @@ extern char* CreatePathByExpandingTildePath();
 bool allegro_init()
 {
     // initialize allegro and required addons -
-    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick()))
+    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick() && al_init_font_addon()))
     {
         printf("Can't initialize Allegro - quiting!\n");
         return false;
@@ -931,6 +934,13 @@ bool allegro_init()
     else
     {
         strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
+    }
+    
+    font = al_load_font(getPath("fixed_font.tga"), 0, 0);
+    if (!font)
+    {
+        rpclog("Failed to load font.\n");
+        return false;
     }
     
     return true;

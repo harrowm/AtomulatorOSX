@@ -154,7 +154,6 @@ bool copyConfigFile(char *from, char* to)
     return true;
 }
 
-
 void loadconfig()
 {
 	int c;

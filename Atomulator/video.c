@@ -163,7 +163,7 @@ ALLEGRO_LOCKED_REGION *lr;
 #define ATOM_SCREEN_WIDTH 256.0
 #define ATOM_SCREEN_HEIGHT 192.0
 
-ALLEGRO_FONT *font;
+extern ALLEGRO_FONT *font;
 
 void lockAtomScreen()
 {
@@ -181,16 +181,6 @@ void unlockAtomScreen()
 void initvideo()
 {
     b2 = al_create_bitmap(ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT);
-    
-    al_init_font_addon();
-    
-    font = al_load_font(getPath("fixed_font.tga"), 0, 0);
-    if (!font)
-    {
-        printf("failed to load font.\n");
-        return;
-    }
-
     updatepal();
     lockAtomScreen();
 }
