@@ -380,16 +380,16 @@ void gui_wprotd()
 
 void gui_fullscreen()
 {
-    if (fullscreen)
-    {
-        fullscreen = 0;
-        leavefullscreen();
-    }
-    else
-    {
-        fullscreen = 1;
-        enterfullscreen();
-    }
+//    if (fullscreen)
+//    {
+//        fullscreen = 0;
+//        leavefullscreen();
+//    }
+//    else
+//    {
+//        fullscreen = 1;
+//        enterfullscreen();
+//    }
 }
 
 void gui_snow()

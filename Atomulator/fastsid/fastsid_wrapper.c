@@ -16,6 +16,11 @@ sound_t _fastSID;
 
 extern void rpclog();
 
+extern int fastsid_init(sound_t *psid, int speed, int cycles_per_sec, int emulate_filter);
+extern int fastsid_calculate_samples(sound_t *psid, SWORD *pbuf, int nr, int sample_in_ptr);
+extern void fastsid_store(sound_t *psid, WORD addr, BYTE byte);
+extern void fastsid_reset(sound_t *psid);
+
 void sid_reset() {
     rpclog("sid_reset() called\n");
     fastsid_reset(&_fastSID);
