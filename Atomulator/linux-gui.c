@@ -629,7 +629,7 @@ void gui_joystk_en()
 // Misc menu functions
 
 // MH - moved from atom.c and changed to Allegro5
-// cannot get al_set_timer_speed to work reliably HACK
+// cannot get al_set_timer_speed to work reliably
 
 void changetimerspeed(int i)
 {

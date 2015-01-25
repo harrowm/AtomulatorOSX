@@ -104,7 +104,6 @@ int textcols[2][4] = {
     }
 };
 
-
 int semigrcols[2][8] = {
     {
         0xffe0e0e0,
@@ -142,8 +141,6 @@ int grcols[2][4] = {
         0xffffffff
     }
 };
-
-
 
 int blacks[2] = {
     0xff202020,
@@ -485,17 +482,10 @@ void drawline(int line)
 			}
 
 			addr = ((line + 1) << 5) | 0x8000;
-/*rpclog("addr=%04X\n",addr);*/
 			for (x = 0; x < 32; x++)
 				fetcheddat[x] = ram[addr + x];
 
 			break;
-
-//                        default:
-//                        printf("Bad GFX mode %i\n",gfxmode);
-//                        dumpregs();
-//                        dumpram();
-//                        exit(-1);
 		}
 	}
     
@@ -509,7 +499,6 @@ void drawline(int line)
 			al_save_bitmap(scrshotname, b2);
             lockAtomScreen();
         }
-        //drawAtomScreen();
     }
 
     if (line == 200)
@@ -540,71 +529,4 @@ void drawline(int line)
 
 		}
 	}
-
-//        sndbuffer[line]=(speaker)?255:0;
 }
-
-/*void mixaudio(uint8_t *p)
-   {
-        memcpy(p,sndbuffer,262);
-   }*/
-
-void enterfullscreen()
-{
-/*	if (opengl)
-        {
-                rpclog("Enter fullscreen start\n");
-                openglreinit();
-                rpclog("Enter fullscreen end\n");
-                return;
-        }*/
-    
-    //HACK
-//	#ifdef WIN32
-//	destroy_bitmap(b2);
-//	#endif
-//
-//	set_color_depth(depth);
-//	set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 1024, 768, 0, 0);
-//
-//	#ifdef WIN32
-//	b2 = create_video_bitmap(256, 192);
-//	#endif
-//
-//	set_color_depth(8);
-//	updatepal();
-//
-}
-
-void leavefullscreen()
-{
-/*	if (opengl)
-        {
-                openglreinit();
-                return;
-        }*/
-
-//HACK
-//#ifdef WIN32
-//	destroy_bitmap(b2);
-//	#endif
-//
-//	set_color_depth(depth);
-//
-//#ifdef WIN32
-//	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 2048, 2048, 0, 0);
-//#else
-//	set_gfx_mode(GFX_AUTODETECT_WINDOWED, 512, 384, 0, 0);
-//#endif
-//
-//	#ifdef WIN32
-//	b2 = create_video_bitmap(256, 192);
-//	#endif
-//
-//	set_color_depth(8);
-//	updatepal();
-//
-//	updatewindowsize(512, 384);
-}
-
-

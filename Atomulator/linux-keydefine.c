@@ -7,10 +7,6 @@
 #include <string.h>
 #include "atom.h"
 
-
-// HACK
-#define D_O_K 0
-
 int keytemp[128];
 
 char *key_names[] =

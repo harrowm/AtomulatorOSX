@@ -27,8 +27,8 @@ void check()
 
 	if ((error = alGetError()) != AL_NO_ERROR)
 	{
-		//printf("AL Error : %08X\n", error);
-		//printf("Description : %s\n",alGetErrorString(error));
+		rpclog("AL Error : %08X\n", error);
+		//rpclog("Description : %s\n",alGetErrorString(error));
 	}
 /*        if ((error = alutGetError()) != ALUT_ERROR_NO_ERROR)
         {
