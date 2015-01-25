@@ -5,6 +5,7 @@
 #include "fastsid.h"
 
 int sndsidfilter=1;
+extern int cursid;
 
 int sidrunning=0;
 
@@ -37,7 +38,7 @@ void sid_init() {
     sid_reset();
 }
 
-void sid_settype(int resamp, int model) {
+void sid_settype(int sidmethod, int model) {
     rpclog("sid_settype is not implemented\n");
 }
 

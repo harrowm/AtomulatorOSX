@@ -682,7 +682,7 @@ static sound_t *fastsid_open(BYTE *sidstate)
 int fastsid_init(sound_t *psid, int speed, int cycles_per_sec, int emulate_filter)
 {
     DWORD i;
-    int sid_model = 0;
+    // int sid_model = 0;
 
     psid->speed1 = (cycles_per_sec << 8) / speed;
     for (i = 0; i < 16; i++) {
@@ -716,7 +716,8 @@ int fastsid_init(sound_t *psid, int speed, int cycles_per_sec, int emulate_filte
     //    return 0;
     //}
 
-    psid->newsid = sid_model == 1;
+    psid->newsid = sid_model = 1;
+    
     for (i = 0; i < 4096; i++) {
         wavetable10[i] = (WORD)(i < 2048 ? i << 4 : 0xffff - (i << 4));
         wavetable20[i] = (WORD)(i << 3);

@@ -64,55 +64,37 @@
 #define MENU_soundmenu          31
 #define MENU_gui_internalsnd    32
 #define MENU_gui_tnoise         33
+
 #define MENU_gui_atomsid        34
-#define MENU_residmenu          35
-#define MENU_sidtypemenu        36
-#define MENU_gui_sidtype1       37
-#define MENU_gui_sidtype2       38
-#define MENU_gui_sidtype3       39
-#define MENU_gui_sidtype4       40
-#define MENU_gui_sidtype5       41
-#define MENU_gui_sidtype6       42
-#define MENU_gui_sidtype7       43
-#define MENU_gui_sidtype8       44
-#define MENU_gui_sidtype9       45
-#define MENU_gui_sidtype10      46
-#define MENU_gui_sidtype11      47
-#define MENU_gui_sidtype12      48
-#define MENU_gui_sidtype13      49
-#define MENU_gui_sidtype14      50
-#define MENU_methodmenu         51
-#define MENU_gui_method1        52
-#define MENU_gui_method2        53
 
-#define MENU_gui_ddnoise        54
-#define MENU_ddtypemenu         55
-#define MENU_gui_ddtype1        56
-#define MENU_gui_ddtype2        57
-#define MENU_ddvolmenu          58
-#define MENU_gui_ddvol1         59
-#define MENU_gui_ddvol2         60
-#define MENU_gui_ddvol3         61
-#define MENU_keymenu            62
-#define MENU_gui_keydefine      63
-#define MENU_gui_keydefault     64
-#define MENU_gui_joystk_en      65
+#define MENU_gui_ddnoise        35
+#define MENU_ddtypemenu         36
+#define MENU_gui_ddtype1        37
+#define MENU_gui_ddtype2        38
+#define MENU_ddvolmenu          39
+#define MENU_gui_ddvol1         40
+#define MENU_gui_ddvol2         41
+#define MENU_gui_ddvol3         42
+#define MENU_keymenu            43
+#define MENU_gui_keydefine      44
+#define MENU_gui_keydefault     45
+#define MENU_gui_joystk_en      46
 
-#define MENU_miscmenu           66
-#define MENU_speedmenu          67
-#define MENU_gui_speed1         68
-#define MENU_gui_speed2         69
-#define MENU_gui_speed3         70
-#define MENU_gui_speed4         71
-#define MENU_gui_speed5         72
-#define MENU_gui_speed6         73
-#define MENU_gui_speed7         74
-#define MENU_gui_speed8         75
-#define MENU_gui_speed9         76
-#define MENU_gui_speed10        77
-#define MENU_gui_scrshot        78
+#define MENU_miscmenu           47
+#define MENU_speedmenu          48
+#define MENU_gui_speed1         49
+#define MENU_gui_speed2         50
+#define MENU_gui_speed3         51
+#define MENU_gui_speed4         52
+#define MENU_gui_speed5         53
+#define MENU_gui_speed6         54
+#define MENU_gui_speed7         55
+#define MENU_gui_speed8         56
+#define MENU_gui_speed9         57
+#define MENU_gui_speed10        58
+#define MENU_gui_scrshot        59
 
-#define MENU_gui_showspeed      79
+#define MENU_gui_showspeed      60
 
 int timerspeeds[] 	= { 5, 12, 25, 38, 50, 75, 85, 100, 150, 200, 250 };
 int emuspeed = 4;
@@ -177,26 +159,9 @@ void updatelinuxgui()
     
     al_set_menu_item_flags(menu, MENU_gui_internalsnd, (spon) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, MENU_gui_tnoise, (tpon) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_atomsid, (sndatomsid) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
-    al_set_menu_item_flags(menu, MENU_gui_sidtype1, (cursid == SID_MODEL_6581) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype2, (cursid == SID_MODEL_8580) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype3, (cursid == SID_MODEL_8580D) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype4, (cursid == SID_MODEL_6581R4) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype5, (cursid == SID_MODEL_6581R3_4885) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype6, (cursid == SID_MODEL_6581R3_0486S) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype7, (cursid == SID_MODEL_6581R3_3984) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype8, (cursid == SID_MODEL_6581R4AR_3789) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype9, (cursid == SID_MODEL_6581R3_4485) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype10, (cursid == SID_MODEL_6581R4_1986S) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype11, (cursid == SID_MODEL_8580R5_3691) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype12, (cursid == SID_MODEL_8580R5_3691D) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype13, (cursid == SID_MODEL_8580R5_1489) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_sidtype14, (cursid == SID_MODEL_8580R5_1489D) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    
-    al_set_menu_item_flags(menu, MENU_gui_method1, (sidmethod == 0) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
-    al_set_menu_item_flags(menu, MENU_gui_method2, (sidmethod == 1) ? ALLEGRO_MENU_ITEM_CHECKED : 0);    
-    
+    al_set_menu_item_flags(menu, MENU_gui_atomsid, (sndatomsid)  ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+
     al_set_menu_item_flags(menu, MENU_gui_ddnoise, (sndddnoise) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
 
     al_set_menu_item_flags(menu, MENU_gui_ddtype1, (!ddtype) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
@@ -460,116 +425,6 @@ void gui_atomsid()
     updatelinuxgui();
 }
 
-void gui_sidtype1()
-{
-    cursid = SID_MODEL_6581;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype2()
-{
-    cursid = SID_MODEL_8580;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype3()
-{
-    cursid = SID_MODEL_8580D;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype4()
-{
-    cursid = SID_MODEL_6581R4;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype5()
-{
-    cursid = SID_MODEL_6581R3_4885;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype6()
-{
-    cursid = SID_MODEL_6581R3_0486S;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype7()
-{
-    cursid = SID_MODEL_6581R3_3984;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype8()
-{
-    cursid = SID_MODEL_6581R4AR_3789;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype9()
-{
-    cursid = SID_MODEL_6581R3_4485;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype10()
-{
-    cursid = SID_MODEL_6581R4_1986S;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype11()
-{
-    cursid = SID_MODEL_8580R5_3691;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-void gui_sidtype12()
-{
-    cursid = SID_MODEL_8580R5_3691D;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-void gui_sidtype13()
-{
-    cursid = SID_MODEL_8580R5_1489;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_sidtype14()
-{
-    cursid = SID_MODEL_8580R5_1489D;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_method1()
-{
-    sidmethod = 0;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
-void gui_method2()
-{
-    sidmethod = 1;
-    sid_settype(sidmethod, cursid);
-    updatelinuxgui();
-}
-
 void gui_ddnoise()
 {
     sndddnoise = !sndddnoise;
@@ -775,30 +630,10 @@ func MENU_fn[] =
     gui_ramrom_en,      // MENU_gui_ramrom_en
     gui_ramromdsk_en,   // MENU_gui_ramromdsk_en
     
-    
     gui_dummy,          // MENU_soundmenu
     gui_internalsnd,    // MENU_gui_internalsnd
     gui_tnoise,         // MENU_gui_tnoise
     gui_atomsid,        // MENU_gui_atomsid
-    gui_dummy,          // MENU_residmenu
-    gui_dummy,          // sidtypemenu
-    gui_sidtype1,       // MENU_sidtypemenu1
-    gui_sidtype2,       // MENU_sidtypemenu2
-    gui_sidtype3,       // MENU_sidtypemenu3
-    gui_sidtype4,       // MENU_sidtypemenu4
-    gui_sidtype5,       // MENU_sidtypemenu5
-    gui_sidtype6,       // MENU_sidtypemenu6
-    gui_sidtype7,       // MENU_sidtypemenu7
-    gui_sidtype8,       // MENU_sidtypemenu8
-    gui_sidtype9,       // MENU_sidtypemenu9
-    gui_sidtype10,      // MENU_sidtypemenu10
-    gui_sidtype11,      // MENU_sidtypemenu11
-    gui_sidtype12,      // MENU_sidtypemenu12
-    gui_sidtype13,      // MENU_sidtypemenu13
-    gui_sidtype14,      // MENU_sidtypemenu14
-    gui_dummy,          // MENU_methodmenu
-    gui_method1,        // MENU_gui_method1
-    gui_method2,        // MENU_gui_method2
     
     gui_ddnoise,        // MENU_gui_ddnoise
     gui_dummy,          // MENU_ddtypemenu
@@ -876,29 +711,7 @@ ALLEGRO_MENU_INFO menu_info[] = {
         ALLEGRO_START_OF_MENU("&Sound", MENU_soundmenu),
             { "Internal speaker",  	MENU_gui_internalsnd, 	ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
             { "Tape noise",         MENU_gui_tnoise,		ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
-            { "AtomSID",            MENU_gui_atomsid,		ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-            ALLEGRO_START_OF_MENU("reSID configuration", MENU_residmenu),
-                ALLEGRO_START_OF_MENU("Model", MENU_sidtypemenu),
-                    {"6581",                    MENU_gui_sidtype1,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580",                    MENU_gui_sidtype2,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580 + digi boost",       MENU_gui_sidtype3,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R4",                  MENU_gui_sidtype4,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R3 4885",             MENU_gui_sidtype5,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R3 0486S",            MENU_gui_sidtype6,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R3 3984",             MENU_gui_sidtype7,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R4AR 3789",           MENU_gui_sidtype8,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R3 4485",             MENU_gui_sidtype9,  ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"6581R4 1986S",            MENU_gui_sidtype10, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580R5 3691",             MENU_gui_sidtype11, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580R5 3691 + digi boost",MENU_gui_sidtype12, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580R5 1489",             MENU_gui_sidtype13, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"8580R5 1489 + digi boost",MENU_gui_sidtype14, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                ALLEGRO_END_OF_MENU,
-                ALLEGRO_START_OF_MENU("Sample method", MENU_methodmenu),
-                    {"Interpolating", MENU_gui_method1, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                    {"Resampling",    MENU_gui_method2, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
-                ALLEGRO_END_OF_MENU,
-            ALLEGRO_END_OF_MENU,
+            { "AtomSID",            MENU_gui_atomsid,       ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
             {"Disc drive noise",    MENU_gui_ddnoise, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
             ALLEGRO_START_OF_MENU("Disc drive type", MENU_ddtypemenu),
                 { "5.25", MENU_gui_ddtype1, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
