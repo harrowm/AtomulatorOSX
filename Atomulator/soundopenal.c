@@ -17,7 +17,7 @@ ALuint buffersdd[4];    // front and back buffers
 ALenum format;          // internal format
 
 #define FREQ 31200
-#define BUFLEN ((312 * 2 * 5) * 4)
+#define BUFLEN ((312 * 2 * 2) * 4)
 
 void closeal();
 
@@ -111,7 +111,7 @@ void givealbuffer(int16_t *buf)
 	int processed;
 	int state;
 	int c;
-
+    
 //        return;
 
 //        if (!sndinternal && !sndbeebsid) return;

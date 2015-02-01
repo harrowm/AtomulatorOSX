@@ -7,7 +7,7 @@
 
 extern ALLEGRO_KEYBOARD_STATE keybd; // used in the keyboard routines
 
-int16_t sndbuffer[312 * 2 * 5];
+int16_t sndbuffer[312 * 2 * 2];
 int sndpos = 0;
 
 /*SWARM - CTRL=LEFT, ADJ=RIGHT, REPT=FIRE*/
@@ -218,7 +218,7 @@ void pollsound()
 		sndbuffer[sndpos++] = temp;
 	}
 
-	if (sndpos >= (312 * 2 * 5))
+	if (sndpos >= (312 * 2 * 2))
 	{
 		sndpos = 0;
 		givealbuffer(sndbuffer);
