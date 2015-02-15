@@ -164,7 +164,7 @@
 		D4B4CD841A7313BF00003686 /* wave8580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave8580.h; sourceTree = "<group>"; };
 		D4B4CD8A1A73178500003686 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atomulator-icon-32.png"; sourceTree = "<group>"; };
-		D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atomulator-logo-128.png"; sourceTree = "<group>"; };
+		D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "atomulator-logo-128.png"; path = "../../Desktop/Atomulator/Resources/Icons/atomulator-logo-128.png"; sourceTree = "<group>"; };
 		D4F1430F1A56D41600098CCD /* Changes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Changes.rtf; path = Atomulator/Changes.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
