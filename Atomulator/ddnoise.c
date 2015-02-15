@@ -155,7 +155,7 @@ void mixddnoise()
 				if (ddnoise_mstat != -1)
 				{
 //                                if (!c) rpclog("MixM!\n");
-//HACK					ddbuffer[c] += ((int16_t)((((int16_t*)motorsmp[ddnoise_mstat]->data)[(int)ddnoise_mpos]) ^ 0x8000) / 2);
+//					ddbuffer[c] += ((int16_t)((((int16_t*)motorsmp[ddnoise_mstat]->data)[(int)ddnoise_mpos]) ^ 0x8000) / 2);
 					ddnoise_mpos += ((float)al_get_sample_frequency(motorsmp[ddnoise_mstat]) / 44100.0);
 				}
 			}

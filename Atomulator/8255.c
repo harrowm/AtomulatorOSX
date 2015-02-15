@@ -7,7 +7,9 @@
 
 extern ALLEGRO_KEYBOARD_STATE keybd; // used in the keyboard routines
 
-int16_t sndbuffer[312 * 2 * 2];
+#define SNDBUFLEN 312*2*2
+
+int16_t sndbuffer[SNDBUFLEN];
 int sndpos = 0;
 
 /*SWARM - CTRL=LEFT, ADJ=RIGHT, REPT=FIRE*/
@@ -207,20 +209,29 @@ void pollsound()
 	}
 
 	if (spon)
-		temp += (speaker) ? 4095 : -4096;
-		
+		//temp += (speaker) ? 4095 : -4096;
+        temp += (speaker) ? 4095 : -4096;
+    
 	if (tpon)
-		temp += (tapedat) ? 2047 : -2048;
+		//temp += (tapedat) ? 2047 : -2048;
+        temp += (tapedat) ? 0 : -2048;
 
-	if (0!=temp)
+	//if (0!=temp)
 	{
 		sndbuffer[sndpos++] = temp;
 		sndbuffer[sndpos++] = temp;
 	}
 
-	if (sndpos >= (312 * 2 * 2))
+	if (sndpos >= SNDBUFLEN)
 	{
 		sndpos = 0;
+        
+//        for (int i =0; i< SNDBUFLEN; i++)
+//        {
+//            printf(" 0x%1x ", (unsigned)sndbuffer[i]);
+//            if (!(i % 5)) printf("\n");
+//        }
+        
 		givealbuffer(sndbuffer);
 	}
 }

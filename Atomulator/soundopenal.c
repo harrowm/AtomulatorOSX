@@ -8,6 +8,8 @@
 //#include <OpenAL/alut.h> file not available under OSX, potential HACK
 #include "atom.h"
 
+#include "allegro_audio.h"
+
 int samples = 0;
 FILE *allog;
 
@@ -17,7 +19,8 @@ ALuint buffersdd[4];    // front and back buffers
 ALenum format;          // internal format
 
 #define FREQ 31200
-#define BUFLEN ((312 * 2 * 2) * 4)
+#define SNDBUFLEN (312*2*2)
+#define BUFLEN (SNDBUFLEN * 4)
 
 void closeal();
 
@@ -53,10 +56,47 @@ void closeal()
 int16_t tempbuf[BUFLEN >> 1];
 int16_t tempbufdd[4410 * 2];
 
+// HACK
+
+    // flag used to determine whether to run Allegro sound or OpenAL
+    static bool useAllegroSound = false;
+
+    ALLEGRO_SAMPLE *sam = NULL;
+    void *buff = NULL;
+
+// End of HACK
+
+
 void inital()
 {
 	int c;
+    
+    if (useAllegroSound)
+    {
+        if (!al_reserve_samples(16))
+            rpclog("Could not set up Allegro voice and mixer\n");
+        
+        
 
+        
+        unsigned int samples = SNDBUFLEN;
+        unsigned long sample_size = al_get_channel_count(ALLEGRO_CHANNEL_CONF_1) * al_get_audio_depth_size(ALLEGRO_AUDIO_DEPTH_INT16);
+        unsigned long bytes = samples * sample_size;
+        
+        printf("samples %d sample_size %d bytes %d\n", samples, sample_size, bytes);
+        
+
+        buff = al_malloc(bytes);
+        
+        sam = al_create_sample(buff, samples, FREQ, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_1, false);
+        if (sam == NULL)
+        {
+            rpclog("Cannot create Allegro sample\n");
+            exit(1); // HACK
+        }
+        return;
+    }
+    
 	format = AL_FORMAT_STEREO16;
 	check();
 
@@ -111,8 +151,27 @@ void givealbuffer(int16_t *buf)
 	int processed;
 	int state;
 	int c;
-    
-//        return;
+
+    if (useAllegroSound)
+    {
+        int16_t* ptr;
+        
+        ptr = (int16_t *) al_get_sample_data(sam);
+        memcpy(ptr, buf, SNDBUFLEN*2);
+        
+     
+        //    if (!allog) allog=fopen("/Users/malcolm/Desktop/al.pcm","wb");
+        //    fwrite(ptr,SNDBUFLEN*2,1,allog);
+
+        
+        if (!allog) allog=fopen("/Users/malcolm/Desktop/goodbeep2.pcm","rb");
+            fread(ptr,1,SNDBUFLEN*2,allog);
+        //   al_rest(1);
+        
+        
+        al_play_sample(sam, 1.0, 0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
+        return;
+    }
 
 //        if (!sndinternal && !sndbeebsid) return;
 //return;
@@ -141,9 +200,13 @@ void givealbuffer(int16_t *buf)
 //                printf("U ");
 		check();
 
-		for (c = 0; c < (BUFLEN >> 1); c++)
+		for (int c = 0; c < (BUFLEN >> 1); c++)
+        {
 			zbuf[c] = buf[c >> 1];                //^0x8000;
-
+            //if (zbuf[c] != 4095)
+                //printf("%04x %d\n", zbuf[c], zbuf[c]);
+            //if (!(c % 8)) printf("\n");
+        }
 		alBufferData(buffer, AL_FORMAT_STEREO16, zbuf, BUFLEN, FREQ);
 //                printf("Passing %i bytes\n",BUFLEN);
 //                printf("B ");
@@ -158,8 +221,8 @@ void givealbuffer(int16_t *buf)
 
 //                printf("\n");
 
-//                if (!allog) allog=fopen("al.pcm","wb");
-//                fwrite(buf,BUFLEN,1,allog);
+                if (!allog) allog=fopen("/Users/malcolm/Desktop/al.pcm","wb");
+                fwrite(zbuf,BUFLEN,1,allog);
 	}
 }
 

@@ -11,6 +11,8 @@
 #include <allegro_primitives.h>  // for drawing rectangles
 #include <allegro_image.h>
 #include <allegro5/allegro_font.h>
+#include "allegro_audio.h"
+#include "allegro_acodec.h"
 
 #include "atom.h"
 #include "roms.h"
@@ -755,7 +757,7 @@ extern char* CreatePathByExpandingTildePath();
 bool allegro_init()
 {
     // initialize allegro and required addons -
-    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick() && al_init_font_addon()))
+    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick() && al_init_font_addon() && al_init_acodec_addon() && al_install_audio()))
     {
         printf("Can't initialize Allegro - quiting!\n");
         return false;
