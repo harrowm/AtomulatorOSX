@@ -11,9 +11,8 @@
       "scale" : "2x"
     },
     {
-      "size" : "32x32",
       "idiom" : "mac",
-      "filename" : "atomulator-icon-32.png",
+      "size" : "32x32",
       "scale" : "1x"
     },
     {

@@ -68,7 +68,6 @@
 		D4B4CD861A7313BF00003686 /* fastsid_wrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD7F1A7313BF00003686 /* fastsid_wrapper.c */; };
 		D4B4CD871A7313BF00003686 /* fixpoint.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B4CD801A7313BF00003686 /* fixpoint.c */; };
 		D4B4CD8B1A73178500003686 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8A1A73178500003686 /* Media.xcassets */; };
-		D4B4CD8E1A731CB900003686 /* atomulator-icon-32.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */; };
 		D4B4CD901A731E0A00003686 /* atomulator-logo-128.png in Resources */ = {isa = PBXBuildFile; fileRef = D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */; };
 		D4F143101A56D41600098CCD /* Changes.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D4F1430F1A56D41600098CCD /* Changes.rtf */; };
 /* End PBXBuildFile section */
@@ -163,7 +162,6 @@
 		D4B4CD831A7313BF00003686 /* wave6581.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave6581.h; sourceTree = "<group>"; };
 		D4B4CD841A7313BF00003686 /* wave8580.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wave8580.h; sourceTree = "<group>"; };
 		D4B4CD8A1A73178500003686 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atomulator-icon-32.png"; sourceTree = "<group>"; };
 		D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "atomulator-logo-128.png"; path = "../../Desktop/Atomulator/Resources/Icons/atomulator-logo-128.png"; sourceTree = "<group>"; };
 		D4F1430F1A56D41600098CCD /* Changes.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; name = Changes.rtf; path = Atomulator/Changes.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -375,7 +373,6 @@
 			isa = PBXGroup;
 			children = (
 				D4B4CD8F1A731E0A00003686 /* atomulator-logo-128.png */,
-				D4B4CD8D1A731CB900003686 /* atomulator-icon-32.png */,
 			);
 			path = Icons;
 			sourceTree = "<group>";
@@ -458,7 +455,6 @@
 				D402996E1A63F9C600E016E9 /* basic1.rom in Resources */,
 				D4F143101A56D41600098CCD /* Changes.rtf in Resources */,
 				D40299781A6B910100E016E9 /* atom.cfg in Resources */,
-				D4B4CD8E1A731CB900003686 /* atomulator-icon-32.png in Resources */,
 				D40299691A63F9C600E016E9 /* afloat.rom in Resources */,
 				D40299681A63F9C600E016E9 /* abasic.rom in Resources */,
 				D402996D1A63F9C600E016E9 /* axr1.rom in Resources */,
