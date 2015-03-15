@@ -12,7 +12,6 @@
 #include <allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include "allegro_audio.h"
-#include "allegro_acodec.h"
 
 #include "atom.h"
 #include "roms.h"
@@ -132,6 +131,7 @@ ALLEGRO_EVENT event;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_MENU *menu;
 ALLEGRO_FONT *font;
+ALLEGRO_AUDIO_STREAM *stream;
 
 extern void scrupdate();
 extern char* getPath();
@@ -856,6 +856,8 @@ bool allegro_create_timer_and_events()
     al_start_timer(displaytimer);
     return true;
 }
+
+extern void giveSoundBuffer();
 
 void allegro_process_events()
 {

@@ -149,7 +149,7 @@ void atom_init(int argc, char **argv)
 		if (tapenext)
 			tapenext--;
 	}
-	initalmain(0, NULL);
+
 	inituef();
 	initmem();
 	loadroms();

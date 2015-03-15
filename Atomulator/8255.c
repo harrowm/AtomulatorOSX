@@ -5,6 +5,8 @@
 #include "atom.h"
 #include "sid_atom.h"
 
+#include "allegro_audio.h"
+
 extern ALLEGRO_KEYBOARD_STATE keybd; // used in the keyboard routines
 
 #define SNDBUFLEN 312*2*2
@@ -202,21 +204,15 @@ void pollsound()
 	int16_t temp = 0;
 
 	if (sndatomsid)
-	{
-//		sid_fillbuf(&sndbuffer[sndpos << 1],2);
         sid_fillbuf(&temp,1);
-//        printf("SID: %d\n", temp);
-	}
 
 	if (spon)
-		//temp += (speaker) ? 4095 : -4096;
         temp += (speaker) ? 4095 : -4096;
     
 	if (tpon)
-		//temp += (tapedat) ? 2047 : -2048;
-        temp += (tapedat) ? 0 : -2048;
+        temp += (tapedat) ? 2047 : -2048;
 
-	//if (0!=temp)
+	if (temp!=0)
 	{
 		sndbuffer[sndpos++] = temp;
 		sndbuffer[sndpos++] = temp;
@@ -224,14 +220,7 @@ void pollsound()
 
 	if (sndpos >= SNDBUFLEN)
 	{
-		sndpos = 0;
-        
-//        for (int i =0; i< SNDBUFLEN; i++)
-//        {
-//            printf(" 0x%1x ", (unsigned)sndbuffer[i]);
-//            if (!(i % 5)) printf("\n");
-//        }
-        
-		givealbuffer(sndbuffer);
-	}
+        sndpos = 0;
+        giveSoundBuffer(sndbuffer);
+    }
 }
