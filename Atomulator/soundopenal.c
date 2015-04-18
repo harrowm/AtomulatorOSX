@@ -12,10 +12,10 @@ extern ALLEGRO_AUDIO_STREAM *stream;
 
 void inital()
 {
-    if (!al_reserve_samples(0))
+    if (!al_reserve_samples(16)) // 11 used for disk drive smaples plus a few spare!
         rpclog("Could not set up Allegro voice and mixer\n");
     
-    // How many biffer fragments to allow - eg from manual used 8 so I will too 
+    // How many buffer fragments to allow - eg from manual used 8 so I will too
     stream = al_create_audio_stream(8, SNDBUFLEN, FREQ, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_1);
     if (!stream)
     {
@@ -29,7 +29,8 @@ void inital()
         exit(1); // HACK
     }
 }
-    
+
+// replaces old givealsoundbuffer() routine
 void giveSoundBuffer(int16_t *soundBuf)
 {
     void* alBuf = al_get_audio_stream_fragment(stream);
