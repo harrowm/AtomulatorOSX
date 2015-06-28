@@ -1,10 +1,10 @@
 /*Atomulator v1.0 by Tom Walker
    Linux main*/
 
-#ifndef WIN32
+//#ifndef WIN32
 
 #include <stdio.h>
-#include <allegro.h> // MH Even though we dont use any Allegro function in this file, not including the header file hangs in OSX, not sure why
+#include <Allegro5/allegro.h> // MH Even though we dont use any Allegro function in this file, not including the header file hangs in OSX, not sure why - ah is to handled a hidden function al_mangled_main()
 #include "atom.h"
 
 extern bool allegro_init();
@@ -73,6 +73,6 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-#endif
+//#endif
 
 

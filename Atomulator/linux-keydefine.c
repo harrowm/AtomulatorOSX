@@ -3,7 +3,7 @@
 
 #ifndef WIN32
 #include <stdio.h>
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include <string.h>
 #include "atom.h"
 

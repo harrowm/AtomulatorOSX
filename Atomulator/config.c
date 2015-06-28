@@ -7,7 +7,7 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>

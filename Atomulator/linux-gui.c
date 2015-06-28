@@ -6,12 +6,12 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <allegro.h>
-#include <allegro_native_dialog.h>
-#include <allegro_primitives.h>  // for drawing rectangles
-#include <allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include "allegro_audio.h"
+#include <Allegro5/allegro.h>
+#include <Allegro5/allegro_native_dialog.h>
+#include <Allegro5/allegro_primitives.h>  // for drawing rectangles
+#include <Allegro5/allegro_image.h>
+#include <Allegro5/allegro_font.h>
+#include "Allegro5/allegro_audio.h"
 
 #include "atom.h"
 #include "roms.h"
@@ -132,6 +132,8 @@ ALLEGRO_DISPLAY *display;
 ALLEGRO_MENU *menu;
 ALLEGRO_FONT *font;
 ALLEGRO_AUDIO_STREAM *stream;
+ALLEGRO_AUDIO_STREAM *ddstream;
+
 
 extern void scrupdate();
 extern char* getPath();
@@ -756,13 +758,6 @@ extern char* CreatePathByExpandingTildePath();
 
 bool allegro_init()
 {
-    // initialize allegro and required addons -
-    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick() && al_init_font_addon() && al_init_acodec_addon() && al_install_audio()))
-    {
-        printf("Can't initialize Allegro - quiting!\n");
-        return false;
-    }
-    
     if (CreatePathByExpandingTildePath("~/Documents/Atomulator/") == NULL)
     {
         char t[256];
@@ -786,12 +781,25 @@ bool allegro_init()
         strcpy(exedir, CreatePathByExpandingTildePath("~/Documents/Atomulator/"));
     }
     
+    
+    rpclog("Here1\n");
+    
+    
+    // initialize allegro and required addons -
+    if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() && al_install_mouse() && al_install_keyboard() && al_install_joystick() && al_init_font_addon() && al_init_acodec_addon() && al_install_audio()))
+    {
+        rpclog("Can't initialize Allegro - quiting!\n");
+        return false;
+    }
+    
     font = al_load_font(getPath("fixed_font.tga"), 0, 0);
     if (!font)
     {
         rpclog("Failed to load font.\n");
         return false;
     }
+    
+    rpclog("Here\n");
     
     return true;
 }

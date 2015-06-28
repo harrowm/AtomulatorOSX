@@ -144,7 +144,6 @@ void rewindit();
 int getftell();
 void findfilenamesuef();
 
-void initalmain(int argc, char *argv[]);
 void inital();
 void givealbuffer(int16_t *buf);
 void givealbufferdd(int16_t *buf);

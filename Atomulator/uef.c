@@ -1,7 +1,7 @@
 /*Atomulator v1.0 by Tom Walker
    UEF handling (including HQ-UEF support)*/
 
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include <zlib.h>
 #include <stdio.h>
 #include "atom.h"

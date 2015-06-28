@@ -8,7 +8,7 @@
 
 #include <string.h>
 #include <stdio.h>
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include "atom.h"
 #include "atommc.h"
 

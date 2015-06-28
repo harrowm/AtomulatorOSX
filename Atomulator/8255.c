@@ -1,11 +1,11 @@
 /*Atomulator v1.0 by Tom Walker
    8255 PIA + keyboard + sound emulation*/
 #include <string.h>
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include "atom.h"
 #include "sid_atom.h"
 
-#include "allegro_audio.h"
+#include "Allegro5/allegro_audio.h"
 
 extern ALLEGRO_KEYBOARD_STATE keybd; // used in the keyboard routines
 
@@ -198,6 +198,8 @@ void receive(uint8_t dat)
 //        rpclog("Recieved byte %02X - first bit %i\n",dat,databyte&1);
 	lastdat = dat;
 }
+
+extern void giveSoundBuffer();
 
 void pollsound()
 {

@@ -1,6 +1,6 @@
 /*Atomulator v1.0 by Tom Walker
    6502 emulation*/
-#include <allegro.h>
+#include <Allegro5/allegro.h>
 #include <string.h>
 #include <stdio.h>
 #include "atom.h"

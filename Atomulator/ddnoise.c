@@ -1,8 +1,8 @@
 /*Atomulator v1.0 by Tom Walker
    Disc drive noise*/
 
-#include <allegro.h>
-#include <allegro_audio.h>
+#include <Allegro5/allegro.h>
+#include <Allegro5/allegro_audio.h>
 #include <stdio.h>
 #include <string.h>
 #include "atom.h"

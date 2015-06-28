@@ -2,9 +2,9 @@
    6847 video emulation*/
 
 #include <stdio.h>
-#include <allegro.h>
-#include <allegro_primitives.h>  // for drawing rectangles
-#include <allegro5/allegro_font.h>
+#include <Allegro5/allegro.h>
+#include <Allegro5/allegro_primitives.h>  // for drawing rectangles
+#include <Allegro5/allegro_font.h>
 
 extern char* getPath();
 extern ALLEGRO_TIMER *displaytimer;

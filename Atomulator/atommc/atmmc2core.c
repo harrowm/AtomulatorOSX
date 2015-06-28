@@ -6,7 +6,7 @@
 #include "atmmc2io.h"
 
 // Joystick support
-#include "allegro.h" 
+#include "Allegro5/allegro.h" 
 
 //#include "status.h"
 

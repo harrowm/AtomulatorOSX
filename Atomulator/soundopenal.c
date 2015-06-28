@@ -3,23 +3,33 @@
 
 #include "atom.h"
 
-#include "allegro_audio.h"
+#include "Allegro5/allegro_audio.h"
 
 #define FREQ 31200
 #define SNDBUFLEN (312*2*2)
 
 extern ALLEGRO_AUDIO_STREAM *stream;
+extern ALLEGRO_AUDIO_STREAM *ddstream;
 
 void inital()
 {
     if (!al_reserve_samples(16)) // 11 used for disk drive smaples plus a few spare!
         rpclog("Could not set up Allegro voice and mixer\n");
     
-    // How many buffer fragments to allow - eg from manual used 8 so I will too
-    stream = al_create_audio_stream(8, SNDBUFLEN, FREQ, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_1);
+    // How many buffer fragments to allow - eg from manual used 8, 2 appears to be too few from testing .. 4 seems to work ok and minimizes any delay
+    stream = al_create_audio_stream(4, SNDBUFLEN, FREQ, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_1);
     if (!stream)
     {
-        rpclog("Could not create stream.\n");
+        rpclog("Could not create audio stream.\n");
+        exit(1); // HACK
+    }
+
+    // Create an audio stream for the disk drive noises
+    // Samples given with code are 44.1k any single channel
+    ddstream = al_create_audio_stream(4, SNDBUFLEN, 44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_1);
+    if (!ddstream)
+    {
+        rpclog("Could not create disk drive audio stream.\n");
         exit(1); // HACK
     }
     
@@ -28,6 +38,15 @@ void inital()
         rpclog("Could not attach stream to mixer.\n");
         exit(1); // HACK
     }
+    
+    // attach disk drive stream - but ensure not playing first
+    al_set_audio_stream_playing(ddstream, false);
+    if (!al_attach_audio_stream_to_mixer(ddstream, al_get_default_mixer()))
+    {
+        rpclog("Could not attach disk drive audio stream to mixer.\n");
+        exit(1); // HACK
+    }
+
 }
 
 // replaces old givealsoundbuffer() routine
