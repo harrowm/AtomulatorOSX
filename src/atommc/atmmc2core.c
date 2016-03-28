@@ -67,6 +67,7 @@ BYTE JOYSTICK;
 
 void at_process(void)
 {
+	int i;
    unsigned char received;
    void (*worker)(void) = NULL;
 
@@ -338,7 +339,7 @@ void at_process(void)
                     if (joystate.stick[0].axis[1] < -0.1) // up
                         JOYSTICK ^= 8;
                     // Check if any button is pressed and if so assume fire pressed
-                    for (int i = 0; i < al_get_joystick_num_buttons(joystick); i++)
+                    for (i = 0; i < al_get_joystick_num_buttons(joystick); i++)
                     {
                         if (joystate.button[i])
                         {

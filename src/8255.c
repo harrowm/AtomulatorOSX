@@ -142,7 +142,7 @@ uint8_t read8255(uint16_t addr)
                 if (joystate.stick[0].axis[1] > 0.1)  temp&=~0x10;  // Q-key pressed
                 if (joystate.stick[0].axis[1] < -0.1)  temp&=~4;     // --key pressed
                 // Check if any button is pressed and if so assume fire pressed
-                for (int i = 0; i < al_get_joystick_num_buttons(joystick); i++)
+                for (i = 0; i < al_get_joystick_num_buttons(joystick); i++)
                 {
                     if (joystate.button[i])
                     {

@@ -1,41 +1,15 @@
-# Makefile for Atomulator - Linux and Windows
+# Makefile for Atomulator - Linux
 
-ifeq ($(OS), Windows_NT)
-	ifeq ($(PROCESSOR_ARCHITECTURE), x86)
-		TARGET=Atomulator-Win32
+# LIBS = -lstdc++ `pkg-config --static --libs allegro-static-5 allegro_main-static-5 allegro_memfile-static-5 allegro_color-static-5 allegro_physfs-static-5 allegro_primitives-static-5 allegro_image-static-5 allegro_ttf-static-5 allegro_dialog-static-5 allegro_audio-static-5 allegro_acodec-static-5 allegro_font-static-5`
 
-		# have to dynamically link OpenAL32
-		# order of the libraries is important !!!
+LIBS = -lstdc++ `pkg-config --static --libs allegro_monolith-static-5`
+UNAME_P := $(shell getconf LONG_BIT)
 
-		# works !!
-		#LIBS  = -Wl,-Bstatic -lallegro_monolith-static -lstdc++ -lgcc /mingw32/i686-w64-mingw32/lib/libwinpthread.a
-		#LIBS += -ldumb -lflac -lfreetype -logg -lz -lpng -ljpeg -Wl,-Bdynamic -lopenal32 -Wl,-Bstatic
-		#LIBS += -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 -lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi
-
-		LIBS  = -Wl,--subsystem,windows -static -lallegro_monolith-static -lstdc++ -lgcc
-		LIBS += -ldumb -lflac -lfreetype -logg -lz -lpng -ljpeg /mingw32/lib/libopenal32.a
-		LIBS += -lgdiplus -luuid -lkernel32 -lwinmm -lpsapi -lopengl32 -lglu32 -luser32 -lcomdlg32 -lgdi32 -lshell32 -lole32 -ladvapi32 -lws2_32 -lshlwapi
-	endif
-	ifeq ($(PROCESSOR_ARCHITECTURE), amd64)
-		TARGET=Atomulator-Win64
-	endif
+ifeq ($(UNAME_P), 64)
+	TARGET=Atomulator-Linux-x86_64
 else
-	# known to work, but too many libraries
-	# LIBS = -lstdc++ `pkg-config --static --libs allegro-static-5 allegro_main-static-5 allegro_memfile-static-5 allegro_color-static-5 allegro_physfs-static-5 allegro_primitives-static-5 allegro_image-static-5 allegro_ttf-static-5 allegro_dialog-static-5 allegro_audio-static-5 allegro_acodec-static-5 allegro_font-static-5`
-
-	LIBS = -lstdc++ `pkg-config --static --libs allegro-static-5 allegro_main-static-5 allegro_primitives-static-5 allegro_image-static-5 allegro_ttf-static-5 allegro_dialog-static-5 allegro_audio-static-5 allegro_acodec-static-5 allegro_font-static-5`
-	UNAME_S := $(shell uname -s)
-	UNAME_P := $(shell getconf LONG_BIT)
-
-	ifeq ($(UNAME_S), Linux)
-		ifeq ($(UNAME_P), 64)
-			TARGET=Atomulator-Linux-x86_64
-		else
-			TARGET=Atomulator-Linux-i686
-		endif
-	endif
+	TARGET=Atomulator-Linux-i686
 endif
-
 
 VPATH = . resid-fp atommc
 CPP  = g++

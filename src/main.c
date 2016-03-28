@@ -50,6 +50,8 @@ bool displayjustcreated = true;
 
 bool initJoystick()
 {
+	int a, i;
+
     int num_joysticks = al_get_num_joysticks();
     
     if (num_joysticks == 0)
@@ -62,15 +64,15 @@ bool initJoystick()
         rpclog("Joystick: '%s'\n", al_get_joystick_name(joystick));
         rpclog("  Buttons:");
         int n = al_get_joystick_num_buttons(joystick);
-        for (int i = 0; i < n; i++)
+        for (i = 0; i < n; i++)
             rpclog(" '%s'", al_get_joystick_button_name(joystick, i));
         rpclog("\n");
             
         n = al_get_joystick_num_sticks(joystick);
-        for (int i = 0; i < n; i++)
+        for (i = 0; i < n; i++)
         {
             rpclog("  Stick %d: '%s'\n", i, al_get_joystick_stick_name(joystick, i));
-            for (int a = 0; a < al_get_joystick_num_axes(joystick, i); a++)
+            for (a = 0; a < al_get_joystick_num_axes(joystick, i); a++)
                 rpclog("    Axis %d: '%s'\n", a, al_get_joystick_axis_name(joystick, i, a));
         }
     }
