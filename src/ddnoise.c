@@ -41,6 +41,7 @@ static ALLEGRO_SAMPLE* loadSampleFile(char* f)
     strlcpy(ddnoisefile, al_path_cstr(exepath, ALLEGRO_NATIVE_PATH_SEP), MAXPATH-1);
 	al_drop_path_tail(exepath); // leave clean for next use - remove drive type    
 	al_drop_path_tail(exepath); // leave clean for next use - remove ddnoise directory
+    al_set_path_filename(exepath, NULL); // Leave clean
 
     s = al_load_sample(ddnoisefile);
 
@@ -158,7 +159,7 @@ void mixddnoise()
 		ddnoise_mpos = 0;
 	}
 
-	if (sndddnoise)
+	if (sndddnoise && (ddnoise_mstat >= 0))
 	{
         mpos_increment = (float)(al_get_sample_frequency(motorsmp[ddnoise_mstat]) / 44100.0f);
         msample_length = (float)al_get_sample_length(motorsmp[ddnoise_mstat]);

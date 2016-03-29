@@ -1,4 +1,4 @@
-MMC Path given in atom.cfg is invalid - /home/malcolm/Atomulator/mmc
+MMC Path given in atom.cfg is invalid - /home/malcolm/AtomulatorOSX/mmc
 MMC Path reset to - /home/malcolm/AtomulatorOSX/mmc/rlog.txt
 MMC path is /home/malcolm/AtomulatorOSX/mmc/rlog.txt
 No joysticks installed
@@ -21,7 +21,7 @@ utility_ptr = 0x0c000
 akernel_ptr = 0x23000
 reset_rom():done
 atom_reset(1)
-exedir=/home/malcolm/AtomulatorOSX/motoroff525.wav
+exedir=/home/malcolm/AtomulatorOSX/
 docdir=/home/malcolm/AtomulatorOSX/rlog.txt
 InitMMC()
 InitMMC():Done
@@ -37,3 +37,56 @@ utility_ptr = 0x0c000
 akernel_ptr = 0x23000
 reset_rom():done
 atom_reset():done
+atom_reset(0)
+exedir=/home/malcolm/AtomulatorOSX/
+docdir=/home/malcolm/AtomulatorOSX/rlog.txt
+InitMMC()
+InitMMC():Done
+reset_rom(), ramrom=1, bbcmode=0
+Running with Ramoth RAMROM roms
+RR_enables= 0, RR_bankreg= 0
+Running with Atom mode roms, diskrom flag = 0
+Running with Atom mode roms, diskrom flag = 0
+utility_ptr = 0x0c000
+ abasic_ptr = 0x20000
+ afloat_ptr = 0x21000
+ dosrom_ptr = 0x03000
+akernel_ptr = 0x23000
+reset_rom():done
+atom_reset():done
+atom_reset(1)
+exedir=/home/malcolm/AtomulatorOSX/
+docdir=/home/malcolm/AtomulatorOSX/rlog.txt
+InitMMC()
+InitMMC():Done
+reset_rom(), ramrom=1, bbcmode=0
+Running with Ramoth RAMROM roms
+RR_enables= 0, RR_bankreg= 0
+Running with Atom mode roms, diskrom flag = 1
+Running with Atom mode roms, diskrom flag = 1
+utility_ptr = 0x0c000
+ abasic_ptr = 0x1c000
+ afloat_ptr = 0x1d000
+ dosrom_ptr = 0x1e000
+akernel_ptr = 0x1f000
+reset_rom():done
+atom_reset():done
+atom_reset(0)
+exedir=/home/malcolm/AtomulatorOSX/
+docdir=/home/malcolm/AtomulatorOSX/rlog.txt
+InitMMC()
+InitMMC():Done
+reset_rom(), ramrom=1, bbcmode=0
+Running with Ramoth RAMROM roms
+RR_enables= 0, RR_bankreg= 0
+Running with Atom mode roms, diskrom flag = 1
+Running with Atom mode roms, diskrom flag = 1
+utility_ptr = 0x0c000
+ abasic_ptr = 0x1c000
+ afloat_ptr = 0x1d000
+ dosrom_ptr = 0x1e000
+akernel_ptr = 0x1f000
+reset_rom():done
+atom_reset():done
+file_exists(/home/malcolm/AtomulatorOSX/mmc/MENU)
+get_fileinfo_special()
