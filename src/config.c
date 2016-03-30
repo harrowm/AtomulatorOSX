@@ -110,6 +110,7 @@ void loadconfig()
 
 	al_set_path_filename(docpath, "atom.cfg");
 	strlcpy(s, al_path_cstr(docpath, ALLEGRO_NATIVE_PATH_SEP), MAXPATH - 1);
+	al_set_path_filename(docpath, NULL);
 	
 	atom_config = al_load_config_file(s);
     
@@ -258,5 +259,6 @@ void saveconfig()
 
 	al_set_path_filename(docpath, "atom.cfg");
 	strlcpy(s, al_path_cstr(docpath, ALLEGRO_NATIVE_PATH_SEP), MAXPATH - 1);
+	al_set_path_filename(docpath, NULL);
 	al_save_config_file(s, atom_config);
 }

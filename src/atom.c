@@ -56,6 +56,7 @@ void rpclog(char *format, ...)
     
    	al_set_path_filename(docpath, "rlog.txt");
    	strlcpy(buf2, al_path_cstr(docpath, ALLEGRO_NATIVE_PATH_SEP), MAXPATH-1);
+   	al_set_path_filename(docpath, NULL);
     
 	if (!rlog)
 		rlog = fopen(buf2, "wt");
@@ -86,6 +87,7 @@ void prtbuf(char *format, ...)
 	
 	al_set_path_filename(docpath, "pbuf.txt");
 	strlcpy(buf, al_path_cstr(docpath, ALLEGRO_NATIVE_PATH_SEP), MAXPATH - 1);
+   	al_set_path_filename(docpath, NULL);
 	
 	if (!plog)
 		plog = fopen(buf, "wt");
