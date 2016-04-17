@@ -110,6 +110,9 @@ int ddframes = 0;
 
 void scrupdate()
 {
+    if (debug)
+        return;
+    
 	ddframes++;
 	drawscr++;
 }
@@ -249,9 +252,13 @@ void atom_run()
 
 void atom_exit()
 {
+    printf("Atom exit - save config\n");
 	saveconfig();
+    printf("Atom exit - close dd noise\n");
 	closeddnoise();
+    printf("Atom exit - finalize mmc\n");
 	FinalizeMMC();
+    printf("Atom exit - done\n");
 //        dumpregs();
 //        dumpram();
 }

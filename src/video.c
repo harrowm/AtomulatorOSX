@@ -255,7 +255,7 @@ void drawAtomScreen()
     lockAtomScreen();
 
 	if (debug)
-		drawMemScreen();
+		drawDebugScreens();
 }
 
 void drawline(int line)

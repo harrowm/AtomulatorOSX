@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_font.h>
 
 #include "atom.h"
 #include "debugger.h"
@@ -27,7 +28,11 @@ ALLEGRO_STATE memstate;
 ALLEGRO_LOCKED_REGION *mlr;
 extern ALLEGRO_DISPLAY *memDisplay;
 
+ALLEGRO_BITMAP *inp;
+ALLEGRO_STATE inpstate;
+ALLEGRO_LOCKED_REGION *ilr;
 extern ALLEGRO_DISPLAY *inputDisplay;
+
 extern ALLEGRO_EVENT_QUEUE *events;
 
 
@@ -56,14 +61,37 @@ static void initMemVideo()
 #define winmemsizex 256
 #define winmemsizey 256
 
-void drawMemScreen()
+static void lockInputScreen()
+{
+    al_store_state(&inpstate, ALLEGRO_STATE_TARGET_BITMAP);
+    al_set_target_bitmap(inp);
+    ilr = al_lock_bitmap(inp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+}
+
+static void unlockInputScreen()
+{
+    al_unlock_bitmap(inp);
+    al_restore_state(&inpstate);
+}
+
+static void initInputVideo()
+{
+    inp = al_create_bitmap(640, 256);
+    lockInputScreen();
+}
+
+extern char inputScreenLine[5][100];
+extern ALLEGRO_FONT *font;
+
+void drawDebugScreens()
 {
 
 	int pos=0;
 	int line=0;
 
 	unsigned int *ptr;
-
+    
+    // Memory screen
 	for (line=0; line<256; line++)
 	{
 		ptr = (unsigned int *)(mlr->data + mlr->pitch * line);
@@ -82,10 +110,26 @@ void drawMemScreen()
     al_flip_display();
 	al_clear_to_color(al_map_rgb(0,0,0));
     lockMemScreen();
+    
+    // Debug input screen
+    unlockInputScreen();
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[0]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 20.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[1]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 40.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[2]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 60.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[3]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 80.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[4]);
+    al_flip_display();
+    al_clear_to_color(al_map_rgb(0,0,0));
+    lockInputScreen();
+    
 }
 
 void startdebug()
 {
+    int x;
+    int y;
+    extern ALLEGRO_DISPLAY *display;
+    
 	if (debug)
 	{
 		//show memory console
@@ -95,27 +139,38 @@ void startdebug()
 		// manipulating the bitmap the code assumes a 32bit pixel size
         al_set_new_display_option(ALLEGRO_COLOR_SIZE, 32, ALLEGRO_REQUIRE);
 
+        // Try to display the memory screen to the right of the Atomulator window
+        al_get_window_position(display, &x, &y);
+        al_set_new_window_position(x + winsizex + 10.0, y);
+        
     	memDisplay = al_create_display(256, 256);
     	if (memDisplay == NULL)
         {
-        	rpclog("Error creating Allegro memory display (32bit pixel size required).\n");
+        	rpclog("ERROR: Error creating Allegro memory display (32bit pixel size required).\n");
 			return;
     	}
 
 		al_set_window_title(memDisplay, "Memory viewer");
 		initMemVideo();
-
+        
 		// Show output console
 		debugLog = al_open_native_text_log("Debugger Output", ALLEGRO_TEXTLOG_NO_CLOSE|ALLEGRO_TEXTLOG_MONOSPACE);
 
 		// Show input console
-    	inputDisplay = al_create_display(640, 128);
+        
+        
+        // Try to display the input screen below the Atomulator window
+        al_get_window_position(display, &x, &y);
+        al_set_new_window_position(x, y + winsizey + 30.0);
+        
+    	inputDisplay = al_create_display(winsizex, 100);
     	if (inputDisplay == NULL)
         {
-        	rpclog("Error creating Allegro input display (32bit pixel size required).\n");
+        	rpclog("ERROR: Error creating Allegro input display (32bit pixel size required).\n");
 			return;
     	}
 		al_set_window_title(inputDisplay, "Debugger input console");
+        initInputVideo();
 		al_register_event_source(events, al_get_display_event_source(inputDisplay));
 	}
 }
@@ -364,6 +419,7 @@ void debugread(uint16_t addr)
 		}
 	}
 }
+
 void debugwrite(uint16_t addr, uint8_t val)
 {
 	int c;
@@ -392,412 +448,407 @@ extern bool inputStringReady;
 uint16_t oldpc, oldoldpc, pc3;
 void dodebugger(int linenum)
 {
-	int c, d, e, f;
-	int params;
-	uint8_t temp;
-	char outs[256];
-	char ins[256];
-	int lines;
-
-	if ((!opcode) && debug_on_brk)
-	{
-		sprintf(outs, "BRK %04X! %04X %04X\n", pc, oldpc, oldoldpc);
-		debugout(outs);
-		debug = 1;
-	}
-//	if (!opcode)
-//		debug = 1;
-
-	for (c = 0; c < 8; c++)
-	{
-		if (breakpoints[c] == pc)
-		{
-			debug = 1;
-			sprintf(outs, "    Break at %04X\n", pc);
-			debugout(outs);
-		}
-	}
-	if (!debug)
-		return;
-//        if (!opcode) printf("BRK at %04X\n",pc);
-	if (debugstep)
-	{
-		debugstep--;
-		if (debugstep)
-			return;
-	}
-/*        if (!debugopen)
+    int c, d;
+    char outs[256];
+    
+    int origdebug =0;
+    int x, y;
+    
+    origdebug = debug;
+    
+    if ((!opcode) && debug_on_brk)
+    {
+        sprintf(outs, "BRK %04X! %04X %04X\n", pc, oldpc, oldoldpc);
+        debugout(outs);
+        debug = 1;
+    }
+    
+    for (c = 0; c < 8; c++)
+    {
+        if (breakpoints[c] == pc)
         {
-                debugopen=1;
-                debugdisaddr=pc;
-        }*/
-	indebug = 1;
-
-	while (1)
-	{
-		d = debugdisaddr;
-		debugdisaddr = pc;
-		debugdisassemble();
-		debugdisaddr = d;
-
-		if (!inputStringReady)
-			break;
-		else
-		{
-			strcpy(ins, inputString);
-			debugout(ins);
-		}
-
-		// Force the screen to be refreshed before each debug command
-		for (lines = 0; lines < linenum; lines++) {
-			if (lines < 262 || lines == 311) {
-				drawline(lines);
-			}
-		}
-
-		sprintf(outs, "  >");
-		debugout(outs);
-#ifdef WIN32
-/*                gotstr=0;
-                while (!gotstr && debug) sleep(10);
-                if (!debug)
-                {
-                        indebug=0;
-                        return;
-                }
-                strcpy(ins,debugconsoleins);*/
-		// Come back to these lines, commented out so we compile under Visual Studio
-		// c = ReadConsoleA(cinf, ins, 255, (LPDWORD)&d, NULL);
-		// ins[d] = 0;
-#else
-		d = (int)fgets(ins, 255, stdin);
-//                gets(ins);
-#endif
-//printf("Got %s %i\n",ins,d);
-//                rpclog("Got %s\n",ins);
-//                rpclog("%i chars %i chars return %i\n",strlen(ins),d,c);
-		d = 0;
-		while (ins[d] != 32 && ins[d] != 0xA && ins[d] != 0xD && ins[d] != 0)
-			d++;
-		while (ins[d] == 32)
-			d++;
-		if (ins[d] == 0xA || ins[d] == 0xD || ins[d] == 0)
-			params = 0;
-		else
-			params = 1;
-
-		if (ins[0] == 0xA || ins[0] == 0xD)
-			ins[0] = debuglastcommand;
-//debugout("Processing!\n");
-		switch (ins[0])
-		{
-		case 'c': case 'C':
-			debug = 0;
-//                        debugopen=0;
-//                        FreeConsole();
-			indebug = 0;
-			return;
-		case 'm': case 'M':
-			if (params)
-				sscanf(&ins[d], "%X", (unsigned int*)&debugmemaddr);
-			for (c = 0; c < 16; c++)
-			{
-				sprintf(outs, "    %04X : ", debugmemaddr);
-				debugout(outs);
-				for (d = 0; d < 16; d++)
-				{
-					sprintf(outs, "%02X ", dreadmem(debugmemaddr + d));
-					debugout(outs);
-				}
-				debugout("  ");
-				for (d = 0; d < 16; d++)
-				{
-					temp = dreadmem(debugmemaddr + d);
-					if (temp < 32)
-						sprintf(outs, ".");
-					else
-						sprintf(outs, "%c", temp);
-					debugout(outs);
-				}
-				debugmemaddr += 16;
-				debugout("\n");
-			}
-			break;
-		case 'd': case 'D':
-			if (params)
-				sscanf(&ins[d], "%X", (unsigned int*)&debugdisaddr);
-			for (c = 0; c < 12; c++)
-			{
-				debugout("    ");
-				debugdisassemble();
-				debugout("\n");
-			}
-			break;
-		case 'r': case 'R':
-			sprintf(outs, "    6502 registers :\n");
-			debugout(outs);
-			sprintf(outs, "    A=%02X X=%02X Y=%02X S=01%02X PC=%04X\n", a, x, y, s, pc);
-			debugout(outs);
-			sprintf(outs, "    Status : %c%c%c%c%c%c\n", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
-			debugout(outs);
-			break;
-		case 's': case 'S':
-			if (params)
-				sscanf(&ins[d], "%i", &debugstep);
-			else
-				debugstep = 1;
-			debuglastcommand = ins[0];
-			indebug = 0;
-			return;
-		case 'b': case 'B':
-			if (!strncasecmp(ins, "breakr", 6))
-			{
-				if (!params)
-					break;
-				for (c = 0; c < 8; c++)
-				{
-					if (breakpoints[c] == -1)
-					{
-						sscanf(&ins[d], "%X", &breakr[c]);
-						sprintf(outs, "    Read breakpoint %i set to %04X\n", c, breakr[c]);
-						debugout(outs);
-						break;
-					}
-				}
-			}
-			else if (!strncasecmp(ins, "breakw", 6))
-			{
-				if (!params)
-					break;
-				for (c = 0; c < 8; c++)
-				{
-					if (breakpoints[c] == -1)
-					{
-						sscanf(&ins[d], "%X", &breakw[c]);
-						sprintf(outs, "    Write breakpoint %i set to %04X\n", c, breakw[c]);
-						debugout(outs);
-						break;
-					}
-				}
-			}
-			else if (!strncasecmp(ins, "break", 5))
-			{
-				if (!params)
-					break;
-				for (c = 0; c < 8; c++)
-				{
-					if (breakpoints[c] == -1)
-					{
-						sscanf(&ins[d], "%X", &breakpoints[c]);
-						sprintf(outs, "    Breakpoint %i set to %04X\n", c, breakpoints[c]);
-						debugout(outs);
-						break;
-					}
-				}
-			}
-			if (!strncasecmp(ins, "blist", 5))
-			{
-				for (c = 0; c < 8; c++)
-				{
-					if (breakpoints[c] != -1)
-					{
-						sprintf(outs, "    Breakpoint %i : %04X\n", c, breakpoints[c]);
-						debugout(outs);
-					}
-				}
-				for (c = 0; c < 8; c++)
-				{
-					if (breakr[c] != -1)
-					{
-						sprintf(outs, "    Read breakpoint %i : %04X\n", c, breakr[c]);
-						debugout(outs);
-					}
-				}
-				for (c = 0; c < 8; c++)
-				{
-					if (breakw[c] != -1)
-					{
-						sprintf(outs, "    Write breakpoint %i : %04X\n", c, breakr[c]);
-						debugout(outs);
-					}
-				}
-			}
-			if (!strncasecmp(ins, "bclearr", 7))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X", &e);
-				for (c = 0; c < 8; c++)
-				{
-					if (breakr[c] == e)
-						breakr[c] = -1;
-					if (c == e)
-						breakr[c] = -1;
-				}
-			}
-			else if (!strncasecmp(ins, "bclearw", 7))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X", &e);
-				for (c = 0; c < 8; c++)
-				{
-					if (breakw[c] == e)
-						breakw[c] = -1;
-					if (c == e)
-						breakw[c] = -1;
-				}
-			}
-			else if (!strncasecmp(ins, "bclear", 6))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X", &e);
-				for (c = 0; c < 8; c++)
-				{
-					if (breakpoints[c] == e)
-						breakpoints[c] = -1;
-					if (c == e)
-						breakpoints[c] = -1;
-				}
-			}
-			break;
-		case 'w': case 'W':
-			if (!strncasecmp(ins, "watchr", 6))
-			{
-				if (!params)
-					break;
-				for (c = 0; c < 8; c++)
-				{
-					if (watchr[c] == -1)
-					{
-						sscanf(&ins[d], "%X", &watchr[c]);
-						sprintf(outs, "    Read watchpoint %i set to %04X\n", c, watchr[c]);
-						debugout(outs);
-						break;
-					}
-				}
-				break;
-			}
-			if (!strncasecmp(ins, "watchw", 6))
-			{
-				if (!params)
-					break;
-				for (c = 0; c < 8; c++)
-				{
-					if (watchw[c] == -1)
-					{
-						sscanf(&ins[d], "%X", &watchw[c]);
-						sprintf(outs, "    Write watchpoint %i set to %04X\n", c, watchw[c]);
-						debugout(outs);
-						break;
-					}
-				}
-				break;
-			}
-			if (!strncasecmp(ins, "wlist", 5))
-			{
-				for (c = 0; c < 8; c++)
-				{
-					if (watchr[c] != -1)
-					{
-						sprintf(outs, "    Read watchpoint %i : %04X\n", c, watchr[c]);
-						debugout(outs);
-					}
-				}
-				for (c = 0; c < 8; c++)
-				{
-					if (watchw[c] != -1)
-					{
-						sprintf(outs, "    Write watchpoint %i : %04X\n", c, watchw[c]);
-						debugout(outs);
-					}
-				}
-			}
-			if (!strncasecmp(ins, "wclearr", 7))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X", &e);
-				for (c = 0; c < 8; c++)
-				{
-					if (watchr[c] == e)
-						watchr[c] = -1;
-					if (c == e)
-						watchr[c] = -1;
-				}
-			}
-			else if (!strncasecmp(ins, "wclearw", 7))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X", &e);
-				for (c = 0; c < 8; c++)
-				{
-					if (watchw[c] == e)
-						watchw[c] = -1;
-					if (c == e)
-						watchw[c] = -1;
-				}
-			}
-			else if (!strncasecmp(ins, "writem", 6))
-			{
-				if (!params)
-					break;
-				sscanf(&ins[d], "%X %X", &e, &f);
-				rpclog("WriteM %04X %04X\n", e, f);
-				writemem(e, f);
-			}
-			break;
-		case 'q': case 'Q':
-			setquit();
-			while (1)
-				;
-			break;
-		case 'h': case 'H': case '?':
-			sprintf(outs, "\n    Debugger commands :\n\n");
-			debugout(outs);
-			sprintf(outs, "    bclear n   - clear breakpoint n or breakpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    bclearr n  - clear read breakpoint n or read breakpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    bclearw n  - clear write breakpoint n or write breakpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    blist      - list current breakpoints\n");
-			debugout(outs);
-			sprintf(outs, "    break n    - set a breakpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    breakr n   - break on reads from address n\n");
-			debugout(outs);
-			sprintf(outs, "    breakw n   - break on writes to address n\n");
-			debugout(outs);
-			sprintf(outs, "    c          - continue running indefinitely\n");
-			debugout(outs);
-			sprintf(outs, "    d [n]      - disassemble from address n\n");
-			debugout(outs);
-			sprintf(outs, "    m [n]      - memory dump from address n\n");
-			debugout(outs);
-			sprintf(outs, "    q          - force emulator exit\n");
-			debugout(outs);
-			sprintf(outs, "    r          - print 6502 registers\n");
-			debugout(outs);
-			sprintf(outs, "    s [n]      - step n instructions (or 1 if no parameter)\n\n");
-			debugout(outs);
-			sprintf(outs, "    watchr n   - watch reads from address n\n");
-			debugout(outs);
-			sprintf(outs, "    watchw n   - watch writes to address n\n");
-			debugout(outs);
-			sprintf(outs, "    wclearr n  - clear read watchpoint n or read watchpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    wclearw n  - clear write watchpoint n or write watchpoint at n\n");
-			debugout(outs);
-			sprintf(outs, "    writem a v - write to memory, a = address, v = value\n");
-			debugout(outs);
-			break;
-		}
-		debuglastcommand = ins[0];
-//                WriteConsole(consf,"\n",1,NULL,NULL);
-//                WriteConsole(consf,ins,strlen(ins),NULL,NULL);
-	}
-	indebug = 0;
+            debug = 1;
+            sprintf(outs, "    Break at %04X\n", pc);
+            debugout(outs);
+        }
+    }
+    
+    if (debugstep)
+    {
+        d = debugdisaddr;
+        debugdisaddr = pc;
+        
+        debugdisassemble();
+        debugdisaddr = d;
+        
+        debugstep--;
+        if (!debugstep)
+            debug = 1; // enter the debugger
+    }
+    
+    if (origdebug != debug) // debugger window needs to be selected
+    {
+        // nope - al_get_window_position(inputDisplay, &x, &y);
+        // nope - al_set_window_position(inputDisplay, x-10.0, y);
+        al_set_target_backbuffer(inputDisplay);
+        al_clear_to_color(al_map_rgb(0,255,0));
+        al_flip_display();
+        printf("here\n");
+        // dont work - al_resize_display(inputDisplay, x, y);
+        printf("Here2\n");
+    }
 }
+
+
+void getDebuggerCommand(int linenum)
+{
+    int c, d, e, f;
+    int params;
+    uint8_t temp;
+    char outs[256];
+    char ins[256];
+    int lines;
+    
+    if (!debug)
+        return;
+    
+    indebug = 1;
+    
+    d = debugdisaddr;
+    debugdisaddr = pc;
+    debugdisassemble();
+    debugdisaddr = d;
+    
+    strcpy(ins, inputString);
+    
+    // Force the screen to be refreshed before each debug command
+    for (lines = 0; lines < linenum; lines++) {
+        if (lines < 262 || lines == 311) {
+            drawline(lines);
+        }
+    }
+    
+    sprintf(outs, "\n> %s\n", ins);
+    debugout(outs);
+
+    d = 0;
+    while (ins[d] != 32 && ins[d] != 0xA && ins[d] != 0xD && ins[d] != 0)
+        d++;
+    while (ins[d] == 32)
+        d++;
+    if (ins[d] == 0xA || ins[d] == 0xD || ins[d] == 0)
+        params = 0;
+    else
+        params = 1;
+    
+    if (ins[0] == 0xA || ins[0] == 0xD)
+        ins[0] = debuglastcommand;
+    
+    switch (ins[0])
+    {
+        case 'c': case 'C':
+            debug = 0;
+            indebug = 0;
+            return;
+        case 'm': case 'M':
+            if (params)
+                sscanf(&ins[d], "%X", (unsigned int*)&debugmemaddr);
+            for (c = 0; c < 16; c++)
+            {
+                sprintf(outs, "    %04X : ", debugmemaddr);
+                debugout(outs);
+                for (d = 0; d < 16; d++)
+                {
+                    sprintf(outs, "%02X ", dreadmem(debugmemaddr + d));
+                    debugout(outs);
+                }
+                debugout("  ");
+                for (d = 0; d < 16; d++)
+                {
+                    temp = dreadmem(debugmemaddr + d);
+                    if (temp < 32)
+                        sprintf(outs, ".");
+                    else
+                        sprintf(outs, "%c", temp);
+                    debugout(outs);
+                }
+                debugmemaddr += 16;
+                debugout("\n");
+            }
+            break;
+        case 'd': case 'D':
+            if (params)
+                sscanf(&ins[d], "%X", (unsigned int*)&debugdisaddr);
+            for (c = 0; c < 12; c++)
+            {
+                debugout("    ");
+                debugdisassemble();
+                debugout("\n");
+            }
+            break;
+        case 'r': case 'R':
+            sprintf(outs, "    6502 registers :\n");
+            debugout(outs);
+            sprintf(outs, "    A=%02X X=%02X Y=%02X S=01%02X PC=%04X\n", a, x, y, s, pc);
+            debugout(outs);
+            sprintf(outs, "    Status : %c%c%c%c%c%c\n", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
+            debugout(outs);
+            break;
+        case 's': case 'S':
+            if (params)
+                sscanf(&ins[d], "%i", &debugstep);
+            else
+                debugstep = 1;
+            debuglastcommand = ins[0];
+            indebug = 0;
+            return;
+        case 'b': case 'B':
+            if (!strncasecmp(ins, "breakr", 6))
+            {
+                if (!params)
+                    break;
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakpoints[c] == -1)
+                    {
+                        sscanf(&ins[d], "%X", &breakr[c]);
+                        sprintf(outs, "    Read breakpoint %i set to %04X\n", c, breakr[c]);
+                        debugout(outs);
+                        break;
+                    }
+                }
+            }
+            else if (!strncasecmp(ins, "breakw", 6))
+            {
+                if (!params)
+                    break;
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakpoints[c] == -1)
+                    {
+                        sscanf(&ins[d], "%X", &breakw[c]);
+                        sprintf(outs, "    Write breakpoint %i set to %04X\n", c, breakw[c]);
+                        debugout(outs);
+                        break;
+                    }
+                }
+            }
+            else if (!strncasecmp(ins, "break", 5))
+            {
+                if (!params)
+                    break;
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakpoints[c] == -1)
+                    {
+                        sscanf(&ins[d], "%X", &breakpoints[c]);
+                        sprintf(outs, "    Breakpoint %i set to %04X\n", c, breakpoints[c]);
+                        debugout(outs);
+                        break;
+                    }
+                }
+            }
+            if (!strncasecmp(ins, "blist", 5))
+            {
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakpoints[c] != -1)
+                    {
+                        sprintf(outs, "    Breakpoint %i : %04X\n", c, breakpoints[c]);
+                        debugout(outs);
+                    }
+                }
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakr[c] != -1)
+                    {
+                        sprintf(outs, "    Read breakpoint %i : %04X\n", c, breakr[c]);
+                        debugout(outs);
+                    }
+                }
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakw[c] != -1)
+                    {
+                        sprintf(outs, "    Write breakpoint %i : %04X\n", c, breakr[c]);
+                        debugout(outs);
+                    }
+                }
+            }
+            if (!strncasecmp(ins, "bclearr", 7))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X", &e);
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakr[c] == e)
+                        breakr[c] = -1;
+                    if (c == e)
+                        breakr[c] = -1;
+                }
+            }
+            else if (!strncasecmp(ins, "bclearw", 7))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X", &e);
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakw[c] == e)
+                        breakw[c] = -1;
+                    if (c == e)
+                        breakw[c] = -1;
+                }
+            }
+            else if (!strncasecmp(ins, "bclear", 6))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X", &e);
+                for (c = 0; c < 8; c++)
+                {
+                    if (breakpoints[c] == e)
+                        breakpoints[c] = -1;
+                    if (c == e)
+                        breakpoints[c] = -1;
+                }
+            }
+            break;
+        case 'w': case 'W':
+            if (!strncasecmp(ins, "watchr", 6))
+            {
+                if (!params)
+                    break;
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchr[c] == -1)
+                    {
+                        sscanf(&ins[d], "%X", &watchr[c]);
+                        sprintf(outs, "    Read watchpoint %i set to %04X\n", c, watchr[c]);
+                        debugout(outs);
+                        break;
+                    }
+                }
+                break;
+            }
+            if (!strncasecmp(ins, "watchw", 6))
+            {
+                if (!params)
+                    break;
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchw[c] == -1)
+                    {
+                        sscanf(&ins[d], "%X", &watchw[c]);
+                        sprintf(outs, "    Write watchpoint %i set to %04X\n", c, watchw[c]);
+                        debugout(outs);
+                        break;
+                    }
+                }
+                break;
+            }
+            if (!strncasecmp(ins, "wlist", 5))
+            {
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchr[c] != -1)
+                    {
+                        sprintf(outs, "    Read watchpoint %i : %04X\n", c, watchr[c]);
+                        debugout(outs);
+                    }
+                }
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchw[c] != -1)
+                    {
+                        sprintf(outs, "    Write watchpoint %i : %04X\n", c, watchw[c]);
+                        debugout(outs);
+                    }
+                }
+            }
+            if (!strncasecmp(ins, "wclearr", 7))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X", &e);
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchr[c] == e)
+                        watchr[c] = -1;
+                    if (c == e)
+                        watchr[c] = -1;
+                }
+            }
+            else if (!strncasecmp(ins, "wclearw", 7))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X", &e);
+                for (c = 0; c < 8; c++)
+                {
+                    if (watchw[c] == e)
+                        watchw[c] = -1;
+                    if (c == e)
+                        watchw[c] = -1;
+                }
+            }
+            else if (!strncasecmp(ins, "writem", 6))
+            {
+                if (!params)
+                    break;
+                sscanf(&ins[d], "%X %X", &e, &f);
+                rpclog("WriteM %04X %04X\n", e, f);
+                writemem(e, f);
+            }
+            break;
+        case 'q': case 'Q':
+            setquit();
+            break;
+            
+        case 'h': case 'H': case '?':
+            sprintf(outs, "\n    Debugger commands :\n\n");
+            debugout(outs);
+            sprintf(outs, "    bclear n   - clear breakpoint n or breakpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    bclearr n  - clear read breakpoint n or read breakpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    bclearw n  - clear write breakpoint n or write breakpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    blist      - list current breakpoints\n");
+            debugout(outs);
+            sprintf(outs, "    break n    - set a breakpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    breakr n   - break on reads from address n\n");
+            debugout(outs);
+            sprintf(outs, "    breakw n   - break on writes to address n\n");
+            debugout(outs);
+            sprintf(outs, "    c          - continue running indefinitely\n");
+            debugout(outs);
+            sprintf(outs, "    d [n]      - disassemble from address n\n");
+            debugout(outs);
+            sprintf(outs, "    m [n]      - memory dump from address n\n");
+            debugout(outs);
+            sprintf(outs, "    q          - force emulator exit\n");
+            debugout(outs);
+            sprintf(outs, "    r          - print 6502 registers\n");
+            debugout(outs);
+            sprintf(outs, "    s [n]      - step n instructions (or 1 if no parameter)\n\n");
+            debugout(outs);
+            sprintf(outs, "    watchr n   - watch reads from address n\n");
+            debugout(outs);
+            sprintf(outs, "    watchw n   - watch writes to address n\n");
+            debugout(outs);
+            sprintf(outs, "    wclearr n  - clear read watchpoint n or read watchpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    wclearw n  - clear write watchpoint n or write watchpoint at n\n");
+            debugout(outs);
+            sprintf(outs, "    writem a v - write to memory, a = address, v = value\n");
+            debugout(outs);
+            break;
+    }
+    debuglastcommand = ins[0];
+    
+    indebug = 0;
+}
+

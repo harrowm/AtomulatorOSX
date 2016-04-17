@@ -66,7 +66,7 @@ void init8255()
 int keyrow;
 void write8255(uint16_t addr, uint8_t val)
 {
-	int oldgfx = gfxmode;
+//	int oldgfx = gfxmode;
 	
 	switch (addr & 0xF)
 	{

@@ -308,7 +308,6 @@ FRESULT f_unlink (
 )
 {
 	char del_path[PATHSIZE+1];
-// MH - unused	int open_mode=0;
 
 /* CHANGED FOR SP4 */
 

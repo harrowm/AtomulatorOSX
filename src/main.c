@@ -17,7 +17,8 @@
 // called in uef.c and csw.c but not used
 void cataddname (char *s) { rpclog("%s\n", s); }
 
-int quited = 0;
+// used by the debugger to force Atomulator to exit
+bool quited = false;
 
 // Allegro variables used
 ALLEGRO_KEYBOARD_STATE keybd;
@@ -86,7 +87,7 @@ bool allegro_init()
 {
 	// initialize allegro and required addons
     if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() &&
-		/*al_install_mouse() &&*/ al_install_keyboard() && al_install_joystick() &&
+		al_install_keyboard() && al_install_joystick() &&
 		al_init_font_addon() && al_init_acodec_addon() && al_install_audio() &&
         al_init_native_dialog_addon()))
     {
@@ -234,11 +235,14 @@ bool allegro_create_timer_and_events()
 }
 
 char inputString[256];
+char inputScreenLine[5][100];
 int inputStringLength = 0;
 bool inputStringReady = false;
 
 void allegro_process_events()
 {
+    int drawdebugscr;
+    
     al_wait_for_event(events, &event);
     switch (event.type)
     {
@@ -246,50 +250,74 @@ void allegro_process_events()
 	
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             quited = true;
+            al_flush_event_queue(events);
             break;
 
         case ALLEGRO_EVENT_MENU_CLICK:
 			processMenuOption(event.user.data1);
             break;
-
+        
+        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+            if (event.display.source == display)
+                debug = 0; // not at debug prompt
+            else if (event.display.source == inputDisplay) 
+                debug = 1; // at debug prompt
+            break;
+            
         case ALLEGRO_EVENT_KEY_CHAR:
 			if (event.keyboard.display == display)
 			{
+                debug = 0; // not at debug prompt
             	if (event.keyboard.keycode == ALLEGRO_KEY_F12)
                 	atom_reset(0);
 			}
-			else  // check to see if the user is typing in the debugger console
-			{
-				if (debug)
-				{
-					const int inputChar = event.keyboard.unichar;
+			else if (event.keyboard.display == inputDisplay) // check to see if the user is typing in the debugger console
+            {
+                debug = 1; // at debug prompt
+                const int inputChar = event.keyboard.unichar;
 
-					inputStringReady = false;
-					if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
-					{
-						if (inputStringLength >0)
-							inputStringLength--;
-					}
-					else
-					{
-						if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
-						{
-							inputString[inputStringLength] = '\0';
-							inputStringReady = true;
-						}
-						else
-						{
-							if ((inputStringLength < 100) && (inputChar > 31) && (inputChar < 127))
-							{
-								inputString[inputStringLength] = (char) inputChar;
-								inputStringLength++;
-							}
-						}
-					}
-				}
+                inputStringReady = false;
+                if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
+                {
+                    if (inputStringLength >0)
+                    {
+                        inputStringLength--;
+                        inputString[inputStringLength] = 0;
+                        strlcpy(inputScreenLine[4], inputString, 100);
+                    }
+                }
+                else
+                {
+                    if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
+                    {
+                        inputStringReady = true;
+                        inputStringLength = 0;
+                        
+                        // scroll the display
+                        strlcpy(inputScreenLine[0], inputScreenLine[1], 100);
+                        strlcpy(inputScreenLine[1], inputScreenLine[2], 100);
+                        strlcpy(inputScreenLine[2], inputScreenLine[3], 100);
+                        strlcpy(inputScreenLine[3], inputScreenLine[4], 100);
+                        strlcpy(inputScreenLine[4], "", 100);
+                        
+                        getDebuggerCommand(0);
+                    }
+                    else
+                    {
+                        if ((inputStringLength < 100) && (inputChar > 31) && (inputChar < 127))
+                        {
+                            inputString[inputStringLength] = (char) inputChar;
+                            inputStringLength++;
+                            inputString[inputStringLength] = '\0';  // always have a printable string ready
+                            
+                            // update the screen buffer
+                            strlcpy(inputScreenLine[4], inputString, 100);
+                        }
+                    }
+                }
 			}
             break;
-
+            
         case ALLEGRO_EVENT_DISPLAY_RESIZE:
             al_acknowledge_resize(event.display.source);
 			// resize the display on initial creation if on Linux (Debian)
@@ -309,30 +337,51 @@ void allegro_process_events()
 
         case ALLEGRO_EVENT_TIMER:
             scrupdate();
+            
+            if (debug)
+            {
+                if (++drawdebugscr >= 5)
+                {
+                    drawDebugScreens();
+                    drawdebugscr=0;
+                }
+            }
             break;
     }
 }
 
 void allegro_exit()
 {
+    printf("Uninstall joystick\n");
     al_uninstall_joystick();
+    printf("destroy path\n");
 	al_destroy_path(exepath);
+    printf("destroy font\n");
 	al_destroy_font(font);
+    printf("destroy audio stream\n");
 	al_destroy_audio_stream(stream);
+    printf("destroy dd audio stream\n");
 	al_destroy_audio_stream(ddstream);
+    printf("destroy timer\n");
 
 	al_destroy_timer(timer);
+    printf("unset display menu\n");
 
     al_set_display_menu(display, NULL);
+    printf("destroy event queue\n");
 //    al_destroy_menu(menu); crashes on OSX
 
 	al_destroy_event_queue(events);
+    printf("set target bitmap null\n");
 
 	al_set_target_bitmap(NULL);
+    printf("Nothing left ..\n");
 
 	// MH - al_destroy_display() hangs .. FIXME
 	//al_destroy_display(display);
 }
+
+extern int ddframes;
 
 int main(int argc, char **argv)
 {
@@ -347,9 +396,9 @@ int main(int argc, char **argv)
     if (!allegro_create_timer_and_events())
         return 1;
 
-	// On Linux systems adding in the menu resizes the window
+	// On Linux systems e.g. Debian adding in the menu resizes the window
 	// You must start the timers/events first and then catch the system
-	// thrown resize event
+	// thrown resize event.
 
     if (!al_set_display_menu(display, menu))
     {
@@ -368,8 +417,10 @@ int main(int argc, char **argv)
 
     while (!quited)
     {
-        atom_run();
+        if (!debug) atom_run();
         allegro_process_events();
+        //printf("In main loop %d\n", ddframes);
+        if (quited) printf("QUITED\n");
     }
 
 	atom_exit();

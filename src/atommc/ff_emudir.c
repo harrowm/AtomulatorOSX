@@ -22,7 +22,6 @@
 
 static DIR *dirptr;
 static struct dirent *entry;
-// MH - not used static int error;
 
 void StripTrailingSlash(char	*path);
 
@@ -111,7 +110,9 @@ void findclose(EMUDIR	*dir)
 {
 	//rpclog("findclose()\n");
 	
-	closedir(dirptr);
+    // On OSX dirptr is initialized to NULL
+	if (dirptr != NULL)
+        closedir(dirptr);
 }
 
 void StripTrailingSlash(char	*path)

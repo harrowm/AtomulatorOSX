@@ -92,7 +92,7 @@ void write1770(uint16_t addr, uint8_t val)
         {
                 case CTRLREG:
 //                        rpclog("Write CTRL FE24 %02X\n",val);
-					debuglog("Write CTRL %02X\n",val);
+//					debuglog("Write CTRL %02X\n",val);
 					wd1770.ctrl=val;
 					if (val & CTL_DS0) curdrive=0;
 					else               curdrive=1;

@@ -793,23 +793,11 @@ void exec6502(int linenum, int cpl)
 				skipint = 0;
 			if (debugon)
 				dodebugger(linenum);
-			opcode = readmem(pc);
-
-//            if (pc == 0x2B00)
-//                rpclog("ERROR: PC is 0x2B00\n");
-//            
-//            if (pc == 0xCE86)
-//                rpclog("ERROR: PC is 0xCE86skip\n");
             
-            pc++;
-            
+			opcode = readmem(pc++);
 			switch (opcode)
 			{
 			case 0x00:         /*BRK*/
-/*                                printf("BRK at %04X\n",pc);
-                                dumpregs();
-                                dumpram();
-                                exit(-1);*/
 				pc++;
 				push(pc >> 8);
 				push(pc & 0xFF);

@@ -1,5 +1,6 @@
 /*Atomulator v1.0 by Tom Walker
    Disc drive noise*/
+// Migrated to Allegro5 by Malcolm Harrow
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>

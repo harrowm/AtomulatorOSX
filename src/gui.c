@@ -31,12 +31,8 @@ void setejecttext(int drive, char *fn)
     update_gui();
 }
 
-void setquit()
-{
-}
-
 extern int fullscreen;
-extern int quited;
+extern bool quited;
 int windx = 512, windy = 384;
 extern int dcol;
 extern int ddtype, ddvol, sndddnoise;
@@ -56,6 +52,11 @@ extern ALLEGRO_AUDIO_STREAM *ddstream;
 extern ALLEGRO_PATH *docpath;
 
 void gui_keydefine();
+
+void setquit()
+{
+    quited = true;
+}
 
 void update_gui()
 {
@@ -265,7 +266,7 @@ void processMenuOption(intptr_t option)
 			break;
 
 		case IDM_FILE_EXIT:
-			quited = 1;
+			quited = true;
 			break;
 
 		// Tape Menu
@@ -765,6 +766,8 @@ void processMenuOption(intptr_t option)
 
 		case IDM_MISC_BREAK:
 			debug = 1;
+            if (!debugon)
+                startdebug();
 			break;
 			
 		default:
