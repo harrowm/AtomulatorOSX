@@ -105,16 +105,15 @@ void prtbuf(char *format, ...)
 extern int tapeon;
 extern uint8_t *ram;
 
-int drawscr;
+int drawscr = 0;
 int ddframes = 0;
+int debugcursor =0;
 
 void scrupdate()
 {
-    if (debug)
-        return;
-    
 	ddframes++;
 	drawscr++;
+    debugcursor++;
 }
 
 void atom_reset(int power_on)
@@ -227,12 +226,23 @@ void atom_init(int argc, char **argv)
 
 void atom_run()
 {
-	if ((drawscr > 0) || (tapeon && fasttape))
+    int lines;
+    
+    // if at the debug screen then just redraw the atom screen and return not running the Atom emulator
+    if (debug)
+    {
+        for (lines = 0; lines < 193; lines++) {
+            drawline(lines);
+        }
+        return;
+    }
+    
+    if ((drawscr > 0) || (tapeon && fasttape))
 	{
-		if (palnotntsc)
-			exec6502(312, 64);
-		else
-			exec6502(262, 64);
+        if (palnotntsc)
+            exec6502(312, 64);
+        else
+            exec6502(262, 64);
         
 		if (tapeon && fasttape)
 			drawscr = 0;
@@ -241,24 +251,20 @@ void atom_run()
 		
 		if (drawscr > 25)
 			drawscr = 0;
-		
-		if (ddframes >= 25)
-		{
-			ddframes -= 25;
-			mixddnoise();
-		}
-	}
+        
+        if (ddframes >= 25)
+        {
+            ddframes -= 25;
+            mixddnoise();
+        }
+    }
 }
 
 void atom_exit()
 {
-    printf("Atom exit - save config\n");
 	saveconfig();
-    printf("Atom exit - close dd noise\n");
 	closeddnoise();
-    printf("Atom exit - finalize mmc\n");
 	FinalizeMMC();
-    printf("Atom exit - done\n");
 //        dumpregs();
 //        dumpram();
 }

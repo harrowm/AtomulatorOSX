@@ -2,7 +2,7 @@
    6847 video emulation*/
 #include <stdio.h>
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>  // for drawing rectangles
+#include <allegro5/allegro_primitives.h>  // for drawing rectangles and lines
 #include <allegro5/allegro_font.h>
 #include "atom.h"
 
@@ -243,19 +243,23 @@ void drawAtomScreen()
 
     totalframes++;
 
-    al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);   
+    al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
 
 	if (showspeed)
         al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
 
     if (tapeon)
         al_draw_filled_rectangle(winsizex - 12.0f, 0.0f, winsizex, 4.0f, al_map_rgb(255, 0, 0));
+    
+    if (debugon)
+    {
+        al_draw_line(0.0, winsizey+1.0, winsizex, winsizey+1.0, al_map_rgb(255,255,255), 2.0);
+        drawDebugInputScreen();
+    }
 
     al_flip_display();
+    al_clear_to_color(al_map_rgb(0,0,0));
     lockAtomScreen();
-
-	if (debug)
-		drawDebugScreens();
 }
 
 void drawline(int line)
@@ -515,6 +519,8 @@ void drawline(int line)
 			fskipcount = 0;
 			drawAtomScreen();
 			frmcount = 0;
+            if (debugon)
+                drawMemScreen();
 		}
     }
 

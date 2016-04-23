@@ -234,14 +234,9 @@ bool allegro_create_timer_and_events()
     return true;
 }
 
-char inputString[256];
-char inputScreenLine[5][100];
-int inputStringLength = 0;
-bool inputStringReady = false;
-
 void allegro_process_events()
 {
-    int drawdebugscr;
+//    int drawdebugscr;
     
     al_wait_for_event(events, &event);
     switch (event.type)
@@ -257,64 +252,22 @@ void allegro_process_events()
 			processMenuOption(event.user.data1);
             break;
         
-        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
-            if (event.display.source == display)
-                debug = 0; // not at debug prompt
-            else if (event.display.source == inputDisplay) 
-                debug = 1; // at debug prompt
-            break;
+//        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+//            if (event.display.source == display)
+//                debug = 0; // not at debug prompt
+//            else if (event.display.source == inputDisplay) 
+//                debug = 1; // at debug prompt
+//            break;
             
         case ALLEGRO_EVENT_KEY_CHAR:
-			if (event.keyboard.display == display)
-			{
-                debug = 0; // not at debug prompt
-            	if (event.keyboard.keycode == ALLEGRO_KEY_F12)
-                	atom_reset(0);
-			}
-			else if (event.keyboard.display == inputDisplay) // check to see if the user is typing in the debugger console
+            if (debug == 0)
             {
-                debug = 1; // at debug prompt
-                const int inputChar = event.keyboard.unichar;
-
-                inputStringReady = false;
-                if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE)
-                {
-                    if (inputStringLength >0)
-                    {
-                        inputStringLength--;
-                        inputString[inputStringLength] = 0;
-                        strlcpy(inputScreenLine[4], inputString, 100);
-                    }
-                }
-                else
-                {
-                    if (event.keyboard.keycode == ALLEGRO_KEY_ENTER)
-                    {
-                        inputStringReady = true;
-                        inputStringLength = 0;
-                        
-                        // scroll the display
-                        strlcpy(inputScreenLine[0], inputScreenLine[1], 100);
-                        strlcpy(inputScreenLine[1], inputScreenLine[2], 100);
-                        strlcpy(inputScreenLine[2], inputScreenLine[3], 100);
-                        strlcpy(inputScreenLine[3], inputScreenLine[4], 100);
-                        strlcpy(inputScreenLine[4], "", 100);
-                        
-                        getDebuggerCommand(0);
-                    }
-                    else
-                    {
-                        if ((inputStringLength < 100) && (inputChar > 31) && (inputChar < 127))
-                        {
-                            inputString[inputStringLength] = (char) inputChar;
-                            inputStringLength++;
-                            inputString[inputStringLength] = '\0';  // always have a printable string ready
-                            
-                            // update the screen buffer
-                            strlcpy(inputScreenLine[4], inputString, 100);
-                        }
-                    }
-                }
+                if (event.keyboard.keycode == ALLEGRO_KEY_F12)
+                    atom_reset(0);
+            }
+            else // check to see if the user is typing in the debugger console
+            {
+                handleDebuggerInput(event.keyboard.keycode, event.keyboard.unichar);
 			}
             break;
             
@@ -323,59 +276,51 @@ void allegro_process_events()
 			// resize the display on initial creation if on Linux (Debian)
 			if (displayjustcreated == true)
 			{
-				al_resize_display(display, origwinsizex, origwinsizey);
-            	al_acknowledge_resize(event.display.source);
+                // Switching on the dubgger also forces a screen resize .. if the system isnt running on Debian then
+                // the first resize event if on the debugger starting, so dont resize the screen to the original size
+                if (!debugon)
+                {
+                    al_resize_display(display, origwinsizex, origwinsizey);
+                    al_acknowledge_resize(event.display.source);
+                }
 				displayjustcreated = false;
 			}
             
             // force the display's aspect ratio to 4/3
             winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
             winsizey = winsizex*3/4;
-            al_resize_display(display, winsizex, winsizey);
+            
+            if (debugon)
+                al_resize_display(display, winsizex, winsizey + 100.0); // Allow for the debug input window
+            else
+                al_resize_display(display, winsizex, winsizey);
+            
             al_acknowledge_resize(event.display.source);
             break;
 
         case ALLEGRO_EVENT_TIMER:
             scrupdate();
-            
-            if (debug)
-            {
-                if (++drawdebugscr >= 5)
-                {
-                    drawDebugScreens();
-                    drawdebugscr=0;
-                }
-            }
             break;
     }
 }
 
 void allegro_exit()
 {
-    printf("Uninstall joystick\n");
     al_uninstall_joystick();
-    printf("destroy path\n");
 	al_destroy_path(exepath);
-    printf("destroy font\n");
 	al_destroy_font(font);
-    printf("destroy audio stream\n");
 	al_destroy_audio_stream(stream);
-    printf("destroy dd audio stream\n");
 	al_destroy_audio_stream(ddstream);
-    printf("destroy timer\n");
 
 	al_destroy_timer(timer);
-    printf("unset display menu\n");
 
     al_set_display_menu(display, NULL);
-    printf("destroy event queue\n");
+
 //    al_destroy_menu(menu); crashes on OSX
 
 	al_destroy_event_queue(events);
-    printf("set target bitmap null\n");
 
 	al_set_target_bitmap(NULL);
-    printf("Nothing left ..\n");
 
 	// MH - al_destroy_display() hangs .. FIXME
 	//al_destroy_display(display);
@@ -417,10 +362,8 @@ int main(int argc, char **argv)
 
     while (!quited)
     {
-        if (!debug) atom_run();
+        atom_run();
         allegro_process_events();
-        //printf("In main loop %d\n", ddframes);
-        if (quited) printf("QUITED\n");
     }
 
 	atom_exit();

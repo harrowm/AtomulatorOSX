@@ -288,7 +288,9 @@ extern void debugread(uint16_t addr);
 extern void debugwrite(uint16_t addr, uint8_t val);
 extern void dodebugger(int linenum);
 extern void debuglog(char *format, ...);
-extern void drawDebugScreens(void);
+extern void drawMemScreen(void);
+extern void drawDebugInputScreen(void);
+
 // static void lockMemScreen(void);
 // static void unlockMemScreen(void);
 // static void initMemVideo(void);

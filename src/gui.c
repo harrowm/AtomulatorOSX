@@ -747,17 +747,10 @@ void processMenuOption(intptr_t option)
 			break;
 
 		case IDM_MISC_DEBUG:
-			// HACK - this was in the Windows version Sleep(200);
 			if (!debugon)
-			{
-				debug = debugon = 1;
 				startdebug();
-			}
 			else
-			{
-				debug ^= 1;
 				enddebug();
-			}
 			break;
 
 		case IDM_MISC_DEBONBRK:
@@ -765,7 +758,7 @@ void processMenuOption(intptr_t option)
 			break;
 
 		case IDM_MISC_BREAK:
-			debug = 1;
+            debug = 1; // at debug prompt
             if (!debugon)
                 startdebug();
 			break;

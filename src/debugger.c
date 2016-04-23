@@ -61,31 +61,11 @@ static void initMemVideo()
 #define winmemsizex 256
 #define winmemsizey 256
 
-static void lockInputScreen()
-{
-    al_store_state(&inpstate, ALLEGRO_STATE_TARGET_BITMAP);
-    al_set_target_bitmap(inp);
-    ilr = al_lock_bitmap(inp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
-}
-
-static void unlockInputScreen()
-{
-    al_unlock_bitmap(inp);
-    al_restore_state(&inpstate);
-}
-
-static void initInputVideo()
-{
-    inp = al_create_bitmap(640, 256);
-    lockInputScreen();
-}
-
 extern char inputScreenLine[5][100];
 extern ALLEGRO_FONT *font;
 
-void drawDebugScreens()
+void drawMemScreen()
 {
-
 	int pos=0;
 	int line=0;
 
@@ -110,18 +90,37 @@ void drawDebugScreens()
     al_flip_display();
 	al_clear_to_color(al_map_rgb(0,0,0));
     lockMemScreen();
+}
+
+extern int debugcursor;
+static bool showCursor = true;
+
+void drawDebugInputScreen()
+{
+    char lastLine[100];
     
-    // Debug input screen
-    unlockInputScreen();
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[0]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 20.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[1]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 40.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[2]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 60.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[3]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 80.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[4]);
-    al_flip_display();
-    al_clear_to_color(al_map_rgb(0,0,0));
-    lockInputScreen();
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 0.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[0]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 20.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[1]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 40.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[2]);
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 60.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[3]);
     
+    if (debugcursor > 100)
+    {
+        showCursor = !showCursor;
+        debugcursor = 0;
+    }
+    
+    if (!debug) showCursor = false;
+    
+    if (showCursor)
+    {
+        snprintf(lastLine, 100, "%s_", inputScreenLine[4]);
+    }
+    else
+        snprintf(lastLine, 100, "%s", inputScreenLine[4]);
+
+    
+    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 80.0, ALLEGRO_ALIGN_LEFT, lastLine);
 }
 
 void startdebug()
@@ -130,54 +129,47 @@ void startdebug()
     int y;
     extern ALLEGRO_DISPLAY *display;
     
-	if (debug)
-	{
-		//show memory console
-        al_set_new_display_flags(ALLEGRO_WINDOWED|ALLEGRO_NO_PRESERVE_TEXTURE);
+    debug = debugon = 1;
+    
+    //show memory console
+    al_set_new_display_flags(ALLEGRO_WINDOWED|ALLEGRO_NO_PRESERVE_TEXTURE);
 
-        // The screen handling performance has been improved by directly 
-		// manipulating the bitmap the code assumes a 32bit pixel size
-        al_set_new_display_option(ALLEGRO_COLOR_SIZE, 32, ALLEGRO_REQUIRE);
+    // The screen handling performance has been improved by directly 
+    // manipulating the bitmap the code assumes a 32bit pixel size
+    al_set_new_display_option(ALLEGRO_COLOR_SIZE, 32, ALLEGRO_REQUIRE);
 
-        // Try to display the memory screen to the right of the Atomulator window
-        al_get_window_position(display, &x, &y);
-        al_set_new_window_position(x + winsizex + 10.0, y);
-        
-    	memDisplay = al_create_display(256, 256);
-    	if (memDisplay == NULL)
-        {
-        	rpclog("ERROR: Error creating Allegro memory display (32bit pixel size required).\n");
-			return;
-    	}
+    // Try to display the memory screen to the right of the Atomulator window
+    al_get_window_position(display, &x, &y);
+    al_set_new_window_position(x + winsizex + 10.0, y);
+    
+    memDisplay = al_create_display(256, 256);
+    if (memDisplay == NULL)
+    {
+        rpclog("ERROR: Error creating Allegro memory display (32bit pixel size required).\n");
+        return;
+    }
 
-		al_set_window_title(memDisplay, "Memory viewer");
-		initMemVideo();
-        
-		// Show output console
-		debugLog = al_open_native_text_log("Debugger Output", ALLEGRO_TEXTLOG_NO_CLOSE|ALLEGRO_TEXTLOG_MONOSPACE);
+    al_set_window_title(memDisplay, "Memory viewer");
+    initMemVideo();
+    
+    // Show output console
+    debugLog = al_open_native_text_log("Debugger Output", ALLEGRO_TEXTLOG_NO_CLOSE|ALLEGRO_TEXTLOG_MONOSPACE);
 
-		// Show input console
-        
-        
-        // Try to display the input screen below the Atomulator window
-        al_get_window_position(display, &x, &y);
-        al_set_new_window_position(x, y + winsizey + 30.0);
-        
-    	inputDisplay = al_create_display(winsizex, 100);
-    	if (inputDisplay == NULL)
-        {
-        	rpclog("ERROR: Error creating Allegro input display (32bit pixel size required).\n");
-			return;
-    	}
-		al_set_window_title(inputDisplay, "Debugger input console");
-        initInputVideo();
-		al_register_event_source(events, al_get_display_event_source(inputDisplay));
-	}
+    // Show input console
+    al_resize_display(display, winsizex, winsizey+100.0);
+    
+    // clear the input display
+    strlcpy(inputScreenLine[0], "", 100);
+    strlcpy(inputScreenLine[1], "", 100);
+    strlcpy(inputScreenLine[2], "", 100);
+    strlcpy(inputScreenLine[3], "", 100);
+    strlcpy(inputScreenLine[4], "> ", 100);
 }
 
 void enddebug()
 {
 	debug = debugon = 0;
+    // HACK NEED TO CLOSE DEBUG WINDOWS
 }
 
 static void debugout(char *s)
@@ -443,7 +435,6 @@ void debugwrite(uint16_t addr, uint8_t val)
 }
 
 extern char inputString[256];
-extern bool inputStringReady;
 
 uint16_t oldpc, oldoldpc, pc3;
 void dodebugger(int linenum)
@@ -451,10 +442,10 @@ void dodebugger(int linenum)
     int c, d;
     char outs[256];
     
-    int origdebug =0;
-    int x, y;
+//    int origdebug =0;
+//    int x, y;
     
-    origdebug = debug;
+//    origdebug = debug;
     
     if ((!opcode) && debug_on_brk)
     {
@@ -485,29 +476,16 @@ void dodebugger(int linenum)
         if (!debugstep)
             debug = 1; // enter the debugger
     }
-    
-    if (origdebug != debug) // debugger window needs to be selected
-    {
-        // nope - al_get_window_position(inputDisplay, &x, &y);
-        // nope - al_set_window_position(inputDisplay, x-10.0, y);
-        al_set_target_backbuffer(inputDisplay);
-        al_clear_to_color(al_map_rgb(0,255,0));
-        al_flip_display();
-        printf("here\n");
-        // dont work - al_resize_display(inputDisplay, x, y);
-        printf("Here2\n");
-    }
 }
 
-
-void getDebuggerCommand(int linenum)
+void executeDebuggerCommand()
 {
     int c, d, e, f;
     int params;
     uint8_t temp;
     char outs[256];
     char ins[256];
-    int lines;
+//    int lines;
     
     if (!debug)
         return;
@@ -522,11 +500,11 @@ void getDebuggerCommand(int linenum)
     strcpy(ins, inputString);
     
     // Force the screen to be refreshed before each debug command
-    for (lines = 0; lines < linenum; lines++) {
-        if (lines < 262 || lines == 311) {
-            drawline(lines);
-        }
-    }
+//    for (lines = 0; lines < linenum; lines++) {
+//        if (lines < 262 || lines == 311) {
+//            drawline(lines);
+//        }
+//    }
     
     sprintf(outs, "\n> %s\n", ins);
     debugout(outs);
@@ -566,7 +544,7 @@ void getDebuggerCommand(int linenum)
                 for (d = 0; d < 16; d++)
                 {
                     temp = dreadmem(debugmemaddr + d);
-                    if (temp < 32)
+                    if ((temp < 32) || (temp > 126))
                         sprintf(outs, ".");
                     else
                         sprintf(outs, "%c", temp);
@@ -600,7 +578,7 @@ void getDebuggerCommand(int linenum)
             else
                 debugstep = 1;
             debuglastcommand = ins[0];
-            indebug = 0;
+            debug = 0;
             return;
         case 'b': case 'B':
             if (!strncasecmp(ins, "breakr", 6))
@@ -852,3 +830,50 @@ void getDebuggerCommand(int linenum)
     indebug = 0;
 }
 
+
+char inputString[256];
+char inputScreenLine[5][100];
+int inputStringLength = 0;
+
+void handleDebuggerInput(int keycode, int inputChar)
+{
+    if (keycode == ALLEGRO_KEY_BACKSPACE)
+    {
+        if (inputStringLength >0)
+        {
+            inputStringLength--;
+            inputString[inputStringLength] = 0;
+            
+            // update the screen buffer
+            snprintf(inputScreenLine[4], 100, "> %s", inputString);
+        }
+    }
+    else
+    {
+        if (keycode == ALLEGRO_KEY_ENTER)
+        {
+            inputStringLength = 0;
+            
+            // scroll the display
+            strlcpy(inputScreenLine[0], inputScreenLine[1], 100);
+            strlcpy(inputScreenLine[1], inputScreenLine[2], 100);
+            strlcpy(inputScreenLine[2], inputScreenLine[3], 100);
+            strlcpy(inputScreenLine[3], inputScreenLine[4], 100);
+            strlcpy(inputScreenLine[4], "> ", 100);
+            
+            executeDebuggerCommand();
+        }
+        else
+        {
+            if ((inputStringLength < 100) && (inputChar > 31) && (inputChar < 127))
+            {
+                inputString[inputStringLength] = (char) inputChar;
+                inputStringLength++;
+                inputString[inputStringLength] = '\0';  // always have a printable string ready
+                
+                // update the screen buffer
+                snprintf(inputScreenLine[4], 100, "> %s", inputString);
+            }
+        }
+    }
+}
