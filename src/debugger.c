@@ -22,6 +22,15 @@ int debug_on_brk = 0;
 // MH - moved these here to get a clean compile on OSX
 int fetchc[65536], readc[65536], writec[65536];
 
+
+int breakpoints[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int breakr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int breakw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int watchr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int watchw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+bool bpHit[8] = {false, false, false, false, false, false, false, false};
+int debugstep = 0;
+
 //---------------------------
 ALLEGRO_BITMAP *mem;
 ALLEGRO_STATE memstate;
@@ -38,14 +47,14 @@ extern ALLEGRO_EVENT_QUEUE *events;
 
 ALLEGRO_TEXTLOG *debugLog;
 
-static void lockMemScreen()
+ void lockMemScreen()
 {
     al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
     al_set_target_bitmap(mem);
     mlr = al_lock_bitmap(mem, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
-static void unlockMemScreen()
+ void unlockMemScreen()
 {
     al_unlock_bitmap(mem);
     al_restore_state(&memstate);
@@ -64,7 +73,7 @@ static void initMemVideo()
 extern char inputScreenLine[5][100];
 extern ALLEGRO_FONT *font;
 
-void drawMemScreen()
+void calcMemScreen()
 {
 	int pos=0;
 	int line=0;
@@ -86,9 +95,6 @@ void drawMemScreen()
 	}
 
     unlockMemScreen();
-    al_draw_scaled_bitmap(mem, 0, 0, 256, 256, 0, 0, winmemsizex, winmemsizey, 0);
-    al_flip_display();
-	al_clear_to_color(al_map_rgb(0,0,0));
     lockMemScreen();
 }
 
@@ -123,40 +129,73 @@ void drawDebugInputScreen()
     al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 80.0, ALLEGRO_ALIGN_LEFT, lastLine);
 }
 
+char memScreenLine[20][100];
+void drawDebugMemScreen()
+{
+    int c;
+    char bp[7];
+    char br[5];
+    char bw[5];
+    char wr[5];
+    char ww[5];
+    
+    strlcpy(memScreenLine[0], "6502 Registers:", 100);
+    snprintf(memScreenLine[1], 100, "A=%02X X=%02X Y=%02X S=01%02X PC=%04X", a, x, y, s, pc);
+    snprintf(memScreenLine[2], 100, "Status : %c%c%c%c%c%c", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
+    snprintf(memScreenLine[3], 100, "");
+    snprintf(memScreenLine[4], 100, "Breakpoints:");
+    snprintf(memScreenLine[5], 100, " Break  Read Write  MemR  MemW");
+    
+    for (c = 0; c < 8; c++)
+    {
+        if (breakpoints[c] != -1)
+            snprintf(bp, 7, "%c%04X%c", bpHit[c] ? '>' : ' ', breakpoints[c], bpHit[c] ? '<' : ' ');
+        else
+            snprintf(bp, 7, " ---- ");
+
+        if (breakr[c] != -1)
+            snprintf(br, 5, "%04X", breakr[c]);
+        else
+            snprintf(br, 5, "----");
+        
+        if (breakw[c] != -1)
+            snprintf(bw, 5, "%04X", breakw[c]);
+        else
+            snprintf(bw, 5, "----");
+
+        if (watchr[c] != -1)
+            snprintf(wr, 5, "%04X", watchr[c]);
+        else
+            snprintf(wr, 5, "----");
+        
+        if (watchw[c] != -1)
+            snprintf(ww, 5, "%04X", watchw[c]);
+        else
+            snprintf(ww, 5, "----");
+        
+        snprintf(memScreenLine[6+c], 100, "%1d%s %s  %s  %s  %s", c, bp, br, bw, wr, ww);
+    }
+
+    for (c = 0; c < 20; c++)
+        al_draw_text(font, al_map_rgb(255, 255, 255), winsizex+5,  c*15.0, ALLEGRO_ALIGN_LEFT, memScreenLine[c]);
+    
+    al_draw_bitmap(mem, winsizex+5, 220, 0);
+}
+
 void startdebug()
 {
-    int x;
-    int y;
     extern ALLEGRO_DISPLAY *display;
     
     debug = debugon = 1;
     
-    //show memory console
-    al_set_new_display_flags(ALLEGRO_WINDOWED|ALLEGRO_NO_PRESERVE_TEXTURE);
-
-    // The screen handling performance has been improved by directly 
-    // manipulating the bitmap the code assumes a 32bit pixel size
-    al_set_new_display_option(ALLEGRO_COLOR_SIZE, 32, ALLEGRO_REQUIRE);
-
-    // Try to display the memory screen to the right of the Atomulator window
-    al_get_window_position(display, &x, &y);
-    al_set_new_window_position(x + winsizex + 10.0, y);
-    
-    memDisplay = al_create_display(256, 256);
-    if (memDisplay == NULL)
-    {
-        rpclog("ERROR: Error creating Allegro memory display (32bit pixel size required).\n");
-        return;
-    }
-
-    al_set_window_title(memDisplay, "Memory viewer");
+    // Initialize the memory viewer bitmap
     initMemVideo();
-    
+
     // Show output console
     debugLog = al_open_native_text_log("Debugger Output", ALLEGRO_TEXTLOG_NO_CLOSE|ALLEGRO_TEXTLOG_MONOSPACE);
 
     // Show input console
-    al_resize_display(display, winsizex, winsizey+100.0);
+    al_resize_display(display, winsizex+258.0, winsizey+100.0);
     
     // clear the input display
     strlcpy(inputScreenLine[0], "", 100);
@@ -380,32 +419,7 @@ static void debugdisassemble()
 		break;
 	}
 	debugdisaddr++;
-//        WriteConsole(consf,"\n",strlen("\n"),NULL,NULL);
 }
-
-int breakpoints[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int breakr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int breakw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int watchr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int watchw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int debugstep = 0;
-
-//Atomulator 1.26x
-//
-//6502 Registers
-//A=xx X=xx Y=xx S=xxxx PC=xxxx
-//Status: NBJKJKJS
-//
-//Breakpoints
-//   Break   Read  Write WatchR WatchW
-//1   xxxx   xxxx   xxxx   xxxx   xxxx
-//2   xxxx   xxxx   xxxx   xxxx   xxxx
-//3   xxxx   xxxx   xxxx   xxxx   xxxx
-//4   xxxx   xxxx   xxxx   xxxx   xxxx
-//5   xxxx   xxxx   xxxx   xxxx   xxxx
-//6   xxxx   xxxx   xxxx   xxxx   xxxx
-//7   xxxx   xxxx   xxxx   xxxx   xxxx
-//8   xxxx   xxxx   xxxx   xxxx   xxxx
 
 void debugread(uint16_t addr)
 {
@@ -470,7 +484,8 @@ void dodebugger(int linenum)
         if (breakpoints[c] == pc)
         {
             debug = 1;
-            sprintf(outs, "    Break at %04X\n", pc);
+            bpHit[c] = true;
+            sprintf(outs, "    &Break at %04X\n", pc);
             debugout(outs);
         }
     }
@@ -598,7 +613,7 @@ void executeDebuggerCommand()
                     break;
                 for (c = 0; c < 8; c++)
                 {
-                    if (breakpoints[c] == -1)
+                    if (breakr[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &breakr[c]);
                         sprintf(outs, "    Read breakpoint %i set to %04X\n", c, breakr[c]);
@@ -613,7 +628,7 @@ void executeDebuggerCommand()
                     break;
                 for (c = 0; c < 8; c++)
                 {
-                    if (breakpoints[c] == -1)
+                    if (breakw[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &breakw[c]);
                         sprintf(outs, "    Write breakpoint %i set to %04X\n", c, breakw[c]);

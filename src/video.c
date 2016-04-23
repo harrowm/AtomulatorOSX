@@ -229,6 +229,8 @@ extern int totcyc; // from 6502.c
 int old_totalcycles = 0;
 char hudbuf[256];
 
+extern ALLEGRO_BITMAP * mem;
+
 static void hudupdate()
 {
     sprintf(hudbuf,"MHz %2.2f FPS %3d", (float)(totcyc-old_totalcycles)/1000000.0f, (totalframes-old_totalframes));
@@ -238,13 +240,15 @@ static void hudupdate()
 }
 
 void drawAtomScreen()
-{ 
+{
+    if (debugon) calcMemScreen();
+    
     unlockAtomScreen();
 
     totalframes++;
 
     al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
-
+    
 	if (showspeed)
         al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
 
@@ -254,7 +258,10 @@ void drawAtomScreen()
     if (debugon)
     {
         al_draw_line(0.0, winsizey+1.0, winsizex, winsizey+1.0, al_map_rgb(255,255,255), 2.0);
+        al_draw_line(winsizex+1.0, 0.0, winsizex+1.0, winsizey+100.0, al_map_rgb(255,255,255), 2.0);
+        
         drawDebugInputScreen();
+        drawDebugMemScreen();
     }
 
     al_flip_display();
@@ -519,8 +526,6 @@ void drawline(int line)
 			fskipcount = 0;
 			drawAtomScreen();
 			frmcount = 0;
-            if (debugon)
-                drawMemScreen();
 		}
     }
 

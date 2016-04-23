@@ -792,7 +792,10 @@ void exec6502(int linenum, int cpl)
 			if (skipint == 1)
 				skipint = 0;
 			if (debugon)
+            {
 				dodebugger(linenum);
+                if (debug) return;
+            }
             
 			opcode = readmem(pc++);
 			switch (opcode)

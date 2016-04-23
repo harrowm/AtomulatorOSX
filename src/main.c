@@ -286,11 +286,15 @@ void allegro_process_events()
 			}
             
             // force the display's aspect ratio to 4/3
-            winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
+            if (debugon)
+                winsizex = ((al_get_display_width(display)-258) + 3) & ~0x3;  // round to a multiple of 4
+            else
+                winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
+            
             winsizey = winsizex*3/4;
             
             if (debugon)
-                al_resize_display(display, winsizex, winsizey + 100.0); // Allow for the debug input window
+                al_resize_display(display, winsizex+258.0, winsizey + 100.0); // Allow for the debug input window
             else
                 al_resize_display(display, winsizex, winsizey);
             
