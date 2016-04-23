@@ -87,7 +87,7 @@ bool allegro_init()
 {
 	// initialize allegro and required addons
     if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() &&
-		al_install_keyboard() && al_install_joystick() &&
+		al_install_mouse() && al_install_keyboard() && al_install_joystick() &&
 		al_init_font_addon() && al_init_acodec_addon() && al_install_audio() &&
         al_init_native_dialog_addon()))
     {
@@ -224,6 +224,7 @@ bool allegro_create_timer_and_events()
     }
 
     al_register_event_source(events, al_get_keyboard_event_source());
+    al_register_event_source(events, al_get_mouse_event_source());
     al_register_event_source(events, al_get_timer_event_source(timer));
     al_register_event_source(events, al_get_display_event_source(display));
     al_register_event_source(events, al_get_default_menu_event_source());
@@ -236,8 +237,6 @@ bool allegro_create_timer_and_events()
 
 void allegro_process_events()
 {
-//    int drawdebugscr;
-    
     al_wait_for_event(events, &event);
     switch (event.type)
     {
@@ -252,12 +251,12 @@ void allegro_process_events()
 			processMenuOption(event.user.data1);
             break;
         
-//        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
-//            if (event.display.source == display)
-//                debug = 0; // not at debug prompt
-//            else if (event.display.source == inputDisplay) 
-//                debug = 1; // at debug prompt
-//            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+            if (event.mouse.y > winsizey)
+                debug = 1;
+            else
+                debug = 0;
+            break;
             
         case ALLEGRO_EVENT_KEY_CHAR:
             if (debug == 0)

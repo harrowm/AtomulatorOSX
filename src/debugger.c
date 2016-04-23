@@ -390,6 +390,23 @@ int watchr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 int watchw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
 int debugstep = 0;
 
+//Atomulator 1.26x
+//
+//6502 Registers
+//A=xx X=xx Y=xx S=xxxx PC=xxxx
+//Status: NBJKJKJS
+//
+//Breakpoints
+//   Break   Read  Write WatchR WatchW
+//1   xxxx   xxxx   xxxx   xxxx   xxxx
+//2   xxxx   xxxx   xxxx   xxxx   xxxx
+//3   xxxx   xxxx   xxxx   xxxx   xxxx
+//4   xxxx   xxxx   xxxx   xxxx   xxxx
+//5   xxxx   xxxx   xxxx   xxxx   xxxx
+//6   xxxx   xxxx   xxxx   xxxx   xxxx
+//7   xxxx   xxxx   xxxx   xxxx   xxxx
+//8   xxxx   xxxx   xxxx   xxxx   xxxx
+
 void debugread(uint16_t addr)
 {
 	int c;
@@ -436,20 +453,14 @@ void debugwrite(uint16_t addr, uint8_t val)
 
 extern char inputString[256];
 
-uint16_t oldpc, oldoldpc, pc3;
 void dodebugger(int linenum)
 {
     int c, d;
     char outs[256];
     
-//    int origdebug =0;
-//    int x, y;
-    
-//    origdebug = debug;
-    
     if ((!opcode) && debug_on_brk)
     {
-        sprintf(outs, "BRK %04X! %04X %04X\n", pc, oldpc, oldoldpc);
+        sprintf(outs, "BRK %04X!\n", pc);
         debugout(outs);
         debug = 1;
     }
@@ -648,7 +659,7 @@ void executeDebuggerCommand()
                 {
                     if (breakw[c] != -1)
                     {
-                        sprintf(outs, "    Write breakpoint %i : %04X\n", c, breakr[c]);
+                        sprintf(outs, "    Write breakpoint %i : %04X\n", c, breakw[c]);
                         debugout(outs);
                     }
                 }
