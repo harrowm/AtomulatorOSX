@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 
 #include "atom.h"
@@ -24,11 +25,23 @@ int fetchc[65536], readc[65536], writec[65536];
 
 
 int breakpoints[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int breakr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int breakw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int watchr[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-int watchw[8] = { -1, -1, -1, -1, -1, -1, -1, -1 };
-bool bpHit[8] = {false, false, false, false, false, false, false, false};
+int breakr[8]      = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int breakw[8]      = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int watchr[8]      = { -1, -1, -1, -1, -1, -1, -1, -1 };
+int watchw[8]      = { -1, -1, -1, -1, -1, -1, -1, -1 };
+
+bool bpHit[8]     = {false, false, false, false, false, false, false, false};
+bool breakrHit[8] = {false, false, false, false, false, false, false, false};
+bool breakwHit[8] = {false, false, false, false, false, false, false, false};
+bool watchrHit[8] = {false, false, false, false, false, false, false, false};
+bool watchwHit[8] = {false, false, false, false, false, false, false, false};
+
+char bpText[8][5]     = {"----", "----", "----", "----", "----", "----", "----", "----"};
+char breakrText[8][5] = {"----", "----", "----", "----", "----", "----", "----", "----"};
+char breakwText[8][5] = {"----", "----", "----", "----", "----", "----", "----", "----"};
+char watchrText[8][5] = {"----", "----", "----", "----", "----", "----", "----", "----"};
+char watchwText[8][5] = {"----", "----", "----", "----", "----", "----", "----", "----"};
+
 int debugstep = 0;
 
 //---------------------------
@@ -101,6 +114,12 @@ void calcMemScreen()
 extern int debugcursor;
 static bool showCursor = true;
 
+static void debugout(char *s)
+{
+    al_append_native_text_log(debugLog, "%s", s);
+    rpclog("%s", s);
+}
+
 void drawDebugInputScreen()
 {
     char lastLine[100];
@@ -124,61 +143,86 @@ void drawDebugInputScreen()
     }
     else
         snprintf(lastLine, 100, "%s", inputScreenLine[4]);
-
     
     al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 80.0, ALLEGRO_ALIGN_LEFT, lastLine);
 }
 
 char memScreenLine[20][100];
+
+void updateBreakpointString(char *s, int bp)
+{
+    if (bp != -1)
+        snprintf(s, 5, "%04X", bp);
+    else
+        snprintf(s, 5, "----");
+}
+
+int drawBreakpointText(char *s, int x, int y, bool reverse)
+{
+    if (reverse)
+    {
+        al_draw_filled_rectangle(x, y, x+al_get_text_width(font, s), y+al_get_font_line_height(font), al_map_rgb(255, 255, 255));
+        al_draw_text(font, al_map_rgb(0, 0, 0), x,  y, ALLEGRO_ALIGN_LEFT, s);
+    }
+    else
+        al_draw_text(font, al_map_rgb(255, 255, 255), x,  y, ALLEGRO_ALIGN_LEFT, s);
+    
+    return al_get_text_width(font, s);
+}
+
 void drawDebugMemScreen()
 {
     int c;
-    char bp[7];
-    char br[5];
-    char bw[5];
-    char wr[5];
-    char ww[5];
+    
+    int fontHeight;
+    
+    fontHeight = al_get_font_line_height(font);
     
     strlcpy(memScreenLine[0], "6502 Registers:", 100);
     snprintf(memScreenLine[1], 100, "A=%02X X=%02X Y=%02X S=01%02X PC=%04X", a, x, y, s, pc);
     snprintf(memScreenLine[2], 100, "Status : %c%c%c%c%c%c", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
     snprintf(memScreenLine[3], 100, "");
     snprintf(memScreenLine[4], 100, "Breakpoints:");
-    snprintf(memScreenLine[5], 100, " Break  Read Write  MemR  MemW");
+    snprintf(memScreenLine[5], 100, "   Brk BrkR BrkW MemR MemW");
     
+    char outs[256];
+    int xTextPos, yTextPos;
+    
+    for (c = 0; c < 6; c++)
+        al_draw_text(font, al_map_rgb(255, 255, 255), winsizex+5,  c * fontHeight, ALLEGRO_ALIGN_LEFT, memScreenLine[c]);
+    
+    yTextPos = 5 * fontHeight;
     for (c = 0; c < 8; c++)
     {
-        if (breakpoints[c] != -1)
-            snprintf(bp, 7, "%c%04X%c", bpHit[c] ? '>' : ' ', breakpoints[c], bpHit[c] ? '<' : ' ');
-        else
-            snprintf(bp, 7, " ---- ");
-
-        if (breakr[c] != -1)
-            snprintf(br, 5, "%04X", breakr[c]);
-        else
-            snprintf(br, 5, "----");
+        xTextPos = winsizex+5;
+        yTextPos += fontHeight;
         
-        if (breakw[c] != -1)
-            snprintf(bw, 5, "%04X", breakw[c]);
-        else
-            snprintf(bw, 5, "----");
-
-        if (watchr[c] != -1)
-            snprintf(wr, 5, "%04X", watchr[c]);
-        else
-            snprintf(wr, 5, "----");
+        // Line number
+        snprintf(outs, 3, "%1d ", c);
+        al_draw_text(font, al_map_rgb(255, 255, 255), xTextPos,  yTextPos, ALLEGRO_ALIGN_LEFT, outs);
+        xTextPos += al_get_text_width(font, outs);
         
-        if (watchw[c] != -1)
-            snprintf(ww, 5, "%04X", watchw[c]);
-        else
-            snprintf(ww, 5, "----");
+        // Breakpoint
+        xTextPos += drawBreakpointText(bpText[c], xTextPos, yTextPos, bpHit[c]);
+        xTextPos += drawBreakpointText(" ", xTextPos, yTextPos, false);
         
-        snprintf(memScreenLine[6+c], 100, "%1d%s %s  %s  %s  %s", c, bp, br, bw, wr, ww);
+        // Break on read
+        xTextPos += drawBreakpointText(breakrText[c], xTextPos, yTextPos, breakrHit[c]);
+        xTextPos += drawBreakpointText(" ", xTextPos, yTextPos, false);
+        
+        // Break on write
+        xTextPos += drawBreakpointText(breakwText[c], xTextPos, yTextPos, breakwHit[c]);
+        xTextPos += drawBreakpointText(" ", xTextPos, yTextPos, false);
+        
+        // Watch on read
+        xTextPos += drawBreakpointText(watchrText[c], xTextPos, yTextPos, watchrHit[c]);
+        xTextPos += drawBreakpointText(" ", xTextPos, yTextPos, false);
+        
+        // Watch on write
+        xTextPos += drawBreakpointText(watchwText[c], xTextPos, yTextPos, watchwHit[c]);
+        xTextPos += al_get_text_width(font, watchwText[c]);
     }
 
-    for (c = 0; c < 20; c++)
-        al_draw_text(font, al_map_rgb(255, 255, 255), winsizex+5,  c*15.0, ALLEGRO_ALIGN_LEFT, memScreenLine[c]);
-    
     al_draw_bitmap(mem, winsizex+5, 220, 0);
 }
 
@@ -211,13 +255,6 @@ void enddebug()
     // HACK NEED TO CLOSE DEBUG WINDOWS
 }
 
-static void debugout(char *s)
-{
-	al_append_native_text_log(debugLog, "%s", s);
-	//printf("%s", s);
-	//fflush(stdout);
-	rpclog("%s", s);
-}
 
 void debuglog(char *format, ...)
 {
@@ -420,49 +457,62 @@ static void debugdisassemble()
 	}
 	debugdisaddr++;
 }
-
 void debugread(uint16_t addr)
 {
 	int c;
-	char outs[256];
-
+    char outs[256];
+    
 	for (c = 0; c < 8; c++)
 	{
 		if (breakr[c] == addr)
 		{
 			debug = 1;
-			sprintf(outs, "    Break on read from %04X\n", addr);
-			debugout(outs);
+            
+            updateBreakpointString(breakrText[c], breakr[c]);
+            breakrHit[c] = true;
+            
+            sprintf(outs, "    Break on read from %04X\n", addr);
+            debugout(outs);
 			return;
 		}
 		if (watchr[c] == addr)
-		{
-			sprintf(outs, "    Read from %04X - A=%02X X=%02X Y=%02X PC=%04X\n", addr, a, x, y, pc);
-			debugout(outs);
-		}
+        {
+            updateBreakpointString(watchrText[c], watchr[c]);
+            watchrHit[c] = true;
+            
+            sprintf(outs, "    Read from %04X - A=%02X X=%02X Y=%02X PC=%04X\n", addr, a, x, y, pc);
+            debugout(outs);
+        }
 	}
 }
 
 void debugwrite(uint16_t addr, uint8_t val)
 {
 	int c;
-	char outs[256];
+    char outs[256];
 
 	for (c = 0; c < 8; c++)
 	{
-		if (breakw[c] == addr)
-		{
-			debug = 1;
-			sprintf(outs, "    Break on write to %04X - val %02X\n", addr, val);
-			debugout(outs);
-			return;
-		}
-		if (watchw[c] == addr)
-		{
-			sprintf(outs, "    Write %02X to %04X - A=%02X X=%02X Y=%02X PC=%04X\n", val, addr, a, x, y, pc);
-			debugout(outs);
-		}
-	}
+        if (breakw[c] == addr)
+        {
+            debug = 1;
+            
+            updateBreakpointString(breakwText[c], breakw[c]);
+            breakwHit[c] = true;
+            
+            sprintf(outs, "    Break on write to %04X - val %02X\n", addr, val);
+            debugout(outs);
+            return;
+        }
+        if (watchw[c] == addr)
+        {
+            updateBreakpointString(watchwText[c], watchw[c]);
+            watchwHit[c] = true;
+            
+            sprintf(outs, "    Write %02X to %04X - A=%02X X=%02X Y=%02X PC=%04X\n", val, addr, a, x, y, pc);
+            debugout(outs);
+        }
+    }
 }
 
 extern char inputString[256];
@@ -483,10 +533,12 @@ void dodebugger(int linenum)
     {
         if (breakpoints[c] == pc)
         {
-            debug = 1;
+            updateBreakpointString(bpText[c], breakpoints[c]);
             bpHit[c] = true;
-            sprintf(outs, "    &Break at %04X\n", pc);
+            
+            sprintf(outs, "    Break at %04X\n", pc);
             debugout(outs);
+            debug = 1;
         }
     }
     
@@ -616,6 +668,9 @@ void executeDebuggerCommand()
                     if (breakr[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &breakr[c]);
+                        
+                        updateBreakpointString(breakrText[c], breakr[c]);
+                        breakrHit[c] = false;
                         sprintf(outs, "    Read breakpoint %i set to %04X\n", c, breakr[c]);
                         debugout(outs);
                         break;
@@ -631,6 +686,9 @@ void executeDebuggerCommand()
                     if (breakw[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &breakw[c]);
+
+                        updateBreakpointString(breakwText[c], breakw[c]);
+                        breakwHit[c] = false;
                         sprintf(outs, "    Write breakpoint %i set to %04X\n", c, breakw[c]);
                         debugout(outs);
                         break;
@@ -646,6 +704,9 @@ void executeDebuggerCommand()
                     if (breakpoints[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &breakpoints[c]);
+                        
+                        updateBreakpointString(bpText[c], breakpoints[c]);
+                        bpHit[c] = false;
                         sprintf(outs, "    Breakpoint %i set to %04X\n", c, breakpoints[c]);
                         debugout(outs);
                         break;
@@ -686,10 +747,12 @@ void executeDebuggerCommand()
                 sscanf(&ins[d], "%X", &e);
                 for (c = 0; c < 8; c++)
                 {
-                    if (breakr[c] == e)
+                    if ((breakr[c] == e) || (c == e))
+                    {
                         breakr[c] = -1;
-                    if (c == e)
-                        breakr[c] = -1;
+                        updateBreakpointString(breakrText[c], breakr[c]);
+                        breakrHit[c] = false;
+                    }
                 }
             }
             else if (!strncasecmp(ins, "bclearw", 7))
@@ -699,10 +762,12 @@ void executeDebuggerCommand()
                 sscanf(&ins[d], "%X", &e);
                 for (c = 0; c < 8; c++)
                 {
-                    if (breakw[c] == e)
+                    if ((breakw[c] == e) || (c == e))
+                    {
                         breakw[c] = -1;
-                    if (c == e)
-                        breakw[c] = -1;
+                        updateBreakpointString(breakwText[c], breakw[c]);
+                        breakwHit[c] = false;
+                    }
                 }
             }
             else if (!strncasecmp(ins, "bclear", 6))
@@ -712,10 +777,12 @@ void executeDebuggerCommand()
                 sscanf(&ins[d], "%X", &e);
                 for (c = 0; c < 8; c++)
                 {
-                    if (breakpoints[c] == e)
+                    if ((breakpoints[c] == e) || (c == e))
+                    {
                         breakpoints[c] = -1;
-                    if (c == e)
-                        breakpoints[c] = -1;
+                        updateBreakpointString(bpText[c], breakpoints[c]);
+                        bpHit[c] = false;
+                    }
                 }
             }
             break;
@@ -729,6 +796,9 @@ void executeDebuggerCommand()
                     if (watchr[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &watchr[c]);
+                        
+                        updateBreakpointString(watchrText[c], watchr[c]);
+                        watchrHit[c] = false;
                         sprintf(outs, "    Read watchpoint %i set to %04X\n", c, watchr[c]);
                         debugout(outs);
                         break;
@@ -745,6 +815,9 @@ void executeDebuggerCommand()
                     if (watchw[c] == -1)
                     {
                         sscanf(&ins[d], "%X", &watchw[c]);
+                        
+                        updateBreakpointString(watchwText[c], watchw[c]);
+                        watchwHit[c] = false;
                         sprintf(outs, "    Write watchpoint %i set to %04X\n", c, watchw[c]);
                         debugout(outs);
                         break;
@@ -778,10 +851,12 @@ void executeDebuggerCommand()
                 sscanf(&ins[d], "%X", &e);
                 for (c = 0; c < 8; c++)
                 {
-                    if (watchr[c] == e)
+                    if ((watchr[c] == e) || (c == e))
+                    {
                         watchr[c] = -1;
-                    if (c == e)
-                        watchr[c] = -1;
+                        updateBreakpointString(watchrText[c], watchr[c]);
+                        watchrHit[c] = false;
+                    }
                 }
             }
             else if (!strncasecmp(ins, "wclearw", 7))
@@ -791,10 +866,12 @@ void executeDebuggerCommand()
                 sscanf(&ins[d], "%X", &e);
                 for (c = 0; c < 8; c++)
                 {
-                    if (watchw[c] == e)
+                    if ((watchw[c] == e) || (c == e))
+                    {
                         watchw[c] = -1;
-                    if (c == e)
-                        watchw[c] = -1;
+                        updateBreakpointString(watchwText[c], watchw[c]);
+                        watchwHit[c] = false;
+                    }
                 }
             }
             else if (!strncasecmp(ins, "writem", 6))
