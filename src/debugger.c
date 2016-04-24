@@ -563,7 +563,6 @@ void executeDebuggerCommand()
     uint8_t temp;
     char outs[256];
     char ins[256];
-//    int lines;
     
     if (!debug)
         return;
@@ -576,13 +575,6 @@ void executeDebuggerCommand()
     debugdisaddr = d;
     
     strcpy(ins, inputString);
-    
-    // Force the screen to be refreshed before each debug command
-//    for (lines = 0; lines < linenum; lines++) {
-//        if (lines < 262 || lines == 311) {
-//            drawline(lines);
-//        }
-//    }
     
     sprintf(outs, "\n> %s\n", ins);
     debugout(outs);
