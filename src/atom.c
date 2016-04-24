@@ -231,7 +231,7 @@ void atom_run()
     // if at the debug screen then just redraw the atom screen and return not running the Atom emulator
     if (debug)
     {
-        for (lines = 0; lines < 193; lines++) {
+        for (lines = 0; lines < 312; lines++) {
             drawline(lines);
         }
         return;

@@ -77,6 +77,8 @@ static void initMemVideo()
 {
     mem = al_create_bitmap(256, 256);
     lockMemScreen();
+    
+    printf("mem format %d *d\n", al_get_bitmap_format(mem));
 }
 
 //HACK FIXME
@@ -96,14 +98,16 @@ void calcMemScreen()
     // Memory screen
 	for (line=0; line<256; line++)
 	{
-		ptr = (unsigned int *)(mlr->data + mlr->pitch * line);
+        ptr = (unsigned int *)(mlr->data + mlr->pitch * line);
 
-		for (pos=(line<<8); pos < ((line<<8)+256); pos++)
-		{
-			*ptr++ = (writec[pos]<<21) + (readc[pos]<<11) + (fetchc[pos]<<3);
-			if (fetchc[pos]>0) fetchc[pos]--;
-			if (readc[pos]>0) readc[pos]--;
-			if (writec[pos]>0) writec[pos]--;
+        for (pos=(line<<8); pos < ((line<<8)+256); pos++)
+        {
+            //*ptr++ = (writec[pos]<<21) + (readc[pos]<<11) + (fetchc[pos]<<3);
+            *ptr++ = (fetchc[pos]<<21) + (readc[pos]<<11) + (writec[pos]<<3);
+            
+			if (fetchc[pos]) fetchc[pos]--;
+			if (readc[pos]) readc[pos]--;
+			if (writec[pos]) writec[pos]--;
 		}
 	}
 

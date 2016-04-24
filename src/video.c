@@ -117,7 +117,7 @@ int semigrcols[3][8] = {
         0xffe0e0e0,
         0xffe0e0e0,
     },
-    { // SBRG - seems to be the default for OSX
+    { // SBGR - seems to be the default for OSX
         0xff00ff00,
         0xff00ffff,
         0xffff0000,
@@ -127,7 +127,7 @@ int semigrcols[3][8] = {
         0xffff00ff,
         0xff007fff
     },
-    { // SRBG - seems to be the default for LINUX / Windows
+    { // SRGB - seems to be the default for LINUX / Windows
         0xff00ff00,
         0xffffff00,
         0xff0000ff,
