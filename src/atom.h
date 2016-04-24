@@ -290,6 +290,7 @@ extern void dodebugger(int linenum);
 extern void debuglog(char *format, ...);
 extern void drawDebugInputScreen();
 extern void drawDebugMemScreen();
+extern void handleDebuggerInput(int keycode, int inputChar);
 
 // static void lockMemScreen(void);
 // static void unlockMemScreen(void);

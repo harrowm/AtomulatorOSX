@@ -605,6 +605,7 @@ void executeDebuggerCommand()
         case 'c': case 'C':
             debug = 0;
             indebug = 0;
+            sleep(1); // pause to allow the keyboard to reset so Atomulator doesnt pick up an extra enter key stroke
             return;
         case 'm': case 'M':
             if (params)

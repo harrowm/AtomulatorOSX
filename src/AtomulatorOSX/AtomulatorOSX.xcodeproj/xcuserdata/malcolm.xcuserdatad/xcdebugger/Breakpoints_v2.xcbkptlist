@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../debugger.c"
-            timestampString = "483195260.194524"
+            timestampString = "483195702.239678"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1122"
-            endingLineNumber = "1122">
+            startingLineNumber = "1123"
+            endingLineNumber = "1123">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
