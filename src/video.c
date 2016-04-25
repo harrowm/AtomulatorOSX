@@ -91,18 +91,24 @@ int *semigrcol;
 int *grcol;
 int black;
 
-int textcols[2][4] = {
+int textcols[3][4] = {
     {
         0xff202020,
         0xffe0e0e0,
         0xff202020,
         0xffe0e0e0,
     },
-    {
+    { // SBGR - seems to be the default for OSX
         0xff000000,
         0xff00ff00,
         0xff000000,
         0xff007fff
+    },
+    { // SRGB - seems to be the default for LINUX / Windows
+        0xff000000,
+        0xff00ff00,
+        0xff000000,
+        0xffff7f00
     }
 };
 
@@ -175,7 +181,10 @@ void updatepal()
     if (colourboard==1)
     {
         if (al_get_bitmap_format(b2) == ALLEGRO_PIXEL_FORMAT_ARGB_8888)
+        {
             semigrcol = semigrcols[colourboard+1];
+            textcol = textcols[colourboard+1];
+        }
     }
     
     grcol = grcols[colourboard];

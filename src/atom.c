@@ -122,17 +122,13 @@ void atom_reset(int power_on)
     extern ALLEGRO_PATH *exepath;
     
 	debuglog("atom_reset(%d)\n",power_on);
-//	memset(ram, 0, 0x10000);
+
 	if(power_on)
 	{
 		ram[8] = rand();
 		ram[9] = rand();
 		ram[10] = rand();
 		ram[11] = rand();
-		
-		// Clear BBC basic workspace.
-		// if(bbcmode)
-		//	memset(&ram[0], 0, 0x10000);
 	}
 	resetvia();
 	sid_reset();
