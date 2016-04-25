@@ -154,7 +154,7 @@ int grcols[2][4] = {
     },
     {
         0xff000000,
-        0xff00ff00,
+        0xff00FF00,
         0xff000000,
         0xffffffff
     }

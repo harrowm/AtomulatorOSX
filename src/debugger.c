@@ -77,8 +77,6 @@ static void initMemVideo()
 {
     mem = al_create_bitmap(256, 256);
     lockMemScreen();
-    
-    printf("mem format %d *d\n", al_get_bitmap_format(mem));
 }
 
 //HACK FIXME
