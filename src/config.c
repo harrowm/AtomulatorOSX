@@ -139,6 +139,9 @@ void loadconfig()
 
 	palnotntsc      = get_config_int(NULL, LABEL_PALNOTNTSC, 0);
 	colourboard 	= get_config_int(NULL, LABEL_COLOUR, 1);
+    
+    if (colourboard >1) colourboard = 1; // fix bug introduced where 2 was written to the atom.cfg file
+    
 	snow 			= get_config_int(NULL, LABEL_SNOW, 0);
 	ramrom_enable 	= get_config_int(NULL, LABEL_RAMROM, 1);	// Default RAMROM enable
 	RR_jumpers 		= get_config_int(NULL, LABEL_RAMROMJMP, RAMROM_FLAG_DISKROM);	// RAMROM diskrom enabled
