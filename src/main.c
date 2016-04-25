@@ -168,6 +168,45 @@ bool allegro_init()
     return true;
 }
 
+void logDisplay(ALLEGRO_DISPLAY *d)
+{
+    char displayDesc[ALLEGRO_NUM_PIXEL_FORMATS][50] = {
+        "ALLEGRO_PIXEL_FORMAT_ANY",
+        "ALLEGRO_PIXEL_FORMAT_ANY_NO_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_WITH_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_15_NO_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_16_NO_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_16_WITH_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_24_NO_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_32_NO_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ANY_32_WITH_ALPHA",
+        "ALLEGRO_PIXEL_FORMAT_ARGB_8888",
+        "ALLEGRO_PIXEL_FORMAT_RGBA_8888",
+        "ALLEGRO_PIXEL_FORMAT_ARGB_4444",
+        "ALLEGRO_PIXEL_FORMAT_RGB_888",
+        "ALLEGRO_PIXEL_FORMAT_RGB_565",
+        "ALLEGRO_PIXEL_FORMAT_RGB_555",
+        "ALLEGRO_PIXEL_FORMAT_RGBA_5551",
+        "ALLEGRO_PIXEL_FORMAT_ARGB_1555",
+        "ALLEGRO_PIXEL_FORMAT_ABGR_8888",
+        "ALLEGRO_PIXEL_FORMAT_XBGR_8888",
+        "ALLEGRO_PIXEL_FORMAT_BGR_888",
+        "ALLEGRO_PIXEL_FORMAT_BGR_565",
+        "ALLEGRO_PIXEL_FORMAT_BGR_555",
+        "ALLEGRO_PIXEL_FORMAT_RGBX_8888",
+        "ALLEGRO_PIXEL_FORMAT_XRGB_8888",
+        "ALLEGRO_PIXEL_FORMAT_ABGR_F32",
+        "ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE",
+        "ALLEGRO_PIXEL_FORMAT_RGBA_4444",
+        "ALLEGRO_PIXEL_FORMAT_SINGLE_CHANNEL_8",
+        "ALLEGRO_PIXEL_FORMAT_COMPRESSED_RGBA_DXT1",
+        "ALLEGRO_PIXEL_FORMAT_COMPRESSED_RGBA_DXT3",
+        "ALLEGRO_PIXEL_FORMAT_COMPRESSED_RGBA_DXT5"
+    };
+    
+    rpclog ("Allegro display is of format %s\n", displayDesc[al_get_display_format(d)]);
+}
+    
 bool allegro_create_display_and_menus()
 {
    	/* ALLEGRO_GTK_TOPLEVEL is necessary for menus with GTK - ie Debian */
@@ -188,6 +227,8 @@ bool allegro_create_display_and_menus()
         rpclog("ERROR: Error creating Allegro display (32bit pixel size required).\n");
         return false;
     }
+    
+    logDisplay(display);
 
 	// On some flavours of Linux (eg Debian) adding in the menus changes the window size (!!)
 	// Have to listen for the resize event and reset   
