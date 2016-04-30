@@ -62,15 +62,15 @@ ALLEGRO_TEXTLOG *debugLog;
 
  void lockMemScreen()
 {
-    al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
-    al_set_target_bitmap(mem);
+//    al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
+//    al_set_target_bitmap(mem);
     mlr = al_lock_bitmap(mem, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
  void unlockMemScreen()
 {
     al_unlock_bitmap(mem);
-    al_restore_state(&memstate);
+//    al_restore_state(&memstate);
 }
 
 static void initMemVideo()
@@ -92,7 +92,8 @@ void calcMemScreen()
 	int line=0;
 
 	unsigned int *ptr;
-    
+
+                      
     // Memory screen
 	for (line=0; line<256; line++)
 	{
@@ -100,12 +101,17 @@ void calcMemScreen()
 
         for (pos=(line<<8); pos < ((line<<8)+256); pos++)
         {
-            //*ptr++ = (writec[pos]<<21) + (readc[pos]<<11) + (fetchc[pos]<<3);
-            *ptr++ = (fetchc[pos]<<21) + (readc[pos]<<11) + (writec[pos]<<3);
-            
-			if (fetchc[pos]) fetchc[pos]--;
-			if (readc[pos]) readc[pos]--;
-			if (writec[pos]) writec[pos]--;
+            if (fetchc[pos] || readc[pos] || writec[pos])
+            {
+                //*ptr++ = (writec[pos]<<21) + (readc[pos]<<11) + (fetchc[pos]<<3);
+                *ptr++ = (fetchc[pos]<<21) + (readc[pos]<<11) + (writec[pos]<<3);
+                
+                if (fetchc[pos]) fetchc[pos]--;
+                if (readc[pos]) readc[pos]--;
+                if (writec[pos]) writec[pos]--;
+            }
+            else
+                *ptr++ = 0;
 		}
 	}
 
@@ -125,11 +131,13 @@ static void debugout(char *s)
 void drawDebugInputScreen()
 {
     char lastLine[100];
+    extern ALLEGRO_COLOR whiteColour;
+    int fontHeight = al_get_font_line_height(font);
     
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 0.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[0]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 20.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[1]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 40.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[2]);
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 60.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[3]);
+    al_draw_text(font, whiteColour, 0.0, winsizey + 0.0, ALLEGRO_ALIGN_LEFT, inputScreenLine[0]);
+    al_draw_text(font, whiteColour, 0.0, winsizey + fontHeight, ALLEGRO_ALIGN_LEFT, inputScreenLine[1]);
+    al_draw_text(font, whiteColour, 0.0, winsizey + fontHeight*2, ALLEGRO_ALIGN_LEFT, inputScreenLine[2]);
+    al_draw_text(font, whiteColour, 0.0, winsizey + fontHeight*3, ALLEGRO_ALIGN_LEFT, inputScreenLine[3]);
     
     if (debugcursor > 100)
     {
@@ -146,7 +154,7 @@ void drawDebugInputScreen()
     else
         snprintf(lastLine, 100, "%s", inputScreenLine[4]);
     
-    al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, winsizey + 80.0, ALLEGRO_ALIGN_LEFT, lastLine);
+    al_draw_text(font, whiteColour, 0.0, winsizey + fontHeight*4, ALLEGRO_ALIGN_LEFT, lastLine);
 }
 
 char memScreenLine[20][100];
@@ -161,13 +169,16 @@ void updateBreakpointString(char *s, int bp)
 
 int drawBreakpointText(char *s, int x, int y, bool reverse)
 {
+    extern ALLEGRO_COLOR whiteColour;
+    extern ALLEGRO_COLOR blackColour;
+    
     if (reverse)
     {
-        al_draw_filled_rectangle(x, y, x+al_get_text_width(font, s), y+al_get_font_line_height(font), al_map_rgb(255, 255, 255));
-        al_draw_text(font, al_map_rgb(0, 0, 0), x,  y, ALLEGRO_ALIGN_LEFT, s);
+        al_draw_filled_rectangle(x, y, x+al_get_text_width(font, s), y+al_get_font_line_height(font), whiteColour);
+        al_draw_text(font, blackColour, x,  y, ALLEGRO_ALIGN_LEFT, s);
     }
     else
-        al_draw_text(font, al_map_rgb(255, 255, 255), x,  y, ALLEGRO_ALIGN_LEFT, s);
+        al_draw_text(font, whiteColour, x,  y, ALLEGRO_ALIGN_LEFT, s);
     
     return al_get_text_width(font, s);
 }
@@ -175,23 +186,22 @@ int drawBreakpointText(char *s, int x, int y, bool reverse)
 void drawDebugMemScreen()
 {
     int c;
-    
-    int fontHeight;
-    
-    fontHeight = al_get_font_line_height(font);
-    
-    strlcpy(memScreenLine[0], "6502 Registers:", 100);
-    snprintf(memScreenLine[1], 100, "A=%02X X=%02X Y=%02X S=01%02X PC=%04X", a, x, y, s, pc);
-    snprintf(memScreenLine[2], 100, "Status : %c%c%c%c%c%c", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
-    snprintf(memScreenLine[3], 100, "");
-    snprintf(memScreenLine[4], 100, "Breakpoints:");
-    snprintf(memScreenLine[5], 100, "   Brk BrkR BrkW MemR MemW");
-    
     char outs[256];
     int xTextPos, yTextPos;
     
-    for (c = 0; c < 6; c++)
-        al_draw_text(font, al_map_rgb(255, 255, 255), winsizex+5,  c * fontHeight, ALLEGRO_ALIGN_LEFT, memScreenLine[c]);
+    int fontHeight;
+    extern ALLEGRO_COLOR whiteColour;
+    
+    fontHeight = al_get_font_line_height(font);
+
+    xTextPos = winsizex+5;
+    
+    al_draw_textf(font, whiteColour, xTextPos,  0, ALLEGRO_ALIGN_LEFT, "6502 Registers:");
+    al_draw_textf(font, whiteColour, xTextPos,  fontHeight, ALLEGRO_ALIGN_LEFT, "A=%02X X=%02X Y=%02X S=01%02X PC=%04X", a, x, y, s, pc);
+    al_draw_textf(font, whiteColour, xTextPos,  fontHeight*2, ALLEGRO_ALIGN_LEFT, "Status : %c%c%c%c%c%c", (p.n) ? 'N' : ' ', (p.v) ? 'V' : ' ', (p.d) ? 'D' : ' ', (p.i) ? 'I' : ' ', (p.z) ? 'Z' : ' ', (p.c) ? 'C' : ' ');
+
+    al_draw_textf(font, whiteColour, xTextPos,  fontHeight*4, ALLEGRO_ALIGN_LEFT, "Breakpoints:");
+    al_draw_textf(font, whiteColour, xTextPos,  fontHeight*5, ALLEGRO_ALIGN_LEFT,"   Brk BrkR BrkW MemR MemW");
     
     yTextPos = 5 * fontHeight;
     for (c = 0; c < 8; c++)
@@ -201,7 +211,7 @@ void drawDebugMemScreen()
         
         // Line number
         snprintf(outs, 3, "%1d ", c);
-        al_draw_text(font, al_map_rgb(255, 255, 255), xTextPos,  yTextPos, ALLEGRO_ALIGN_LEFT, outs);
+        al_draw_text(font, whiteColour, xTextPos,  yTextPos, ALLEGRO_ALIGN_LEFT, outs);
         xTextPos += al_get_text_width(font, outs);
         
         // Breakpoint
@@ -225,12 +235,15 @@ void drawDebugMemScreen()
         xTextPos += al_get_text_width(font, watchwText[c]);
     }
 
-    al_draw_bitmap(mem, winsizex+5, 220, 0);
+    // Only draw the memory screen if the Atom is running
+    if (!debug)
+        al_draw_bitmap(mem, winsizex+5, 220, 0);
 }
 
 void startdebug()
 {
     extern ALLEGRO_DISPLAY *display;
+    extern ALLEGRO_COLOR whiteColour;
     
     debug = debugon = 1;
     
@@ -241,7 +254,7 @@ void startdebug()
     debugLog = al_open_native_text_log("Debugger Output", ALLEGRO_TEXTLOG_NO_CLOSE|ALLEGRO_TEXTLOG_MONOSPACE);
 
     // Show input console
-    al_resize_display(display, winsizex+258.0, winsizey+100.0);
+    al_resize_display(display, winsizex+256.0+10.0, winsizey+al_get_font_line_height(font)*5);
     
     // clear the input display
     strlcpy(inputScreenLine[0], "", 100);

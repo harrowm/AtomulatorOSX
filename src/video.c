@@ -193,20 +193,15 @@ void updatepal()
 
 static void lockAtomScreen()
 {
-    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-    al_set_target_bitmap(b2);
+//    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+//    al_set_target_bitmap(b2);
     lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
-    if (lr == NULL)
-        rpclog("ERROR: Failed to lock Atom screen bitmap\n");
 }
 
 static void unlockAtomScreen()
 {
-    if (b2 == NULL)
-        rpclog("ERROR: trying to unlock null bitmap in unlockAtomScreen()\n");
-    
     al_unlock_bitmap(b2);
-    al_restore_state(&state);
+//    al_restore_state(&state);
 }
 
 void initvideo()
@@ -250,7 +245,12 @@ static void hudupdate()
 
 void drawAtomScreen()
 {
-    if (debugon) calcMemScreen();
+    extern ALLEGRO_COLOR whiteColour;
+    extern ALLEGRO_COLOR blackColour;
+    
+    // calculate the memory screen if the debugger is on and we are not at the debug prompt (ie Atom is running)
+    if (debugon && !debug)
+        calcMemScreen();
     
     unlockAtomScreen();
 
@@ -259,22 +259,22 @@ void drawAtomScreen()
     al_draw_scaled_bitmap(b2, 0, 0, ATOM_SCREEN_WIDTH, ATOM_SCREEN_HEIGHT, 0, 0, winsizex, winsizey, 0);
     
 	if (showspeed)
-        al_draw_text(font, al_map_rgb(255, 255, 255), 0.0, 0.0, 0, hudbuf);
+        al_draw_text(font, whiteColour, 0.0, 0.0, 0, hudbuf);
 
     if (tapeon)
         al_draw_filled_rectangle(winsizex - 12.0f, 0.0f, winsizex, 4.0f, al_map_rgb(255, 0, 0));
     
     if (debugon)
     {
-        al_draw_line(0.0, winsizey+1.0, winsizex, winsizey+1.0, al_map_rgb(255,255,255), 2.0);
-        al_draw_line(winsizex+1.0, 0.0, winsizex+1.0, winsizey+100.0, al_map_rgb(255,255,255), 2.0);
+        al_draw_line(0.0, winsizey+1.0, winsizex, winsizey+1.0, whiteColour, 2.0);
+        al_draw_line(winsizex+1.0, 0.0, winsizex+1.0, winsizey+100.0, whiteColour, 2.0);
         
         drawDebugInputScreen();
         drawDebugMemScreen();
     }
 
     al_flip_display();
-    al_clear_to_color(al_map_rgb(0,0,0));
+    al_clear_to_color(blackColour);
     lockAtomScreen();
 }
 

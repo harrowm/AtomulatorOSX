@@ -38,6 +38,9 @@ ALLEGRO_AUDIO_STREAM *ddstream;
 ALLEGRO_PATH *exepath; // Path to root of resources directory (fonts, roms, ddnoise)
 ALLEGRO_PATH *docpath; // Path to root of executable directory (mmc, rlog file, atom.cfg file)
 
+ALLEGRO_COLOR whiteColour;
+ALLEGRO_COLOR blackColour;
+
 extern ALLEGRO_MENU_INFO menu_info[]; 
 
 extern void update_gui();
@@ -164,6 +167,9 @@ bool allegro_init()
         rpclog("ERROR: Failed to load font from: %s.\n", fontpath);
         return false;
     }
+    
+    whiteColour = al_map_rgb(255, 255, 255);
+    blackColour = al_map_rgb(0, 0, 0);
 	
     return true;
 }
@@ -217,6 +223,8 @@ bool allegro_create_display_and_menus()
 	al_set_new_display_flags(ALLEGRO_WINDOWED | ALLEGRO_RESIZABLE | ALLEGRO_NO_PRESERVE_TEXTURE);
 #endif
 
+    al_set_new_bitmap_flags(ALLEGRO_NO_PRESERVE_TEXTURE);
+    
 	// The screen handling performance has been improved by directly manipulating the bitmap, code copied from Optima - many thanks hoglet.
 	// The code requires a 32bit pixel size
 	al_set_new_display_option(ALLEGRO_COLOR_SIZE, 32, ALLEGRO_REQUIRE);
@@ -328,14 +336,14 @@ void allegro_process_events()
             
             // force the display's aspect ratio to 4/3
             if (debugon)
-                winsizex = ((al_get_display_width(display)-258) + 3) & ~0x3;  // round to a multiple of 4
+                winsizex = ((al_get_display_width(display)-266) + 3) & ~0x3;  // round to a multiple of 4
             else
                 winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
             
             winsizey = winsizex*3/4;
             
             if (debugon)
-                al_resize_display(display, winsizex+258.0, winsizey + 100.0); // Allow for the debug input window
+                al_resize_display(display, winsizex+266.0, winsizey + al_get_font_line_height(font)*5); // Allow for the debug input window
             else
                 al_resize_display(display, winsizex, winsizey);
             
