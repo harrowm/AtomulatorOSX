@@ -50,11 +50,6 @@ ALLEGRO_STATE memstate;
 ALLEGRO_LOCKED_REGION *mlr;
 extern ALLEGRO_DISPLAY *memDisplay;
 
-ALLEGRO_BITMAP *inp;
-ALLEGRO_STATE inpstate;
-ALLEGRO_LOCKED_REGION *ilr;
-extern ALLEGRO_DISPLAY *inputDisplay;
-
 extern ALLEGRO_EVENT_QUEUE *events;
 
 
