@@ -102,6 +102,7 @@ extern int RR_jumpers;
 // From debugger.c
 extern int debug;
 extern int fetchc[65536], readc[65536], writec[65536];
+extern void calcMemScreen();
 
 // From 8255.c
 extern int spon, tpon;
