@@ -92,7 +92,8 @@ void calcMemScreen()
     // Memory screen
 	for (line=0; line<256; line++)
 	{
-        ptr = (unsigned int *)(mlr->data + mlr->pitch * line);
+        // cast mlr->data to compile on Windows
+        ptr = (unsigned int *)((char *)mlr->data + mlr->pitch * line);
 
         for (pos=(line<<8); pos < ((line<<8)+256); pos++)
         {

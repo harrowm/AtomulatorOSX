@@ -130,14 +130,6 @@ bool allegro_init()
         rpclog("ERROR: Cannot get path to executable.\n");
         return false;
     }
-
-    // On MS Visual Studio, running in immediate mode from the compiler uses a "Debug" directory, lets remove
-    // this to stop having to manually copy files around when coding. Similarly, if we are running the release version
-    // from the release directory we remove that
-#ifdef _MSC_VER
-    if ((strcmp(al_get_path_tail(exepath), "Debug") == 0) || (strcmp(al_get_path_tail(exepath), "Release") == 0))
-        al_drop_path_tail(exepath);
-#endif
 #endif
     
    	exepath = al_get_standard_path(ALLEGRO_RESOURCES_PATH);

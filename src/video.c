@@ -289,7 +289,8 @@ void drawline(int line)
 
     if (line < 192)
 	{
-        unsigned int *ptr = (unsigned int *)(lr->data + lr->pitch * line);
+        // cast lr->data to compile on Windows
+        unsigned int *ptr = (unsigned int *)((char*)lr->data + lr->pitch * line);
 
         switch (gfxmode)
 		{
