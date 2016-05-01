@@ -50,6 +50,7 @@ extern void update_gui();
 // start up.  These variables manage that process.
 int origwinsizex;
 int origwinsizey;
+int winMenuHeight = 0;
 bool displayjustcreated = true;
 
 bool initJoystick()
@@ -127,7 +128,7 @@ bool allegro_init()
     docpath = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
     if (!docpath)
     {
-        rpclog("ERROR: Cannot get path to executable.\n");
+        rpclog("ERROR: Cannot get path to documents (ALLEGRO_RESOURCES_PATH).\n");
         return false;
     }
 #endif
@@ -135,7 +136,7 @@ bool allegro_init()
    	exepath = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
 	if (!exepath)
 	{
-		rpclog("ERROR: Cannot get path to executable.\n");
+		rpclog("ERROR: Cannot get path to executable (ALLEGRO_RESOURCES_PATH).\n");
 		return false;
 	}
 
@@ -144,7 +145,10 @@ bool allegro_init()
 	// from the release directory we remove that
 #ifdef _MSC_VER
 	if ((strcmp(al_get_path_tail(exepath), "Debug") == 0) || (strcmp(al_get_path_tail(exepath), "Release") == 0))
+    {
 		al_drop_path_tail(exepath);	
+        al_drop_path_tail(docpath);
+    }
 #endif
 
 	// Get the font file
@@ -293,7 +297,7 @@ void allegro_process_events()
             break;
         
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
-            if (event.mouse.y > winsizey)
+            if (event.mouse.y > (winsizey+winMenuHeight))
                 debug = 1;
             else
                 debug = 0;
@@ -313,32 +317,41 @@ void allegro_process_events()
             
         case ALLEGRO_EVENT_DISPLAY_RESIZE:
             al_acknowledge_resize(event.display.source);
-			// resize the display on initial creation if on Linux (Debian)
-			if (displayjustcreated == true)
-			{
+            
+            // Allegro doesn't make this easy ..
+            // If we are on a GUI where the menus are kept in the Window (eg Windows, Debian) rather than at the top of
+            // the screen MacOS, Ubuntu then when the Menus are added, the deisplay gets smaller and we have to catch the event
+            // and redraw.
+
+            if (displayjustcreated == true)
+            {
+#if (defined _MSC_VER || defined ALLEGRO_GTK_TOPLEVEL)
                 // Switching on the dubgger also forces a screen resize .. if the system isnt running on Debian then
                 // the first resize event if on the debugger starting, so dont resize the screen to the original size
                 if (!debugon)
                 {
-                    al_resize_display(display, origwinsizex, origwinsizey);
-                    al_acknowledge_resize(event.display.source);
+                    winMenuHeight = origwinsizey - al_get_display_height(display);
+                    al_resize_display(display, origwinsizex, origwinsizey + winMenuHeight);
                 }
-				displayjustcreated = false;
-			}
-            
-            // force the display's aspect ratio to 4/3
-            if (debugon)
-                winsizex = ((al_get_display_width(display)-266) + 3) & ~0x3;  // round to a multiple of 4
+#endif
+                displayjustcreated = false;
+            }
             else
-                winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
-            
-            winsizey = winsizex*3/4;
-            
-            if (debugon)
-                al_resize_display(display, winsizex+266.0, winsizey + al_get_font_line_height(font)*5); // Allow for the debug input window
-            else
-                al_resize_display(display, winsizex, winsizey);
-            
+            {
+                // force the display's aspect ratio to 4/3
+                if (debugon)
+                {
+                    winsizex = ((al_get_display_width(display) - 266) + 3) & ~0x3;  // round to a multiple of 4
+                    winsizey = winsizex * 3 / 4;
+                    al_resize_display(display, winsizex + 266.0, winsizey + winMenuHeight + al_get_font_line_height(font) * 5); // Allow for the debug input window
+                }
+                else
+                {
+                    winsizex = (al_get_display_width(display) + 3) & ~0x3;  // round to a multiple of 4
+                    winsizey = winsizex * 3 / 4;
+                    al_resize_display(display, winsizex, winsizey + winMenuHeight);
+                }
+            }
             al_acknowledge_resize(event.display.source);
             break;
 

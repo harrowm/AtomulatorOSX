@@ -193,15 +193,15 @@ void updatepal()
 
 static void lockAtomScreen()
 {
-//    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
-//    al_set_target_bitmap(b2);
+    al_store_state(&state, ALLEGRO_STATE_TARGET_BITMAP);
+    al_set_target_bitmap(b2);
     lr = al_lock_bitmap(b2, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
 static void unlockAtomScreen()
 {
     al_unlock_bitmap(b2);
-//    al_restore_state(&state);
+    al_restore_state(&state);
 }
 
 void initvideo()
@@ -290,7 +290,7 @@ void drawline(int line)
     if (line < 192)
 	{
         // cast lr->data to compile on Windows
-        unsigned int *ptr = (unsigned int *)((char*)lr->data + lr->pitch * line);
+        unsigned int *ptr = (unsigned int *)((char *)lr->data + lr->pitch * line);
 
         switch (gfxmode)
 		{

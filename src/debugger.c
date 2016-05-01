@@ -57,15 +57,15 @@ ALLEGRO_TEXTLOG *debugLog;
 
  void lockMemScreen()
 {
-//    al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
-//    al_set_target_bitmap(mem);
+    al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
+    al_set_target_bitmap(mem);
     mlr = al_lock_bitmap(mem, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
  void unlockMemScreen()
 {
     al_unlock_bitmap(mem);
-//    al_restore_state(&memstate);
+    al_restore_state(&memstate);
 }
 
 static void initMemVideo()

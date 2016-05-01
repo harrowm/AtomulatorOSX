@@ -126,7 +126,9 @@ void loadconfig()
         discfns[1][0] = 0;
     
     load_config_string(LABEL_MMC_PATH,BaseMMCPath);
-	if (!al_filename_exists(BaseMMCPath))
+    
+    // On Windows al_filename_exists() returns true if passed a NULL string ..
+	if (strlen(BaseMMCPath) == 0 || !al_filename_exists(BaseMMCPath))
 	{
 		rpclog("MMC Path given in atom.cfg is invalid - %s\n", BaseMMCPath);
 		al_append_path_component(docpath, DEF_MMC_DIR);
