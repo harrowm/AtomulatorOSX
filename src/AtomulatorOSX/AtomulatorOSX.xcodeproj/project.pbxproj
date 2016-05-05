@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		D4024E581C69FA990020F1AF /* 1770.c in Sources */ = {isa = PBXBuildFile; fileRef = D4024E561C69FA990020F1AF /* 1770.c */; };
 		D4194AA81C95BEE400F062A5 /* liballegro_monolith-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */; };
+		D484A94B1CDB90B000C29D57 /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A94A1CDB90B000C29D57 /* libFLAC.a */; };
+		D484A94F1CDB915300C29D57 /* libdumb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A94E1CDB915300C29D57 /* libdumb.a */; };
+		D484A9501CDB917200C29D57 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776851C68963B000BAB2F /* libz.tbd */; };
+		D484A9591CDB921000C29D57 /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A9571CDB921000C29D57 /* libvorbisfile.a */; };
 		D49775CD1C6892B7000BAB2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D49775CC1C6892B7000BAB2F /* Assets.xcassets */; };
 		D49775E81C689345000BAB2F /* atmmc2core.c in Sources */ = {isa = PBXBuildFile; fileRef = D49775D81C689345000BAB2F /* atmmc2core.c */; };
 		D49775E91C689345000BAB2F /* atmmc2wfn.c in Sources */ = {isa = PBXBuildFile; fileRef = D49775DB1C689345000BAB2F /* atmmc2wfn.c */; };
@@ -64,7 +68,6 @@
 		D497768F1C68E74F000BAB2F /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = D497768E1C68E74F000BAB2F /* fonts */; };
 		D49776911C68E7C3000BAB2F /* roms in Resources */ = {isa = PBXBuildFile; fileRef = D49776901C68E7C3000BAB2F /* roms */; };
 		D49776931C68E7D1000BAB2F /* ddnoise in Resources */ = {isa = PBXBuildFile; fileRef = D49776921C68E7D1000BAB2F /* ddnoise */; };
-		D4F54C061CA6254000B31703 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776851C68963B000BAB2F /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +75,13 @@
 		D4024E571C69FA990020F1AF /* 1770.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 1770.h; path = ../../1770.h; sourceTree = "<group>"; };
 		D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liballegro_monolith-static.a"; path = "../../../../../../usr/local/lib/liballegro_monolith-static.a"; sourceTree = "<group>"; };
 		D46702CD1C6BA00900621C19 /* AtomulatorOSX.profdata */ = {isa = PBXFileReference; lastKnownFileType = file; path = AtomulatorOSX.profdata; sourceTree = "<group>"; };
+		D484A94A1CDB90B000C29D57 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = ../../../../../../../usr/local/Cellar/flac/1.3.1/lib/libFLAC.a; sourceTree = "<group>"; };
+		D484A94C1CDB90E100C29D57 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../../../../../usr/local/Cellar/freetype/2.6.3/lib/libfreetype.a; sourceTree = "<group>"; };
+		D484A94E1CDB915300C29D57 /* libdumb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdumb.a; path = ../../../../../../../usr/local/lib/libdumb.a; sourceTree = "<group>"; };
+		D484A9511CDB91BA00C29D57 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbis.a; sourceTree = "<group>"; };
+		D484A9531CDB91E900C29D57 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = ../../../../../../../usr/local/Cellar/libogg/1.3.2/lib/libogg.a; sourceTree = "<group>"; };
+		D484A9561CDB921000C29D57 /* libvorbisenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisenc.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbisenc.a; sourceTree = "<group>"; };
+		D484A9571CDB921000C29D57 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbisfile.a; sourceTree = "<group>"; };
 		D49775C31C6892B7000BAB2F /* AtomulatorOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AtomulatorOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D49775CC1C6892B7000BAB2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D49775D11C6892B7000BAB2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -166,7 +176,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4F54C061CA6254000B31703 /* libz.tbd in Frameworks */,
+				D484A9591CDB921000C29D57 /* libvorbisfile.a in Frameworks */,
+				D484A9501CDB917200C29D57 /* libz.tbd in Frameworks */,
+				D484A94F1CDB915300C29D57 /* libdumb.a in Frameworks */,
+				D484A94B1CDB90B000C29D57 /* libFLAC.a in Frameworks */,
 				D4194AA81C95BEE400F062A5 /* liballegro_monolith-static.a in Frameworks */,
 				D497768A1C689C2D000BAB2F /* AudioToolbox.framework in Frameworks */,
 				D49776521C6894F1000BAB2F /* AppKit.framework in Frameworks */,
@@ -313,6 +326,13 @@
 		D49776801C689514000BAB2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D484A9561CDB921000C29D57 /* libvorbisenc.a */,
+				D484A9571CDB921000C29D57 /* libvorbisfile.a */,
+				D484A9531CDB91E900C29D57 /* libogg.a */,
+				D484A9511CDB91BA00C29D57 /* libvorbis.a */,
+				D484A94E1CDB915300C29D57 /* libdumb.a */,
+				D484A94C1CDB90E100C29D57 /* libfreetype.a */,
+				D484A94A1CDB90B000C29D57 /* libFLAC.a */,
 				D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */,
 				D49776851C68963B000BAB2F /* libz.tbd */,
 				D49776891C689C2D000BAB2F /* AudioToolbox.framework */,
@@ -541,6 +561,10 @@
 					/usr/local/lib,
 					/opt/X11/lib,
 					/opt/local/lib,
+					/usr/local/Cellar/flac/1.3.1/lib,
+					/usr/local/Cellar/freetype/2.6.3/lib,
+					/usr/local/Cellar/libvorbis/1.3.5/lib,
+					/usr/local/Cellar/libogg/1.3.2/lib,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = malcolm.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -561,6 +585,10 @@
 					/usr/local/lib,
 					/opt/X11/lib,
 					/opt/local/lib,
+					/usr/local/Cellar/flac/1.3.1/lib,
+					/usr/local/Cellar/freetype/2.6.3/lib,
+					/usr/local/Cellar/libvorbis/1.3.5/lib,
+					/usr/local/Cellar/libogg/1.3.2/lib,
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = malcolm.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
