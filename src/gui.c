@@ -7,6 +7,7 @@
 #include <allegro5/allegro_audio.h>
 #include <stdio.h>
 #include "atom.h"
+#include "atommc.h"
 #include "roms.h"
 #include "resources.h"
 #include "sidtypes.h"
@@ -254,6 +255,25 @@ static void gui_scrshot()
 	}
 }
 
+static void gui_open_settings()
+{
+    ALLEGRO_FILECHOOSER *fc;
+    
+    fc = al_create_native_file_dialog(BaseMMCPath, "Select AtoMMC Directory", "", ALLEGRO_FILECHOOSER_FOLDER);
+    
+    if (al_show_native_file_dialog(display, fc))
+    {
+        if (al_get_native_file_dialog_count(fc) == 1)
+        {
+            strlcpy(BaseMMCPath, al_get_native_file_dialog_path(fc, 0), MAXPATH - 1);
+            saveconfig();
+            loadconfig();
+            InitMMC();
+        }
+        rpclog("Updated AtoMMC Path to %s", BaseMMCPath);
+    }
+}
+
 void processMenuOption(intptr_t option)
 {
 	int c;
@@ -268,6 +288,10 @@ void processMenuOption(intptr_t option)
 		case IDM_FILE_EXIT:
 			quited = true;
 			break;
+        
+        case IDM_SETTINGS:
+            gui_open_settings();
+            break;
 
 		// Tape Menu
 		case IDM_TAPE_LOAD:
@@ -774,8 +798,9 @@ void processMenuOption(intptr_t option)
 
 ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_START_OF_MENU("File", (uint16_t)IDM_FILE_MENU),
+        { "AtoMMC path...", IDM_SETTINGS, 0, NULL},
 		{ "Reset",    IDM_FILE_RESET, 0, NULL },
-		{ "Exit",          IDM_FILE_EXIT,  0, NULL },
+		{ "Exit",     IDM_FILE_EXIT,  0, NULL },
     ALLEGRO_END_OF_MENU,
 
     ALLEGRO_START_OF_MENU("Tape", (uint16_t)IDM_TAPE_MENU),

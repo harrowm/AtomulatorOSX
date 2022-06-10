@@ -23,6 +23,21 @@
 		82D7887F2852C4AB00BEDAEB /* liballegro_color.5.2.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D7886B2852C4AA00BEDAEB /* liballegro_color.5.2.8.dylib */; };
 		82D788812852C4AB00BEDAEB /* liballegro_memfile.5.2.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D7886C2852C4AB00BEDAEB /* liballegro_memfile.5.2.8.dylib */; };
 		82D788852852C89100BEDAEB /* liballegro_dialog.5.2.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D788842852C89100BEDAEB /* liballegro_dialog.5.2.8.dylib */; };
+		82FE002F2853D307001212EC /* liballegro_dialog.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788842852C89100BEDAEB /* liballegro_dialog.5.2.8.dylib */; };
+		82FE00302853D307001212EC /* liballegro_acodec.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D7886A2852C4AA00BEDAEB /* liballegro_acodec.5.2.8.dylib */; };
+		82FE00312853D307001212EC /* liballegro_audio.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788622852C4AA00BEDAEB /* liballegro_audio.5.2.8.dylib */; };
+		82FE00322853D307001212EC /* liballegro_color.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D7886B2852C4AA00BEDAEB /* liballegro_color.5.2.8.dylib */; };
+		82FE00332853D307001212EC /* liballegro_font.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788692852C4AA00BEDAEB /* liballegro_font.5.2.8.dylib */; };
+		82FE00342853D307001212EC /* liballegro_image.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788672852C4AA00BEDAEB /* liballegro_image.5.2.8.dylib */; };
+		82FE00352853D307001212EC /* liballegro_main.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788662852C4AA00BEDAEB /* liballegro_main.5.2.8.dylib */; };
+		82FE00362853D307001212EC /* liballegro_memfile.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D7886C2852C4AB00BEDAEB /* liballegro_memfile.5.2.8.dylib */; };
+		82FE00372853D307001212EC /* liballegro_physfs.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788632852C4AA00BEDAEB /* liballegro_physfs.5.2.8.dylib */; };
+		82FE00382853D307001212EC /* liballegro_primitives.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788652852C4AA00BEDAEB /* liballegro_primitives.5.2.8.dylib */; };
+		82FE00392853D307001212EC /* liballegro_ttf.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788642852C4AA00BEDAEB /* liballegro_ttf.5.2.8.dylib */; };
+		82FE003A2853D307001212EC /* liballegro.5.2.8.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 82D788682852C4AA00BEDAEB /* liballegro.5.2.8.dylib */; };
+		82FE003B2853D307001212EC /* libdumb.a in Resources */ = {isa = PBXBuildFile; fileRef = 82D788602852C0ED00BEDAEB /* libdumb.a */; };
+		82FE003C2853D307001212EC /* libFLAC.a in Resources */ = {isa = PBXBuildFile; fileRef = 82D7885E2852BFAD00BEDAEB /* libFLAC.a */; };
+		82FE003D2853D307001212EC /* libvorbisfile.a in Resources */ = {isa = PBXBuildFile; fileRef = 82D7885C2852BF5100BEDAEB /* libvorbisfile.a */; };
 		D4024E581C69FA990020F1AF /* 1770.c in Sources */ = {isa = PBXBuildFile; fileRef = D4024E561C69FA990020F1AF /* 1770.c */; };
 		D484A9501CDB917200C29D57 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776851C68963B000BAB2F /* libz.tbd */; };
 		D49775CD1C6892B7000BAB2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D49775CC1C6892B7000BAB2F /* Assets.xcassets */; };
@@ -417,6 +432,7 @@
 				TargetAttributes = {
 					D49775C21C6892B7000BAB2F = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
@@ -443,6 +459,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82FE002F2853D307001212EC /* liballegro_dialog.5.2.8.dylib in Resources */,
+				82FE00302853D307001212EC /* liballegro_acodec.5.2.8.dylib in Resources */,
+				82FE00312853D307001212EC /* liballegro_audio.5.2.8.dylib in Resources */,
+				82FE00322853D307001212EC /* liballegro_color.5.2.8.dylib in Resources */,
+				82FE00332853D307001212EC /* liballegro_font.5.2.8.dylib in Resources */,
+				82FE00342853D307001212EC /* liballegro_image.5.2.8.dylib in Resources */,
+				82FE00352853D307001212EC /* liballegro_main.5.2.8.dylib in Resources */,
+				82FE00362853D307001212EC /* liballegro_memfile.5.2.8.dylib in Resources */,
+				82FE00372853D307001212EC /* liballegro_physfs.5.2.8.dylib in Resources */,
+				82FE00382853D307001212EC /* liballegro_primitives.5.2.8.dylib in Resources */,
+				82FE00392853D307001212EC /* liballegro_ttf.5.2.8.dylib in Resources */,
+				82FE003A2853D307001212EC /* liballegro.5.2.8.dylib in Resources */,
+				82FE003B2853D307001212EC /* libdumb.a in Resources */,
+				82FE003C2853D307001212EC /* libFLAC.a in Resources */,
+				82FE003D2853D307001212EC /* libvorbisfile.a in Resources */,
 				D49776911C68E7C3000BAB2F /* roms in Resources */,
 				D49776931C68E7D1000BAB2F /* ddnoise in Resources */,
 				D49775CD1C6892B7000BAB2F /* Assets.xcassets in Resources */,
@@ -615,6 +646,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -643,6 +675,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PreferencesWindow/AtomulatorOSX-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -650,6 +685,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -678,6 +714,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PreferencesWindow/AtomulatorOSX-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
