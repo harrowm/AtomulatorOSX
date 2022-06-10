@@ -102,7 +102,7 @@ extern int RR_jumpers;
 // From debugger.c
 extern int debug;
 extern int fetchc[65536], readc[65536], writec[65536];
-extern void calcMemScreen();
+extern void calcMemScreen(void);
 
 // From 8255.c
 extern int spon, tpon;
@@ -110,19 +110,19 @@ extern int spon, tpon;
 
 
 
-extern void (*fdccallback)();
+extern void (*fdccallback)(void);
 extern void (*fdcdata)(uint8_t dat);
-extern void (*fdcspindown)();
-extern void (*fdcfinishread)();
-extern void (*fdcnotfound)();
-extern void (*fdcdatacrcerror)();
-extern void (*fdcheadercrcerror)();
-extern void (*fdcwriteprotect)();
+extern void (*fdcspindown)(void);
+extern void (*fdcfinishread)(void);
+extern void (*fdcnotfound)(void);
+extern void (*fdcdatacrcerror)(void);
+extern void (*fdcheadercrcerror)(void);
+extern void (*fdcwriteprotect)(void);
 extern int (*fdcgetdata)(int last);
 
 extern int writeprot[2], fwriteprot[2];
 
-void ssd_reset();
+void ssd_reset(void);
 void ssd_load(int drive, char *fn);
 void ssd_close(int drive);
 void dsd_load(int drive, char *fn);
@@ -131,9 +131,9 @@ void ssd_readsector(int drive, int sector, int track, int side, int density);
 void ssd_writesector(int drive, int sector, int track, int side, int density);
 void ssd_readaddress(int drive, int sector, int side, int density);
 void ssd_format(int drive, int sector, int side, int density);
-void ssd_poll();
+void ssd_poll(void);
 
-void fdi_reset();
+void fdi_reset(void);
 void fdi_load(int drive, char *fn);
 void fdi_close(int drive);
 void fdi_seek(int drive, int track);
@@ -141,13 +141,13 @@ void fdi_readsector(int drive, int sector, int track, int side, int density);
 void fdi_writesector(int drive, int sector, int track, int side, int density);
 void fdi_readaddress(int drive, int sector, int side, int density);
 void fdi_format(int drive, int sector, int side, int density);
-void fdi_poll();
+void fdi_poll(void);
 
 void loaddisc(int drive, char *fn);
 void newdisc(int drive, char *fn);
 void closedisc(int drive);
-void disc_reset();
-void disc_poll();
+void disc_reset(void);
+void disc_poll(void);
 void disc_seek(int drive, int track);
 void disc_readsector(int drive, int sector, int track, int side, int density);
 void disc_writesector(int drive, int sector, int track, int side, int density);
@@ -173,7 +173,7 @@ typedef struct DRIVE
 	void (*writesector)(int drive, int sector, int track, int side, int density);
 	void (*readaddress)(int drive, int track, int side, int density);
 	void (*format)(int drive, int track, int side, int density);
-	void (*poll)();
+	void (*poll)(void);
 } DRIVE;
 
 extern int curdrive;
@@ -215,7 +215,7 @@ extern void initmem(void);
 extern void loadroms(void);
 extern void dumpram(void);
 
-extern void set_dosrom_ptr();
+extern void set_dosrom_ptr(void);
 extern uint8_t readmeml(uint16_t addr); // called from debugger.c
 extern void writememl(uint16_t addr, uint8_t val); // called from debugger.c
 
@@ -289,8 +289,8 @@ extern void debugread(uint16_t addr);
 extern void debugwrite(uint16_t addr, uint8_t val);
 extern void dodebugger(int linenum);
 extern void debuglog(char *format, ...);
-extern void drawDebugInputScreen();
-extern void drawDebugMemScreen();
+extern void drawDebugInputScreen(void);
+extern void drawDebugMemScreen(void);
 extern void handleDebuggerInput(int keycode, int inputChar);
 
 // static void lockMemScreen(void);

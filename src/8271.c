@@ -8,25 +8,25 @@
 // MH moved these here from atom.h to get a clean compile on OSX
 
 
-void (*fdccallback)();
+void (*fdccallback)(void);
 void (*fdcdata)(uint8_t dat);
-void (*fdcspindown)();
-void (*fdcfinishread)();
-void (*fdcnotfound)();
-void (*fdcdatacrcerror)();
-void (*fdcheadercrcerror)();
-void (*fdcwriteprotect)();
+void (*fdcspindown)(void);
+void (*fdcfinishread)(void);
+void (*fdcnotfound)(void);
+void (*fdcdatacrcerror)(void);
+void (*fdcheadercrcerror)(void);
+void (*fdcwriteprotect)(void);
 int (*fdcgetdata)(int last);
 DRIVE drives[2];
 
-void callback8271();
+void callback8271(void);
 void data8271(uint8_t dat);
-void spindown8271();
-void finishread8271();
-void notfound8271();
-void datacrcerror8271();
-void headercrcerror8271();
-void writeprotect8271();
+void spindown8271(void);
+void finishread8271(void);
+void notfound8271(void);
+void datacrcerror8271(void);
+void headercrcerror8271(void);
+void writeprotect8271(void);
 int getdata8271(int last);
 
 int byte;
@@ -92,7 +92,7 @@ static void spinup8271()
 	motorspin = 0;
 }
 
-void spindown8271()
+void spindown8271(void)
 {
 //        rpclog("spindown8271\n");
 	motoron = 0;
@@ -350,7 +350,7 @@ void write8271(uint16_t addr, uint8_t val)
 	}
 }
 
-void callback8271()
+void callback8271(void)
 {
 	fdctime = 0;
 //        rpclog("Callback 8271 - command %02X\n",i8271.command);
@@ -500,12 +500,12 @@ void data8271(uint8_t dat)
 	byte++;
 }
 
-void finishread8271()
+void finishread8271(void)
 {
 	fdctime = 200;
 }
 
-void notfound8271()
+void notfound8271(void)
 {
 	i8271.result = 0x18;
 	i8271.status = 0x18;
@@ -515,7 +515,7 @@ void notfound8271()
 //        printf("Not found 8271\n");
 }
 
-void datacrcerror8271()
+void datacrcerror8271(void)
 {
 	i8271.result = 0x0E;
 	i8271.status = 0x18;
@@ -525,7 +525,7 @@ void datacrcerror8271()
 //        printf("CRCdat 8271\n");
 }
 
-void headercrcerror8271()
+void headercrcerror8271(void)
 {
 	i8271.result = 0x0C;
 	i8271.status = 0x18;
@@ -552,7 +552,7 @@ int getdata8271(int last)
 	return i8271.data;
 }
 
-void writeprotect8271()
+void writeprotect8271(void)
 {
 	i8271.result = 0x12;
 	i8271.status = 0x18;

@@ -16,7 +16,7 @@ extern ALLEGRO_PATH *exepath;
 extern int tapeon;
 int totcyc = 0;
 extern int tapecyc;
-void dumpregs();
+void dumpregs(void);
 
 // MH moved here from atom.h to get a clean compile on OSX
 int debugon;
@@ -186,7 +186,7 @@ static void set_rr_ptrs()
 }
 
 // Re-written for 1.20 to reflect latest RAMROM ROM Layout - see roms.h
-void reset_rom()
+void reset_rom(void)
 {
     debuglog("reset_rom(), ramrom=%d, bbcmode=%d\n",ramrom_enable, RR_bit_set(RAMROM_FLAG_BBCMODE));
     set_rr_ptrs();    

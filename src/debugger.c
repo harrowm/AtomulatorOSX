@@ -55,14 +55,14 @@ extern ALLEGRO_EVENT_QUEUE *events;
 
 ALLEGRO_TEXTLOG *debugLog;
 
- void lockMemScreen()
+ void lockMemScreen(void)
 {
     al_store_state(&memstate, ALLEGRO_STATE_TARGET_BITMAP);
     al_set_target_bitmap(mem);
     mlr = al_lock_bitmap(mem, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
 }
 
- void unlockMemScreen()
+ void unlockMemScreen(void)
 {
     al_unlock_bitmap(mem);
     al_restore_state(&memstate);
@@ -567,7 +567,7 @@ void dodebugger(int linenum)
     }
 }
 
-void executeDebuggerCommand()
+void executeDebuggerCommand(void)
 {
     int c, d, e, f;
     int params;

@@ -51,7 +51,7 @@ extern ALLEGRO_AUDIO_STREAM *stream;
 extern ALLEGRO_AUDIO_STREAM *ddstream;
 extern ALLEGRO_PATH *docpath;
 
-void gui_keydefine();
+void gui_keydefine(void);
 
 void setquit()
 {

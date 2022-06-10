@@ -6,7 +6,7 @@
 #include <zlib.h>
 #include "atom.h"
 
-void findfilenamescsw();
+void findfilenamescsw(void);
 int cswena = 0;
 int cintone = 1, cindat = 0, datbits = 0, enddat = 0;
 FILE *cswf;

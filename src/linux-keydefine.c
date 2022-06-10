@@ -107,7 +107,7 @@ char *key_names[] =
 //	return ret;
 //}
 
-int gui_keydefine()
+int gui_keydefine(void)
 {
 //	DIALOG_PLAYER *dp;
 //	BITMAP *b;

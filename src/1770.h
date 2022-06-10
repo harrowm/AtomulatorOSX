@@ -1,6 +1,6 @@
 #include <stdint.h> // Needed on Visual Studio 
 
-void reset1770();
+void reset1770(void);
 uint8_t read1770(uint16_t addr);
 void write1770(uint16_t addr, uint8_t val);
 

@@ -43,7 +43,7 @@ ALLEGRO_COLOR blackColour;
 
 extern ALLEGRO_MENU_INFO menu_info[]; 
 
-extern void update_gui();
+extern void update_gui(void);
 
 // On Debian, adding the menus to the display reduces the window size.
 // We have to look for a resize event and then resize the window on
@@ -53,7 +53,7 @@ int origwinsizey;
 int winMenuHeight = 0;
 bool displayjustcreated = true;
 
-bool initJoystick()
+bool initJoystick(void)
 {
 	int a, i;
 
@@ -87,7 +87,7 @@ bool initJoystick()
     return true;
 }
 
-bool allegro_init()
+bool allegro_init(void)
 {
 	// initialize allegro and required addons
     if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() &&
@@ -209,7 +209,7 @@ void logDisplay(ALLEGRO_DISPLAY *d)
     rpclog ("Allegro display is of format %s\n", displayDesc[al_get_display_format(d)]);
 }
     
-bool allegro_create_display_and_menus()
+bool allegro_create_display_and_menus(void)
 {
    	/* ALLEGRO_GTK_TOPLEVEL is necessary for menus with GTK - ie Debian */
 
@@ -252,7 +252,7 @@ bool allegro_create_display_and_menus()
     return true;
 }
 
-bool allegro_create_timer_and_events()
+bool allegro_create_timer_and_events(void)
 {
     timer = al_create_timer(1.0/300);
     if (timer == NULL)
@@ -280,7 +280,7 @@ bool allegro_create_timer_and_events()
     return true;
 }
 
-void allegro_process_events()
+void allegro_process_events(void)
 {
     al_wait_for_event(events, &event);
     switch (event.type)
@@ -361,7 +361,7 @@ void allegro_process_events()
     }
 }
 
-void allegro_exit()
+void allegro_exit(void)
 {
     al_uninstall_joystick();
 	al_destroy_path(exepath);
