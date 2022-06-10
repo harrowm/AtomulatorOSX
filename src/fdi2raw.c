@@ -1782,7 +1782,7 @@ static void fdi2_decode(FDI *fdi, uint32_t totalavg, uae_u32 *avgp, uae_u32 *min
 	{
 
 		/* calculates the current average bitrate from previous decoded data */
-		uae_u32 avg_size = (total << (2 + mfm)) / totaldiv; /* this is the new average size for one MFM bit */
+		uae_u32 avg_size = (uint32_t)(total << (2 + mfm)) / totaldiv; /* this is the new average size for one MFM bit */
 		/* uae_u32 avg_size = (uae_u32)((((float)total)*((float)(mfm+1))*4.0) / ((float)totaldiv)); */
 		/* you can try tighter ranges than 25%, or wider ranges. I would probably go for tighter... */
 		if ((avg_size < (standard_MFM_8_bit_cell_size - (pulse_limitval * standard_MFM_8_bit_cell_size / 100))) ||
@@ -1815,7 +1815,7 @@ static void fdi2_decode(FDI *fdi, uint32_t totalavg, uae_u32 *avgp, uae_u32 *min
 			}
 			if (idx[i] >= maxidx)   /* stable pulse */
 			{
-				avg_pulse = avgp[i] - jitter;
+				avg_pulse = avgp[i] - (uint32_t)jitter;
 				min_pulse = minp[i];
 				max_pulse = maxp[i];
 				if (jitter >= 0)
@@ -2276,11 +2276,11 @@ FDI *fdi2raw_header(FILE *f)
 	fdi = fdi_malloc(sizeof(FDI));
 	memset(fdi, 0, sizeof(FDI));
 	fdi->file = f;
-	oldseek = ftell(fdi->file);
+	oldseek = (int)ftell(fdi->file);
 	fseek(fdi->file, 0, SEEK_SET);
 	fread(fdi->header, 2048, 1, fdi->file);
 	fseek(fdi->file, oldseek, SEEK_SET);
-	if (memcmp(fdiid, fdi->header, strlen(fdiid)) )
+	if (memcmp(fdiid, fdi->header, strlen((char *) fdiid)) )
 	{
 		fdi_free(fdi);
 		return NULL;

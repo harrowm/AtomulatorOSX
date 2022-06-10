@@ -36,7 +36,7 @@ int findfirst(char		path[],
 	dirptr=opendir(path);
 	if(dirptr!=NULL)
 	{
-		strcpy(dir->path,path);
+		strcpy((char *) dir->path,path);
 	}
 	
 	return (dirptr!=NULL);
@@ -87,7 +87,7 @@ int findnext(EMUDIR	*dir)
 	
 	if(entry!=NULL)
 	{
-		strncpy(dir->filename,entry->d_name,FNAMELEN);
+		strncpy((char *)dir->filename,entry->d_name,FNAMELEN);
 		snprintf(filename,PATHSIZE,"%s/%s",dir->path,dir->filename);
 		
 		//debuglog("%s\n",filename);
@@ -117,7 +117,7 @@ void findclose(EMUDIR	*dir)
 
 void StripTrailingSlash(char	*path)
 {
-	int PathLen = strlen(path)-1;
+	int PathLen = (int)strlen(path)-1;
 	
 	if (PathLen>=0)
 		if((path[PathLen]=='/') || (path[PathLen]=='\\'))
