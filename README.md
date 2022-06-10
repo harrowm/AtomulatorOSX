@@ -1,5 +1,10 @@
-Atomulator v1.1
-~~~~~~~~~~~~~~~
+# TODO:
+
+- Integrate latest Atomulator changes if possible
+- Figure out AtoMMC directory location
+- Continue to quash bugs and errors
+
+# Atomulator v1.1
 
 Atomulator is an emulator of an Acorn Atom - the first micro from Acorn in 1980.
 
@@ -7,8 +12,7 @@ It emulates a 12+16k Atom with colour board, disc pack, and optional BBC BASIC m
 
 Atomulator is licensed under the GPL, see COPYING for more details.
 
-New in version 1.1
-~~~~~~~~~~~~~~~~~~
+# New in version 1.1
 
 Support for Ramoth RAM-ROM clockboost board, which extends the ram to 32K and 
 provides paged roms at #A000
@@ -21,8 +25,7 @@ Fixed minor errors in some graphic mode emulations.
 
 Fixed issue with IRQ usage and reset.
 
-Usage
-~~~~~
+# Usage
 
 Just run Atom.exe. The Atom isn't a very friendly machine, so some basic tips :
 
@@ -74,8 +77,7 @@ Commands are used much like their Atom DOS equivelents.
 
 Further documentation can be found here :
 
-Menu
-~~~~
+#Menu
 
 File -> Reset                  - reset the emulated Atom
         Exit                   - exits back to Windows
@@ -132,8 +134,7 @@ Misc -> Debugger (Windows only) - open the built-in 6502 debugger. Type '?' for 
         Break (Windows only)    - break into the debugger
 
 
-Notes
-~~~~~
+# Notes
 
 - The keyboard isn't too responsive for typing. A real Atom is like this as well.
 

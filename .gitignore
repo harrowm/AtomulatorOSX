@@ -8,3 +8,7 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 *.xcworkspace
+
+## emacs stuff
+*~
+\#*\#
