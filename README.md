@@ -77,7 +77,7 @@ Commands are used much like their Atom DOS equivelents.
 
 Further documentation can be found here :
 
-#Menu
+# Menu
 ```
 File -> Reset                  - reset the emulated Atom
         Exit                   - exits back to Windows
