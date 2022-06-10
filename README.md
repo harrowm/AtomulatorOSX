@@ -1,7 +1,7 @@
 # TODO:
 
 - Integrate latest Atomulator changes if possible
-- Figure out AtoMMC directory location
+- Add a preferences menu to enable config file changes visually
 - Continue to quash bugs and errors
 
 # Atomulator v1.1
@@ -78,7 +78,7 @@ Commands are used much like their Atom DOS equivelents.
 Further documentation can be found here :
 
 #Menu
-
+```
 File -> Reset                  - reset the emulated Atom
         Exit                   - exits back to Windows
 
@@ -132,7 +132,7 @@ Settings ->
 
 Misc -> Debugger (Windows only) - open the built-in 6502 debugger. Type '?' for a list of commands
         Break (Windows only)    - break into the debugger
-
+```
 
 # Notes
 
