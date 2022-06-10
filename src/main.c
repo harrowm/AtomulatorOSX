@@ -373,7 +373,7 @@ void allegro_exit(void)
 
     al_set_display_menu(display, NULL);
 
-//    al_destroy_menu(menu); crashes on OSX
+    al_destroy_menu(menu);
 
 	al_destroy_event_queue(events);
 

@@ -77,9 +77,13 @@ static int get_config_int(char *section, char *name, int def)
 
     s = al_get_config_value(atom_config, section, name);
     if (s == NULL)
+    {
         return def;
+    }
     else
+    {
         return (int)atoi(s);
+    }
 }
 
 static void set_config_int(char *section, char *key, int value)

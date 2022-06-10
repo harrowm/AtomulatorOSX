@@ -253,6 +253,7 @@ static void gui_scrshot()
 		}
 		rpclog("Screen shot %s\n", scrshotname);
 	}
+    al_destroy_native_file_dialog(fc);
 }
 
 static void gui_open_settings()
@@ -272,6 +273,7 @@ static void gui_open_settings()
         }
         rpclog("Updated AtoMMC Path to %s", BaseMMCPath);
     }
+    al_destroy_native_file_dialog(fc);
 }
 
 void processMenuOption(intptr_t option)
