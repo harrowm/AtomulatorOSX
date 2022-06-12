@@ -9,6 +9,7 @@
 #include "atommc.h"
 #include "sid_atom.h" // avoid compiler warnings on OSX
 #include "1770.h"
+#include "buildversion.h"
 
 int palnotntsc = 0;
 int colourboard = 1;
@@ -157,7 +158,9 @@ void atom_init(int argc, char **argv)
 	{
 		if (!strcasecmp(argv[c], "--help"))
 		{
-			printf("%s command line options :\n\n",ATOMULATOR_VERSION);
+            char version[40];
+            getVersionString(version);
+			printf("%s%s command line options :\n\n","Atomulator ", version);
 			printf("-disc disc.ssd  - load disc.ssd into drives :0/:2\n");
 			printf("-disc1 disc.ssd - load disc.ssd into drives :1/:3\n");
 			printf("-tape tape.uef  - load tape.uef\n");

@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-#define ATOMULATOR_VERSION "Atomulator 1.26x"
-
 #ifdef _MSC_VER
 #define strcasecmp _stricmp
 #define strncasecmp _strnicmp

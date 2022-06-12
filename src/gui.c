@@ -13,6 +13,7 @@
 #include "sidtypes.h"
 #include "sid_atom.h"
 #include "debugger.h"
+#include "buildversion.h"
 
 int timerspeeds[] 	= { 5, 12, 25, 38, 50, 75, 85, 100, 150, 200, 250 };
 int frameskips[] = { 0,  0,  0,  0,  0,  0,  0,   1,   2,   3,   4 };
@@ -276,6 +277,22 @@ static void gui_open_settings()
     al_destroy_native_file_dialog(fc);
 }
 
+static void about()
+{
+    extern ALLEGRO_DISPLAY *display;
+    char version[40];
+    getVersionString(version);
+    
+    char versioninfo[250];
+    strcpy(versioninfo, "AtomulatorOSX Version: ");
+    strcat(versioninfo, version);
+    strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phil Harvey-Smith, and Kees van Oss.");
+    
+    
+    al_show_native_message_box(display, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
+    //al_destroy_display(display);
+}
+
 void processMenuOption(intptr_t option)
 {
 	int c;
@@ -283,6 +300,10 @@ void processMenuOption(intptr_t option)
 	switch (option)
 	{
 		// File menu
+        case IDM_ABOUT:
+            about();
+            break;
+            
 		case IDM_FILE_RESET:
 			atom_reset(0);
 			break;
@@ -800,6 +821,9 @@ void processMenuOption(intptr_t option)
 
 ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_START_OF_MENU("File", (uint16_t)IDM_FILE_MENU),
+        // This does NOT work due to some sort of bug in Allegro with destroying displays...need to fix this.
+//        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
+//        ALLEGRO_MENU_SEPARATOR,
         { "AtoMMC path...", IDM_SETTINGS, 0, NULL},
 		{ "Reset",    IDM_FILE_RESET, 0, NULL },
 		{ "Exit",     IDM_FILE_EXIT,  0, NULL },

@@ -4,6 +4,7 @@
 #define ALLEGRO_STATICLINK
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
@@ -13,6 +14,7 @@
 #include <allegro5/allegro_image.h> // fixed font file is in an image format
 
 #include "atom.h"
+#include "buildversion.h"
 
 // called in uef.c and csw.c but not used
 void cataddname (char *s) { rpclog("%s\n", s); }
@@ -247,8 +249,14 @@ bool allegro_create_display_and_menus(void)
         rpclog("ERROR: Error creating Allegro menu\n");
         return false;
     }
-
-	al_set_window_title(display, ATOMULATOR_VERSION);
+    char title[60];
+    char version[40];
+    getVersionString(version);
+    
+    strcpy(title, "AtomulatorOSX ");
+    strcat(title, version);
+    rpclog(title);
+	al_set_window_title(display, title);
     return true;
 }
 
@@ -304,10 +312,17 @@ void allegro_process_events(void)
             break;
             
         case ALLEGRO_EVENT_KEY_CHAR:
+            al_get_keyboard_state(&keybd);
+            if (al_key_down(&keybd, ALLEGRO_KEY_RCTRL) || al_key_down(&keybd, ALLEGRO_KEY_LCTRL)) {
+                if (al_key_down(&keybd, ALLEGRO_KEY_R)) {
+                    atom_reset(0);
+                }
+            }
             if (debug == 0)
             {
-                if (event.keyboard.keycode == ALLEGRO_KEY_F12)
+                if (event.keyboard.keycode == ALLEGRO_KEY_F12) {
                     atom_reset(0);
+                }
             }
             else // check to see if the user is typing in the debugger console
             {
