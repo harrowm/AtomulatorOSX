@@ -3,6 +3,7 @@
 - Integrate latest Atomulator changes if possible
 - Add a preferences menu to enable config file changes visually
 - Test on M1 Macs and figure out how to properly publish a release
+- Fix Allegro issue with destroying display
 - Continue to quash bugs and errors
 
 # AtomulatorOSX improvements
@@ -157,6 +158,32 @@ Misc -> Debugger (Windows only) - open the built-in 6502 debugger. Type '?' for 
 
 - There may be one or two bugs in the tape emulation with some images. This doesn't affect functionality,
   but does give some oddities in messages displayed.
+
+# Building From Source
+
+## Dependencies
+
+To build AtomulatorOSX from source, you will need a few dependencies from Apple:
+
+- Xcode 13+ (With Command-Line Tools installed)
+- macOS 12.0+
+
+You will need the following libraries installed, ideally from Homebrew.
+
+- Allegro 5.2.8.0+
+- libdumb 2.0.3+
+- libFLAC 1.3.4+
+- libvorbis 1.3.7+
+
+Additionally, you will need to utilize [bundle-dylibs](https://github.com/imrehorvath/bundle-dylibs) or a similar tool in the build phase `Embed Libs`. This tool is what makes the resulting .app usable on platforms without the dependencies.
+
+## Building
+
+To build, open the Xcode project in Xcode, verify library pathing, and run the build. There are a number of unused entity warnings, these can be safely ignored.
+
+## TODO Building
+
+- Need to make the library pathing version-independent for easier building
 
 Origianl work by
 Tom Walker
