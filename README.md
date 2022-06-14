@@ -171,8 +171,8 @@ To build AtomulatorOSX from source, you will need a few dependencies from Apple:
 You will need the following libraries installed, ideally from Homebrew.
 
 - Allegro 5.2.8.0+
-- libdumb 2.0.3+
-- libFLAC 1.3.4+
+- dumb 2.0.3+
+- FLAC 1.3.4+
 - libvorbis 1.3.7+
 
 Additionally, you will need to utilize [bundle-dylibs](https://github.com/imrehorvath/bundle-dylibs) or a similar tool in the build phase `Embed Libs`. This tool is what makes the resulting .app usable on platforms without the dependencies.
@@ -183,7 +183,8 @@ To build, open the Xcode project in Xcode, verify library pathing, and run the b
 
 ## TODO Building
 
-- Need to make the library pathing version-independent for easier building
+- Determine the easiest way to build for both x86_64 and arm64 targets on a single machine
+- 
 
 # Credits
 
