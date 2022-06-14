@@ -2,7 +2,8 @@
 
 - Integrate latest Atomulator changes if possible
 - Add a preferences menu to enable config file changes visually
-- Test on M1 Macs and figure out how to properly publish a release
+- Test on M1 Macs and distribute universal binary
+- Publish a release
 - Fix Allegro issue with destroying display
 - Continue to quash bugs and errors
 
@@ -23,16 +24,12 @@ Atomulator is licensed under the GPL, see COPYING for more details.
 
 # New in version 1.1
 
-Support for Ramoth RAM-ROM clockboost board, which extends the ram to 32K and 
+- Support for Ramoth RAM-ROM clockboost board, which extends the ram to 32K and 
 provides paged roms at #A000
-
-Support for the AtoMMC interface, emulated as a folder on the disk Atomulator is on.
-
-Support for the AtomSID interface.
-
-Fixed minor errors in some graphic mode emulations.
-
-Fixed issue with IRQ usage and reset.
+- Support for the AtoMMC interface, emulated as a folder on the disk Atomulator is on.
+- Support for the AtomSID interface.
+- Fixed minor errors in some graphic mode emulations.
+- Fixed issue with IRQ usage and reset.
 
 # Usage
 
@@ -183,8 +180,8 @@ To build, open the Xcode project in Xcode, verify library pathing, and run the b
 
 ## TODO Building
 
-- Determine the easiest way to build for both x86_64 and arm64 targets on a single machine
-- 
+- Determine the easiest way to build for both x86_64 and arm64 targets on a single machine.
+- Figure out how to compile Universal Binary with existing library dependencies.
 
 # Credits
 
