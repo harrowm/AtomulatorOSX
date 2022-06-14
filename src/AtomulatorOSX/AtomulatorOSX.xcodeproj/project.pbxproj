@@ -83,22 +83,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		826C78CC285779DD00D67C4E /* libdumb.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdumb.2.0.dylib; path = ../../../../../../../../usr/local/Cellar/dumb/2.0.3/lib/libdumb.2.0.dylib; sourceTree = "<group>"; };
-		826C78CE28577A0F00D67C4E /* libFLAC.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libFLAC.8.dylib; path = ../../../../../../../../usr/local/Cellar/flac/1.3.4/lib/libFLAC.8.dylib; sourceTree = "<group>"; };
-		826C78D028577A2900D67C4E /* libvorbisfile.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvorbisfile.3.dylib; path = ../../../../../../../../usr/local/Cellar/libvorbis/1.3.7/lib/libvorbisfile.3.dylib; sourceTree = "<group>"; };
 		82D788582852BD3900BEDAEB /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		82D788622852C4AA00BEDAEB /* liballegro_audio.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_audio.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_audio.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788632852C4AA00BEDAEB /* liballegro_physfs.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_physfs.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_physfs.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788642852C4AA00BEDAEB /* liballegro_ttf.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_ttf.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788652852C4AA00BEDAEB /* liballegro_primitives.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_primitives.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_primitives.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788662852C4AA00BEDAEB /* liballegro_main.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_main.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_main.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788672852C4AA00BEDAEB /* liballegro_image.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_image.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_image.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788682852C4AA00BEDAEB /* liballegro.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788692852C4AA00BEDAEB /* liballegro_font.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_font.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_font.5.2.8.dylib; sourceTree = "<group>"; };
-		82D7886A2852C4AA00BEDAEB /* liballegro_acodec.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_acodec.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_acodec.5.2.8.dylib; sourceTree = "<group>"; };
-		82D7886B2852C4AA00BEDAEB /* liballegro_color.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_color.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_color.5.2.8.dylib; sourceTree = "<group>"; };
-		82D7886C2852C4AB00BEDAEB /* liballegro_memfile.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_memfile.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_memfile.5.2.8.dylib; sourceTree = "<group>"; };
-		82D788842852C89100BEDAEB /* liballegro_dialog.5.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_dialog.5.2.8.dylib; path = ../../../../../../../../usr/local/Cellar/allegro/5.2.8.0/lib/liballegro_dialog.5.2.8.dylib; sourceTree = "<group>"; };
 		82E3965F2858E97300A478CC /* liballegro_memfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_memfile.dylib; path = ../../../../../../../../usr/local/lib/liballegro_memfile.dylib; sourceTree = "<group>"; };
 		82E396602858E97300A478CC /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = ../../../../../../../../usr/local/lib/liballegro.dylib; sourceTree = "<group>"; };
 		82E396612858E97300A478CC /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = ../../../../../../../../usr/local/lib/liballegro_ttf.dylib; sourceTree = "<group>"; };
@@ -381,21 +366,6 @@
 				82E396792858E9E900A478CC /* libdumb.dylib */,
 				82E3967A2858E9E900A478CC /* libFLAC.dylib */,
 				82E3967B2858E9E900A478CC /* libvorbis.dylib */,
-				82D788842852C89100BEDAEB /* liballegro_dialog.5.2.8.dylib */,
-				82D7886A2852C4AA00BEDAEB /* liballegro_acodec.5.2.8.dylib */,
-				82D788622852C4AA00BEDAEB /* liballegro_audio.5.2.8.dylib */,
-				82D7886B2852C4AA00BEDAEB /* liballegro_color.5.2.8.dylib */,
-				82D788692852C4AA00BEDAEB /* liballegro_font.5.2.8.dylib */,
-				82D788672852C4AA00BEDAEB /* liballegro_image.5.2.8.dylib */,
-				82D788662852C4AA00BEDAEB /* liballegro_main.5.2.8.dylib */,
-				82D7886C2852C4AB00BEDAEB /* liballegro_memfile.5.2.8.dylib */,
-				82D788632852C4AA00BEDAEB /* liballegro_physfs.5.2.8.dylib */,
-				82D788652852C4AA00BEDAEB /* liballegro_primitives.5.2.8.dylib */,
-				82D788642852C4AA00BEDAEB /* liballegro_ttf.5.2.8.dylib */,
-				82D788682852C4AA00BEDAEB /* liballegro.5.2.8.dylib */,
-				826C78CC285779DD00D67C4E /* libdumb.2.0.dylib */,
-				826C78CE28577A0F00D67C4E /* libFLAC.8.dylib */,
-				826C78D028577A2900D67C4E /* libvorbisfile.3.dylib */,
 				82D788582852BD3900BEDAEB /* Metal.framework */,
 				D49776851C68963B000BAB2F /* libz.tbd */,
 				D49776891C689C2D000BAB2F /* AudioToolbox.framework */,
