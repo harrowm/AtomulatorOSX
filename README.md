@@ -185,7 +185,9 @@ To build, open the Xcode project in Xcode, verify library pathing, and run the b
 
 - Need to make the library pathing version-independent for easier building
 
-Origianl work by
+# Credits
+
+Original work by
 Tom Walker
 b-em@bbcmicro.com
 
@@ -193,4 +195,4 @@ Version 1.1 patches by Phill Harvey-Smith.
 
 AtomulatorOSX created by Malcolm Harrow
 
-Updated by Katherine Cramer
+Updated for macOS 12.0 and Xcode 13 by Katherine Cramer
