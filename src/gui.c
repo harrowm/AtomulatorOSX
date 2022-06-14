@@ -286,7 +286,7 @@ static void about()
     char versioninfo[250];
     strcpy(versioninfo, "AtomulatorOSX Version: ");
     strcat(versioninfo, version);
-    strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phil Harvey-Smith, and Kees van Oss.");
+    strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phill Harvey-Smith, and Kees van Oss.");
     
     
     al_show_native_message_box(display, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
