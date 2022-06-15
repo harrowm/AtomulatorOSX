@@ -392,10 +392,9 @@ void allegro_exit(void)
 
 	al_destroy_event_queue(events);
 
-	al_set_target_bitmap(NULL);
+	al_destroy_bitmap(al_get_target_bitmap());
 
-	// MH - al_destroy_display() hangs .. FIXME
-	//al_destroy_display(display);
+	al_destroy_display(display);
 }
 
 extern int ddframes;
