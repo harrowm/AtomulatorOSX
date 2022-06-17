@@ -3,7 +3,6 @@
 - Integrate latest Atomulator changes if possible
 - Add a preferences menu to enable config file changes visually
 - Test on M1 Macs and distribute universal binary
-- Publish a release
 - Fix Allegro issue with destroying display
 - Continue to quash bugs and errors
 
