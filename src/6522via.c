@@ -307,8 +307,10 @@ void resetvia()
 	updateIFR();
 }
 
-static void dumpvia()
+void dumpvia()
 {
+    rpclog("Beginning VIA dump...");
 	rpclog("T1 = %04X %04X T2 = %04X %04X\n", via.t1c, via.t1l, via.t2c, via.t2l);
 	rpclog("%02X %02X  %02X %02X\n", via.ifr, via.ier, via.pcr, via.acr);
+    rpclog("End VIA dump");
 }

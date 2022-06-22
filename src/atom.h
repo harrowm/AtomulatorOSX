@@ -275,6 +275,7 @@ extern void receive(uint8_t dat);
 // From 6522via.c
 
 extern void writevia(uint16_t addr, uint8_t val);
+extern void dumpvia(void);
 extern uint8_t readvia(uint16_t addr);
 extern void resetvia(void);
 extern void updatetimers(void);
