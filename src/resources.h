@@ -7,6 +7,7 @@
 #define IDM_FILE_EXIT       40001
 #define IDM_SETTINGS        40002
 #define IDM_ABOUT           40003
+#define IDM_OVERSCAN        40004
 #define IDM_TAPE_LOAD       40010
 #define IDM_TAPE_EJECT      40011
 #define IDM_TAPE_REW        40012

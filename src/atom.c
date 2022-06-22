@@ -48,6 +48,8 @@ int ramrom_enable = 1;
 
 int fasttape = 0;
 
+int overscan = 0;
+
 FILE *rlog;
 void rpclog(char *format, ...)
 {

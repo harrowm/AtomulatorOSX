@@ -289,8 +289,7 @@ static void about()
     strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phill Harvey-Smith, and Kees van Oss.");
     
     
-    al_show_native_message_box(display, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
-    //al_destroy_display(display);
+    al_show_native_message_box(NULL, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
 }
 
 void processMenuOption(intptr_t option)
@@ -343,6 +342,17 @@ void processMenuOption(intptr_t option)
 			fasttape = 1;
 			break;
 
+        case IDM_OVERSCAN:
+            if (overscan != 0)
+            {
+                overscan = 0;
+            }
+            else
+            {
+                overscan = 1;
+            }
+            break;
+        
 		// Disc menu
 		case IDM_DISC_LOAD_0:
 			gui_disc_load(0);
@@ -822,8 +832,10 @@ void processMenuOption(intptr_t option)
 ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_START_OF_MENU("File", (uint16_t)IDM_FILE_MENU),
         // This does NOT work due to some sort of bug in Allegro with destroying displays...need to fix this.
-//        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
-//        ALLEGRO_MENU_SEPARATOR,
+        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
+        ALLEGRO_MENU_SEPARATOR,
+        {"Allow Overscan", IDM_OVERSCAN, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
+        ALLEGRO_MENU_SEPARATOR,
         { "AtoMMC path...", IDM_SETTINGS, 0, NULL},
 		{ "Reset",    IDM_FILE_RESET, 0, NULL },
 		{ "Exit",     IDM_FILE_EXIT,  0, NULL },
