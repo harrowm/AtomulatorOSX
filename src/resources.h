@@ -7,6 +7,8 @@
 #define IDM_FILE_EXIT       40001
 #define IDM_SETTINGS        40002
 #define IDM_ABOUT           40003
+#define IDM_OVERSCAN        40004
+#define IDM_DUMP_VIA        40005
 #define IDM_TAPE_LOAD       40010
 #define IDM_TAPE_EJECT      40011
 #define IDM_TAPE_REW        40012
@@ -111,6 +113,7 @@
 #define IDM_JOYSTICK_MENU	80020
 #define IDM_MISC_MENU		80021
 #define IDM_SPEED_MENU		80022
+#define IDM_DEBUG_MENU      80023
 
 #define IDM_SHOWSPEED		50000
 

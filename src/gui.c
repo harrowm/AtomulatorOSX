@@ -64,6 +64,7 @@ void update_gui()
 {
     al_set_menu_item_flags(menu, IDM_TAPES_NORMAL, (!fasttape) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, IDM_TAPES_FAST, (fasttape) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, IDM_OVERSCAN, (overscan == 0) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
     al_set_menu_item_caption(menu, IDM_DISC_EJECT_0, ejecttext[0]);
     al_set_menu_item_caption(menu, IDM_DISC_EJECT_1, ejecttext[1]);
@@ -289,8 +290,7 @@ static void about()
     strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phill Harvey-Smith, and Kees van Oss.");
     
     
-    al_show_native_message_box(display, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
-    //al_destroy_display(display);
+    al_show_native_message_box(NULL, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
 }
 
 void processMenuOption(intptr_t option)
@@ -343,6 +343,21 @@ void processMenuOption(intptr_t option)
 			fasttape = 1;
 			break;
 
+        case IDM_OVERSCAN:
+            if (overscan != 0)
+            {
+                overscan = 0;
+            }
+            else
+            {
+                overscan = 1;
+            }
+            break;
+        
+        case IDM_DUMP_VIA:
+            dumpvia();
+            break;
+            
 		// Disc menu
 		case IDM_DISC_LOAD_0:
 			gui_disc_load(0);
@@ -822,8 +837,8 @@ void processMenuOption(intptr_t option)
 ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_START_OF_MENU("File", (uint16_t)IDM_FILE_MENU),
         // This does NOT work due to some sort of bug in Allegro with destroying displays...need to fix this.
-//        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
-//        ALLEGRO_MENU_SEPARATOR,
+        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
+        ALLEGRO_MENU_SEPARATOR,
         { "AtoMMC path...", IDM_SETTINGS, 0, NULL},
 		{ "Reset",    IDM_FILE_RESET, 0, NULL },
 		{ "Exit",     IDM_FILE_EXIT,  0, NULL },
@@ -980,6 +995,11 @@ ALLEGRO_MENU_INFO menu_info[] = {
         { "Show emulator speed", IDM_SHOWSPEED, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
         { "Save screenshot", IDM_MISC_SCRSHOT, 0, NULL },
 		ALLEGRO_MENU_SEPARATOR,
+        ALLEGRO_START_OF_MENU("Debug Settings", (uint16_t)IDM_DEBUG_MENU),
+            {"Allow Overscan", IDM_OVERSCAN, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
+            {"Dump VIA to log", IDM_DUMP_VIA, 0, NULL},
+        ALLEGRO_END_OF_MENU,
+        ALLEGRO_MENU_SEPARATOR,
 		{ "Debugger", IDM_MISC_DEBUG, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
 		{ "Debug on BRK", IDM_MISC_DEBONBRK, 0, NULL },
 		{ "Break", IDM_MISC_BREAK, 0, NULL },

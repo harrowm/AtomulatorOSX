@@ -199,15 +199,27 @@ void wfnDirectoryRead(void)
 	}
 }
 
-
-
 void wfnSetCWDirectory(void)
 {
    WriteDataPort(STATUS_COMPLETE | f_chdir((const XCHAR*)globalData));
 }
 
+void wfnDirectoryCreate(void)
+{
+   WriteDataPort(STATUS_COMPLETE | f_mkdir((const XCHAR*)globalData));
+}
 
+void wfnDirectoryDelete(void)
+{
+   WriteDataPort(STATUS_COMPLETE | f_unlink((const XCHAR*)globalData));
+}
 
+void wfnRename(void)
+{
+   const XCHAR* from = (const XCHAR*)globalData;
+   const XCHAR*   to = (const XCHAR*)(globalData + strlen((const char*)globalData) + 1);
+   WriteDataPort(STATUS_COMPLETE | f_rename(from, to));
+}
 
 static BYTE fileOpen(BYTE mode)
 {

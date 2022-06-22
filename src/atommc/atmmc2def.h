@@ -6,16 +6,21 @@
 
 // Register definitions, these are offsets from 0xB400 on the Atom side.
 
-#define CMD_REG			0x00
-#define LATCH_REG		0x01
+#define CMD_REG			    0x00
+#define LATCH_REG		    0x01
 #define READ_DATA_REG		0x02
 #define WRITE_DATA_REG		0x03
-#define STATUS_REG		0x04
+#define STATUS_REG		    0x04
 
 // DIR_CMD_REG commands
 #define CMD_DIR_OPEN		0x00
 #define CMD_DIR_READ		0x01
-#define CMD_DIR_CWD		0x02
+#define CMD_DIR_CWD		    0x02
+#define CMD_DIR_GETCWD      0x03
+#define CMD_DIR_MKDIR       0x04
+#define CMD_DIR_RMDIR       0x05
+
+#define CMD_RENAME          0x08
 
 // CMD_REG_COMMANDS
 #define CMD_FILE_CLOSE		0x10
@@ -25,7 +30,7 @@
 #define CMD_FILE_DELETE		0x14
 #define CMD_FILE_GETINFO	0x15
 #define CMD_FILE_SEEK		0x16
-#define CMD_FILE_OPEN_RAF       0x17
+#define CMD_FILE_OPEN_RAF   0x17
 
 #define CMD_INIT_READ		0x20
 #define CMD_INIT_WRITE		0x21
@@ -88,17 +93,3 @@
 #define MMC_MCU_BUSY		0x01
 #define MMC_MCU_READ		0x02
 #define MMC_MCU_WROTE		0x04
-
-
-
-
-
-
-
-
-
-
-
-
-
-

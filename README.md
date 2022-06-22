@@ -1,17 +1,20 @@
 # TODO:
 
-- Integrate latest Atomulator changes if possible
+- Integrate latest RAM/ROM board file from upstream Atomulator repository
 - Add a preferences menu to enable config file changes visually
+- Make About window not pause the emulator while displayed.
 - Test on M1 Macs and distribute universal binary
-- Fix Allegro issue with destroying display
 - Continue to quash bugs and errors
 
-# AtomulatorOSX improvements
+# AtomulatorOSX improvements (as of version 1.30)
 
 - Added file chooser dialogue window to pick your AtoMMC folder
+- Added debug settings for dumping the state of the VIA emulation, and enabling overscan in line with new video drawing logic causing garbage to be drawn on top of drawing surface
+- Added an About window for showing more information about AtomulatorOSX. Currently causes the emulation to pause for duration the window is open, returns to normal upon window close
 - Upgraded to Allegro 5.2.8.0
 - Upgraded dependencies to support macOS 12.0+
 - Updated project to XCode 13 format
+- Integrated most major changes from V1.30 for Windows and Linux
 
 # Atomulator v1.1
 
@@ -132,9 +135,16 @@ Settings ->
 
 
 	Keyboard -> Redefine keys     - redefine PC -> Atom key mapping.
-		    Default mapping   - restore the default keyboard mapping.
+		     	Default mapping   - restore the default keyboard mapping.
 
-Misc -> Debugger (Windows only) - open the built-in 6502 debugger. Type '?' for a list of commands.
+Misc -> Speed		   -> Various options 	- Adjusts speed of emulation system, useful for slower programs (e.g. 3D Plot from Atomic Theory).
+	 	Show Emulator Speed		  			- Displays current emulator speed. Not tested.
+		Save screenshot						- Saves a screenshot to the location of your choice.
+		
+		Debug Settings -> Allow Overscan 	- Allows garbage to appear at top of display under certain scenarios, but has more accurate emulation.
+	 		  		   	  Dump VIA to log	- Dumps the current state of the VIA emulation to the rlog file. Mostly for reworking VIA emulation in future.
+	 		  
+		Debugger (Windows only) - open the built-in 6502 debugger. Type '?' for a list of commands.
         Break (Windows only)    - break into the debugger.
 ```
 

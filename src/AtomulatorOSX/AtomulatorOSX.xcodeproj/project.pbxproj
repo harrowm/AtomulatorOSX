@@ -54,7 +54,7 @@
 		D497763A1C689421000BAB2F /* 6522via.c in Sources */ = {isa = PBXBuildFile; fileRef = D497761C1C689421000BAB2F /* 6522via.c */; };
 		D497763B1C689421000BAB2F /* 8255.c in Sources */ = {isa = PBXBuildFile; fileRef = D497761D1C689421000BAB2F /* 8255.c */; };
 		D497763C1C689421000BAB2F /* 8271.c in Sources */ = {isa = PBXBuildFile; fileRef = D497761E1C689421000BAB2F /* 8271.c */; };
-		D497763D1C689421000BAB2F /* atom.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776201C689421000BAB2F /* atom.c */; settings = {COMPILER_FLAGS = "-DBUILD_VERSION=\\\"$(MARKETING_VERSION).$(CURRENT_PROJECT_VERSION)\\\""; }; };
+		D497763D1C689421000BAB2F /* atom.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776201C689421000BAB2F /* atom.c */; };
 		D497763E1C689421000BAB2F /* atommc.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776221C689421000BAB2F /* atommc.c */; };
 		D497763F1C689421000BAB2F /* config.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776241C689421000BAB2F /* config.c */; };
 		D49776401C689421000BAB2F /* csw.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776251C689421000BAB2F /* csw.c */; };
@@ -65,7 +65,7 @@
 		D49776451C689421000BAB2F /* fdi2raw.c in Sources */ = {isa = PBXBuildFile; fileRef = D497762B1C689421000BAB2F /* fdi2raw.c */; };
 		D49776461C689421000BAB2F /* gui.c in Sources */ = {isa = PBXBuildFile; fileRef = D497762D1C689421000BAB2F /* gui.c */; };
 		D49776471C689421000BAB2F /* linux-keydefine.c in Sources */ = {isa = PBXBuildFile; fileRef = D497762E1C689421000BAB2F /* linux-keydefine.c */; };
-		D49776481C689421000BAB2F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D497762F1C689421000BAB2F /* main.c */; settings = {COMPILER_FLAGS = "-DBUILD_VERSION=\\\"$(MARKETING_VERSION).$(CFBundleVersion)\\\""; }; };
+		D49776481C689421000BAB2F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D497762F1C689421000BAB2F /* main.c */; };
 		D49776491C689421000BAB2F /* resid.cc in Sources */ = {isa = PBXBuildFile; fileRef = D49776301C689421000BAB2F /* resid.cc */; };
 		D497764A1C689421000BAB2F /* sound.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776351C689421000BAB2F /* sound.c */; };
 		D497764B1C689421000BAB2F /* ssd.c in Sources */ = {isa = PBXBuildFile; fileRef = D49776361C689421000BAB2F /* ssd.c */; };
@@ -673,7 +673,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4W32SFN3CU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
@@ -695,7 +695,7 @@
 					/usr/local/Cellar/dumb/2.0.3/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.27;
+				MARKETING_VERSION = 1.30;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -716,7 +716,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4W32SFN3CU;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
@@ -738,7 +738,7 @@
 					/usr/local/Cellar/dumb/2.0.3/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.27;
+				MARKETING_VERSION = 1.30;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;

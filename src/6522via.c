@@ -177,7 +177,11 @@ void writevia(uint16_t addr, uint8_t val)
 		via.t2l &= 0xFF;
 		via.t2l |= (val << 8);
 //                if (via.t2c<1) printf("UT2 reload %i\n",via.t2c);
-		via.t2c = via.t2l + 1;
+		via.t2c = via.t2l;
+        /* Increment the value because it must take effect in 1 tick. */
+        if (!(via.acr & 0x20)) {
+            via.t2c++;
+        }
 		via.ifr &= ~TIMER2INT;
 		updateIFR();
 		via.t2hit = 0;
@@ -232,11 +236,14 @@ uint8_t readvia(uint16_t addr)
 			temp |= (via.irb & ~via.ddrb);
 		else
 			temp |= (via.portb & ~via.ddrb);
-		temp |= 0xFF;
-		if (timerout)
-			temp |= 0x80;
-		else
-			temp &= ~0x80;
+		
+        // DMB: The next line is clearly wrong, so commented out
+        // temp |= 0xFF;
+        // DMB: The timer output is only mixed in if ACR bit 7 is '1'
+        if (via.acr & 0x80) {
+            temp &= 0x7f;
+            temp |= (timerout << 7);
+        }
 //                printf("ORB read %02X\n",temp);
 //                temp|=0xF0;
 		return temp;
@@ -300,8 +307,10 @@ void resetvia()
 	updateIFR();
 }
 
-static void dumpvia()
+void dumpvia()
 {
+    rpclog("Beginning VIA dump...");
 	rpclog("T1 = %04X %04X T2 = %04X %04X\n", via.t1c, via.t1l, via.t2c, via.t2l);
 	rpclog("%02X %02X  %02X %02X\n", via.ifr, via.ier, via.pcr, via.acr);
+    rpclog("End VIA dump");
 }

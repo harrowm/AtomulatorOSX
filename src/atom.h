@@ -66,6 +66,7 @@ typedef struct VIA
 // From atom.c
 extern int fasttape;
 extern int ramrom_enable;
+extern int overscan;
 
 /* For 1770 based GDOS */
 //#define WD1770 1
@@ -267,13 +268,14 @@ extern void polltape(void);
 extern void init8255(void);
 extern void write8255(uint16_t addr, uint8_t val);
 extern uint8_t read8255(uint16_t addr);
-extern void dcd(void);
+extern void dcd(int cycles);
 extern void dcdlow(void);
 extern void receive(uint8_t dat);
 
 // From 6522via.c
 
 extern void writevia(uint16_t addr, uint8_t val);
+extern void dumpvia(void);
 extern uint8_t readvia(uint16_t addr);
 extern void resetvia(void);
 extern void updatetimers(void);

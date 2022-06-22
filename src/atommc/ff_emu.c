@@ -55,24 +55,124 @@ FIL		*openfil;
 char	openname[SHORT_NAME_LEN+1];
 
 #ifdef DEBUGFF
-void HexDump(const void 	*Buff, 
-					   int 		Length); 
+void HexDump(const void      	*Buff,
+                   int 		    Length);
 
 void HexDumpHead(const void 	*Buff, 
 					   int 		Length); 
 
 #endif
 
+// This function is used to convert an path sent by AtoMMC
+// to a filesystem path.
+//
+// Relative paths are appended to the curent directory (MMCPath)
+//
+// Absolute paths are appended to the "MMC" root directory (BaseMMCPath)
+//
+// Note: Atomulator does not securely sandbox the MMC directory. For example
+// *CAT /.. will access the parent folder (containing the Atomulator exe file)
+// *DELETE /..atom.cfg will delete the atom.cfg file (!!!)
+//
+// This is not a regression; it has always been the case.
+//
+// The f_chdir (change directory) function does try to prevent the user moveing
+// to a directory that is above BaseMMCPath. It does a reasonable job of this.
+// On linux, realpath() is used, for example. This approach does not generalize
+// to the other f_ functions, because realpath() only works if the file/
+// directory exists. So it could not, for example, be used by f_open().
+//
+// We should revisit this!
+//
+// AtoMMC emulation allows access to filesystem objects outside of the MMC path
+// https://github.com/hoglet67/Atomulator/issues/13
+static FRESULT build_absolute_path(const XCHAR *xpath, char *newpath, int validate_name)
+{
+    // Make a copy of the path, so we can normalize the path seperators
+    char path[PATHSIZE+1];
+    strncpy(path, xpath, PATHSIZE);
+    // Normalize the path seperators (linux treats \ as a valid name character)
+    int i;
+    for (i = 0; i < strlen(path); i++) {
+        if (path[i] == '\\') {
+            path[i] = '/';
+        }
+    }
+    // For most functions, we need to make sure the name part is a valid 8.3 name
+    // (the exception is f_chdir where we allow things like .. and / and dir/)
+    if (validate_name) {
+        // Find the last element of the path
+        char *name = strrchr(path, '/');
+        if (name == NULL) {
+            name = path;
+        } else {
+            name++;
+        }
+        // Find the suffix
+        char *suffix = strchr(name, '.');
+        // Validate the name part
+        int name_len = (int) ((suffix != NULL) ? (suffix - name) : strlen(name));
+        if (name_len < 1 || name_len > 8) {
+            // Name not between 1 and 8 characters
+            return FR_INVALID_NAME;
+        }
+        // Validate the optional suffix part
+        if (suffix) {
+            // Skip past the period
+            suffix++;
+            // Reject multiple suffixes
+            if (strchr(suffix, '.') != NULL) {
+                // More than one suffix
+                return FR_INVALID_NAME;
+            }
+            int suffix_len = (int) strlen(suffix);
+            if (suffix_len == 0) {
+                // Remove a dangling suffix
+                *(suffix - 1) = '\0';
+            } else if (suffix_len > 3) {
+                // Suffix too long
+                return FR_INVALID_NAME;
+            }
+        }
+    }
+    // Make the path absolute
+    if (*path == '/') {
+        // absolute: append the path to the root directory path
+        snprintf(newpath, PATHSIZE, "%s/%s", BaseMMCPath, path);
+    } else {
+        // relative: append the path to current directory path
+        snprintf(newpath, PATHSIZE, "%s/%s", MMCPath, path);
+    }
+    return F_OK;
+}
+
 static BYTE file_exists(char	name[])
 {
 	struct stat statbuf;
 
-rpclog("file_exists(%s)\n",name);
+    rpclog("file_exists(%s)\n",name);
 
-	if(0==stat(name,&statbuf))
+	if(0==stat(name,&statbuf) && !S_ISDIR(statbuf.st_mode))
 		return FR_OK;
 	else
 		return FR_NO_PATH;
+}
+
+static BYTE dir_exists(char *name)
+{
+    struct stat statbuf;
+    //rpclog("dir_exists(%s)\n",name);
+    if(0==stat(name,&statbuf) && S_ISDIR(statbuf.st_mode) )
+        return FR_OK;
+    else
+        return FR_NO_PATH;
+}
+static FRESULT validate(FIL *fp)
+{
+    if (!fp || !fp->fs) {
+        return FR_INVALID_OBJECT;
+    }
+    return FR_OK;
 }
 
 static void update_FIL(FIL	*fil,
@@ -374,19 +474,74 @@ FRESULT f_lseek (
 	DWORD ofs		/* File pointer from top of file */
 )
 {
+    /* Check validity of the file object */
+    FRESULT res;
+    if ((res = validate(fp)) != FR_OK) {
+        return res;
+    }
 	lseek((int)(size_t)fp->fs,ofs,SEEK_SET);
 	update_FIL(fp,0,0);	
 	return FR_OK;
 }
 
+FRESULT f_rename (
+    const XCHAR *path_old,    /* Pointer to the old name */
+    const XCHAR *path_new    /* Pointer to the new name */
+)
+{
+   char full_path_old[PATHSIZE+1];
+   char full_path_new[PATHSIZE+1];
+   FRESULT res;
+   if ((res = build_absolute_path(path_old, full_path_old, 1)) != FR_OK) {
+       return res;
+   }
+   if ((res = build_absolute_path(path_new, full_path_new, 1)) != FR_OK) {
+       return res;
+   }
+   //rpclog("f_rename(%s, %s)\n", full_path_old, full_path_new);
+   if (rename(full_path_old, full_path_new) == 0) {
+      return FR_OK;
+   } else {
+      return get_result(errno);
+   }
+}
+
+FRESULT f_mkdir (
+    const XCHAR *path        /* Pointer to the directory path */
+)
+{
+   char full_path[PATHSIZE+1];
+   FRESULT res;
+   if ((res = build_absolute_path(path, full_path, 1)) != FR_OK) {
+       return res;
+   }
+   //rpclog("f_mkdir(%s)\n", full_path);
+   if (file_exists(full_path) == FR_OK) {
+      return FR_EXIST;
+   }
+   if (dir_exists(full_path) == FR_OK) {
+      return FR_EXIST;
+   }
+#ifdef WIN32
+   if (mkdir(full_path) == 0) {
+#else
+   if (mkdir(full_path, 0755) == 0) {
+#endif
+      return FR_OK;
+   } else {
+      return get_result(errno);
+   }
+}
+
+/*
 static
-void get_fileinfo (		/* No return code */
-	DIR *dj,			/* Pointer to the directory object */
-	FILINFO *fno	 	/* Pointer to the file information to be filled */
+void get_fileinfo (		// No return code
+	DIR *dj,			// Pointer to the directory object
+	FILINFO *fno	 	// Pointer to the file information to be filled
 )
 {
 }
-
+*/
 void get_fileinfo_special(FILINFO *fno)
 {
 //   get_fileinfo(&dj, fno);
