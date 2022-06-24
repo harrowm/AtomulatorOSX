@@ -6,7 +6,7 @@
 #include <zlib.h>
 #include "atom.h"
 
-void findfilenamescsw();
+void findfilenamescsw(void);
 int cswena = 0;
 int cintone = 1, cindat = 0, datbits = 0, enddat = 0;
 FILE *cswf;
@@ -41,7 +41,9 @@ void opencsw(char *fn)
 	end = ftell(cswf);
 	fseek(cswf, 0, SEEK_SET);
 	/*Read header*/
-	fread(cswhead, 0x34, 1, cswf);
+    if (fread(cswhead, 0x34, 1, cswf) != 1) {
+        rpclog("Failed to fread() %s (header) in opencsw\n", fn);
+    }
 	for (c = 0; c < cswhead[0x23]; c++)
 		getc(cswf);
 	cswrate = cswhead[0x19] | (cswhead[0x1A] << 8) | (cswhead[0x1B] << 16) | (cswhead[0x1C] << 24);
@@ -51,14 +53,17 @@ void opencsw(char *fn)
 	/*Allocate temporary memory and read file into memory*/
 	end -= ftell(cswf);
 	tempin = malloc(end);
-	fread(tempin, end, 1, cswf);
+    if (fread(tempin, end, 1, cswf) != 1) {
+        rpclog("Failed to fread() %s (body) in opencsw\n", fn);
+    }
 	fclose(cswf);
 	/*Decompress*/
 	uncompress(cswdat, (uLongf*)&destlen, tempin, end);
 	free(tempin);
 	/*Reset data pointer*/
 	cswpoint = 0;
-	dcd();
+    // DMB: dcd() is not needed for csw handling (look at 8255.c)
+    // dcd();
 	tapellatch = (1000000 / (1200 / 10)) / 64;
 	tapelcount = 0;
 	pps = 120;
@@ -71,6 +76,7 @@ void opencsw(char *fn)
 
 void closecsw()
 {
+    cswena = 0;
 	if (cswf)
 		fclose(cswf);
 	if (cswdat)

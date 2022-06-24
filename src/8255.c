@@ -186,7 +186,7 @@ void polltape()
 	}
 	else
 	{
-		tapecyc += 794;
+		tapecyc += 832; // As per the Atom: 4,000,000 / 13 / 64  (2403.8Hz high tone)
 		intone ^= 0x10;
 		if (tapeon)
 		{
@@ -229,9 +229,10 @@ void dcdlow()
 //        printf("High tone off\n");
 }
 
-void dcd()
-{
-	hightone = 15000;
+void dcd(int cycles) {
+    // the parameter is the number of cycles of 2400Hz high tone
+    // hightone is decremented at twice this rate
+    hightone = cycles * 2;
 //        printf("High tone on\n");
 }
 

@@ -3,16 +3,29 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82D788592852BD3900BEDAEB /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82D788582852BD3900BEDAEB /* Metal.framework */; platformFilter = maccatalyst; };
+		82E3966C2858E97400A478CC /* liballegro_memfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E3965F2858E97300A478CC /* liballegro_memfile.dylib */; };
+		82E3966D2858E97400A478CC /* liballegro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396602858E97300A478CC /* liballegro.dylib */; };
+		82E3966E2858E97400A478CC /* liballegro_ttf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396612858E97300A478CC /* liballegro_ttf.dylib */; };
+		82E3966F2858E97400A478CC /* liballegro_video.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396622858E97300A478CC /* liballegro_video.dylib */; };
+		82E396702858E97400A478CC /* liballegro_font.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396632858E97300A478CC /* liballegro_font.dylib */; };
+		82E396712858E97400A478CC /* liballegro_audio.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396642858E97300A478CC /* liballegro_audio.dylib */; };
+		82E396722858E97400A478CC /* liballegro_color.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396652858E97300A478CC /* liballegro_color.dylib */; };
+		82E396732858E97400A478CC /* liballegro_acodec.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396662858E97300A478CC /* liballegro_acodec.dylib */; };
+		82E396742858E97400A478CC /* liballegro_dialog.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396672858E97300A478CC /* liballegro_dialog.dylib */; };
+		82E396752858E97400A478CC /* liballegro_image.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396682858E97300A478CC /* liballegro_image.dylib */; };
+		82E396762858E97400A478CC /* liballegro_physfs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396692858E97400A478CC /* liballegro_physfs.dylib */; };
+		82E396772858E97400A478CC /* liballegro_primitives.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E3966A2858E97400A478CC /* liballegro_primitives.dylib */; };
+		82E396782858E97400A478CC /* liballegro_main.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E3966B2858E97400A478CC /* liballegro_main.dylib */; };
+		82E3967C2858E9E900A478CC /* libdumb.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E396792858E9E900A478CC /* libdumb.dylib */; };
+		82E3967D2858E9E900A478CC /* libFLAC.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E3967A2858E9E900A478CC /* libFLAC.dylib */; };
+		82E3967E2858E9E900A478CC /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E3967B2858E9E900A478CC /* libvorbis.dylib */; };
 		D4024E581C69FA990020F1AF /* 1770.c in Sources */ = {isa = PBXBuildFile; fileRef = D4024E561C69FA990020F1AF /* 1770.c */; };
-		D4194AA81C95BEE400F062A5 /* liballegro_monolith-static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */; };
-		D484A94B1CDB90B000C29D57 /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A94A1CDB90B000C29D57 /* libFLAC.a */; };
-		D484A94F1CDB915300C29D57 /* libdumb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A94E1CDB915300C29D57 /* libdumb.a */; };
 		D484A9501CDB917200C29D57 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776851C68963B000BAB2F /* libz.tbd */; };
-		D484A9591CDB921000C29D57 /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D484A9571CDB921000C29D57 /* libvorbisfile.a */; };
 		D49775CD1C6892B7000BAB2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D49775CC1C6892B7000BAB2F /* Assets.xcassets */; };
 		D49775E81C689345000BAB2F /* atmmc2core.c in Sources */ = {isa = PBXBuildFile; fileRef = D49775D81C689345000BAB2F /* atmmc2core.c */; };
 		D49775E91C689345000BAB2F /* atmmc2wfn.c in Sources */ = {isa = PBXBuildFile; fileRef = D49775DB1C689345000BAB2F /* atmmc2wfn.c */; };
@@ -61,7 +74,6 @@
 		D49776521C6894F1000BAB2F /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D497764E1C6894F1000BAB2F /* AppKit.framework */; };
 		D49776531C6894F1000BAB2F /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D497764F1C6894F1000BAB2F /* IOKit.framework */; };
 		D49776541C6894F1000BAB2F /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776501C6894F1000BAB2F /* OpenAL.framework */; };
-		D49776551C6894F1000BAB2F /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776511C6894F1000BAB2F /* OpenGL.framework */; };
 		D49776831C6895F3000BAB2F /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776811C6895F3000BAB2F /* ApplicationServices.framework */; };
 		D49776841C6895F4000BAB2F /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776821C6895F3000BAB2F /* CoreFoundation.framework */; };
 		D497768A1C689C2D000BAB2F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D49776891C689C2D000BAB2F /* AudioToolbox.framework */; };
@@ -71,17 +83,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		82D788582852BD3900BEDAEB /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		82E3965F2858E97300A478CC /* liballegro_memfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_memfile.dylib; path = ../../../../../../../../usr/local/lib/liballegro_memfile.dylib; sourceTree = "<group>"; };
+		82E396602858E97300A478CC /* liballegro.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro.dylib; path = ../../../../../../../../usr/local/lib/liballegro.dylib; sourceTree = "<group>"; };
+		82E396612858E97300A478CC /* liballegro_ttf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_ttf.dylib; path = ../../../../../../../../usr/local/lib/liballegro_ttf.dylib; sourceTree = "<group>"; };
+		82E396622858E97300A478CC /* liballegro_video.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_video.dylib; path = ../../../../../../../../usr/local/lib/liballegro_video.dylib; sourceTree = "<group>"; };
+		82E396632858E97300A478CC /* liballegro_font.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_font.dylib; path = ../../../../../../../../usr/local/lib/liballegro_font.dylib; sourceTree = "<group>"; };
+		82E396642858E97300A478CC /* liballegro_audio.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_audio.dylib; path = ../../../../../../../../usr/local/lib/liballegro_audio.dylib; sourceTree = "<group>"; };
+		82E396652858E97300A478CC /* liballegro_color.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_color.dylib; path = ../../../../../../../../usr/local/lib/liballegro_color.dylib; sourceTree = "<group>"; };
+		82E396662858E97300A478CC /* liballegro_acodec.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_acodec.dylib; path = ../../../../../../../../usr/local/lib/liballegro_acodec.dylib; sourceTree = "<group>"; };
+		82E396672858E97300A478CC /* liballegro_dialog.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_dialog.dylib; path = ../../../../../../../../usr/local/lib/liballegro_dialog.dylib; sourceTree = "<group>"; };
+		82E396682858E97300A478CC /* liballegro_image.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_image.dylib; path = ../../../../../../../../usr/local/lib/liballegro_image.dylib; sourceTree = "<group>"; };
+		82E396692858E97400A478CC /* liballegro_physfs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_physfs.dylib; path = ../../../../../../../../usr/local/lib/liballegro_physfs.dylib; sourceTree = "<group>"; };
+		82E3966A2858E97400A478CC /* liballegro_primitives.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_primitives.dylib; path = ../../../../../../../../usr/local/lib/liballegro_primitives.dylib; sourceTree = "<group>"; };
+		82E3966B2858E97400A478CC /* liballegro_main.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = liballegro_main.dylib; path = ../../../../../../../../usr/local/lib/liballegro_main.dylib; sourceTree = "<group>"; };
+		82E396792858E9E900A478CC /* libdumb.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libdumb.dylib; path = ../../../../../../../../usr/local/lib/libdumb.dylib; sourceTree = "<group>"; };
+		82E3967A2858E9E900A478CC /* libFLAC.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libFLAC.dylib; path = ../../../../../../../../usr/local/lib/libFLAC.dylib; sourceTree = "<group>"; };
+		82E3967B2858E9E900A478CC /* libvorbis.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvorbis.dylib; path = ../../../../../../../../usr/local/lib/libvorbis.dylib; sourceTree = "<group>"; };
+		82FE005A28567403001212EC /* buildversion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = buildversion.h; path = ../../buildversion.h; sourceTree = "<group>"; };
 		D4024E561C69FA990020F1AF /* 1770.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = 1770.c; path = ../../1770.c; sourceTree = "<group>"; };
 		D4024E571C69FA990020F1AF /* 1770.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 1770.h; path = ../../1770.h; sourceTree = "<group>"; };
-		D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liballegro_monolith-static.a"; path = "../../../../../../usr/local/lib/liballegro_monolith-static.a"; sourceTree = "<group>"; };
-		D46702CD1C6BA00900621C19 /* AtomulatorOSX.profdata */ = {isa = PBXFileReference; lastKnownFileType = file; path = AtomulatorOSX.profdata; sourceTree = "<group>"; };
-		D484A94A1CDB90B000C29D57 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = ../../../../../../../usr/local/Cellar/flac/1.3.1/lib/libFLAC.a; sourceTree = "<group>"; };
-		D484A94C1CDB90E100C29D57 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../../../../../usr/local/Cellar/freetype/2.6.3/lib/libfreetype.a; sourceTree = "<group>"; };
-		D484A94E1CDB915300C29D57 /* libdumb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdumb.a; path = ../../../../../../../usr/local/lib/libdumb.a; sourceTree = "<group>"; };
-		D484A9511CDB91BA00C29D57 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbis.a; sourceTree = "<group>"; };
-		D484A9531CDB91E900C29D57 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = ../../../../../../../usr/local/Cellar/libogg/1.3.2/lib/libogg.a; sourceTree = "<group>"; };
-		D484A9561CDB921000C29D57 /* libvorbisenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisenc.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbisenc.a; sourceTree = "<group>"; };
-		D484A9571CDB921000C29D57 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = ../../../../../../../usr/local/Cellar/libvorbis/1.3.5/lib/libvorbisfile.a; sourceTree = "<group>"; };
 		D49775C31C6892B7000BAB2F /* AtomulatorOSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AtomulatorOSX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D49775CC1C6892B7000BAB2F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D49775D11C6892B7000BAB2F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -161,7 +182,6 @@
 		D497764E1C6894F1000BAB2F /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D497764F1C6894F1000BAB2F /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		D49776501C6894F1000BAB2F /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
-		D49776511C6894F1000BAB2F /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		D49776811C6895F3000BAB2F /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		D49776821C6895F3000BAB2F /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D49776851C68963B000BAB2F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -176,32 +196,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D484A9591CDB921000C29D57 /* libvorbisfile.a in Frameworks */,
+				82E3967C2858E9E900A478CC /* libdumb.dylib in Frameworks */,
+				82E3967D2858E9E900A478CC /* libFLAC.dylib in Frameworks */,
+				82E3967E2858E9E900A478CC /* libvorbis.dylib in Frameworks */,
+				82E396782858E97400A478CC /* liballegro_main.dylib in Frameworks */,
+				82E3966D2858E97400A478CC /* liballegro.dylib in Frameworks */,
+				82E396702858E97400A478CC /* liballegro_font.dylib in Frameworks */,
+				82E396752858E97400A478CC /* liballegro_image.dylib in Frameworks */,
+				82E3966E2858E97400A478CC /* liballegro_ttf.dylib in Frameworks */,
+				82E396742858E97400A478CC /* liballegro_dialog.dylib in Frameworks */,
+				82E396712858E97400A478CC /* liballegro_audio.dylib in Frameworks */,
+				82E3966F2858E97400A478CC /* liballegro_video.dylib in Frameworks */,
+				82E396732858E97400A478CC /* liballegro_acodec.dylib in Frameworks */,
+				82E396722858E97400A478CC /* liballegro_color.dylib in Frameworks */,
+				82E396762858E97400A478CC /* liballegro_physfs.dylib in Frameworks */,
+				82E3966C2858E97400A478CC /* liballegro_memfile.dylib in Frameworks */,
+				82E396772858E97400A478CC /* liballegro_primitives.dylib in Frameworks */,
 				D484A9501CDB917200C29D57 /* libz.tbd in Frameworks */,
-				D484A94F1CDB915300C29D57 /* libdumb.a in Frameworks */,
-				D484A94B1CDB90B000C29D57 /* libFLAC.a in Frameworks */,
-				D4194AA81C95BEE400F062A5 /* liballegro_monolith-static.a in Frameworks */,
+				82D788592852BD3900BEDAEB /* Metal.framework in Frameworks */,
 				D497768A1C689C2D000BAB2F /* AudioToolbox.framework in Frameworks */,
 				D49776521C6894F1000BAB2F /* AppKit.framework in Frameworks */,
 				D49776831C6895F3000BAB2F /* ApplicationServices.framework in Frameworks */,
 				D49776841C6895F4000BAB2F /* CoreFoundation.framework in Frameworks */,
 				D49776531C6894F1000BAB2F /* IOKit.framework in Frameworks */,
 				D49776541C6894F1000BAB2F /* OpenAL.framework in Frameworks */,
-				D49776551C6894F1000BAB2F /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D46702CC1C6BA00900621C19 /* OptimizationProfiles */ = {
-			isa = PBXGroup;
-			children = (
-				D46702CD1C6BA00900621C19 /* AtomulatorOSX.profdata */,
-			);
-			path = OptimizationProfiles;
-			sourceTree = "<group>";
-		};
 		D49775BA1C6892B7000BAB2F = {
 			isa = PBXGroup;
 			children = (
@@ -211,7 +235,6 @@
 				D49776801C689514000BAB2F /* Frameworks */,
 				D49775C51C6892B7000BAB2F /* AtomulatorOSX */,
 				D49775C41C6892B7000BAB2F /* Products */,
-				D46702CC1C6BA00900621C19 /* OptimizationProfiles */,
 			);
 			sourceTree = "<group>";
 		};
@@ -262,6 +285,7 @@
 				D49776381C689421000BAB2F /* video.c */,
 				D49775CC1C6892B7000BAB2F /* Assets.xcassets */,
 				D49775D11C6892B7000BAB2F /* Info.plist */,
+				82FE005A28567403001212EC /* buildversion.h */,
 			);
 			path = AtomulatorOSX;
 			sourceTree = "<group>";
@@ -326,14 +350,23 @@
 		D49776801C689514000BAB2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D484A9561CDB921000C29D57 /* libvorbisenc.a */,
-				D484A9571CDB921000C29D57 /* libvorbisfile.a */,
-				D484A9531CDB91E900C29D57 /* libogg.a */,
-				D484A9511CDB91BA00C29D57 /* libvorbis.a */,
-				D484A94E1CDB915300C29D57 /* libdumb.a */,
-				D484A94C1CDB90E100C29D57 /* libfreetype.a */,
-				D484A94A1CDB90B000C29D57 /* libFLAC.a */,
-				D4194AA71C95BEE400F062A5 /* liballegro_monolith-static.a */,
+				82E396662858E97300A478CC /* liballegro_acodec.dylib */,
+				82E396642858E97300A478CC /* liballegro_audio.dylib */,
+				82E396652858E97300A478CC /* liballegro_color.dylib */,
+				82E396672858E97300A478CC /* liballegro_dialog.dylib */,
+				82E396632858E97300A478CC /* liballegro_font.dylib */,
+				82E396682858E97300A478CC /* liballegro_image.dylib */,
+				82E3966B2858E97400A478CC /* liballegro_main.dylib */,
+				82E3965F2858E97300A478CC /* liballegro_memfile.dylib */,
+				82E396692858E97400A478CC /* liballegro_physfs.dylib */,
+				82E3966A2858E97400A478CC /* liballegro_primitives.dylib */,
+				82E396612858E97300A478CC /* liballegro_ttf.dylib */,
+				82E396622858E97300A478CC /* liballegro_video.dylib */,
+				82E396602858E97300A478CC /* liballegro.dylib */,
+				82E396792858E9E900A478CC /* libdumb.dylib */,
+				82E3967A2858E9E900A478CC /* libFLAC.dylib */,
+				82E3967B2858E9E900A478CC /* libvorbis.dylib */,
+				82D788582852BD3900BEDAEB /* Metal.framework */,
 				D49776851C68963B000BAB2F /* libz.tbd */,
 				D49776891C689C2D000BAB2F /* AudioToolbox.framework */,
 				D49776811C6895F3000BAB2F /* ApplicationServices.framework */,
@@ -341,7 +374,6 @@
 				D497764E1C6894F1000BAB2F /* AppKit.framework */,
 				D497764F1C6894F1000BAB2F /* IOKit.framework */,
 				D49776501C6894F1000BAB2F /* OpenAL.framework */,
-				D49776511C6894F1000BAB2F /* OpenGL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -353,9 +385,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D49775D41C6892B7000BAB2F /* Build configuration list for PBXNativeTarget "AtomulatorOSX" */;
 			buildPhases = (
+				82FE005728566D0B001212EC /* Update Version Struct */,
 				D49775BF1C6892B7000BAB2F /* Sources */,
 				D49775C01C6892B7000BAB2F /* Frameworks */,
 				D49775C11C6892B7000BAB2F /* Resources */,
+				826C78C22857757B00D67C4E /* Embed Libs */,
+				82FE00452853F355001212EC /* Increment Build Number */,
 			);
 			buildRules = (
 			);
@@ -372,17 +407,18 @@
 		D49775BB1C6892B7000BAB2F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
-				ORGANIZATIONNAME = "Malcolm Harrow";
+				LastUpgradeCheck = 1340;
+				ORGANIZATIONNAME = "Katherine Cramer";
 				TargetAttributes = {
 					D49775C21C6892B7000BAB2F = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 1320;
 					};
 				};
 			};
 			buildConfigurationList = D49775BE1C6892B7000BAB2F /* Build configuration list for PBXProject "AtomulatorOSX" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -411,6 +447,63 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		826C78C22857757B00D67C4E /* Embed Libs */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Libs";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -delete_rpath @executable_path/../Frameworks \"$TARGET_BUILD_DIR/$PRODUCT_NAME.app/Contents/MacOS/$PRODUCT_NAME\";\n\nbundle-dylibs $TARGET_BUILD_DIR/$PRODUCT_NAME.app\n";
+		};
+		82FE00452853F355001212EC /* Increment Build Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment Build Number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
+		82FE005728566D0B001212EC /* Update Version Struct */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Update Version Struct";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\nversion=${MARKETING_VERSION}\nIFS=. read major minor <<EOF\n${version##*-}\nEOF\n\nsed -e \"19s/.*/    struct VERSION v = {$major, $minor, $buildNumber};/\" -i '' ../buildversion.h\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D49775BF1C6892B7000BAB2F /* Sources */ = {
@@ -472,17 +565,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -515,17 +620,29 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -551,23 +668,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4W32SFN3CU;
+				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = AtomulatorOSX/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/lib,
 					/opt/X11/lib,
 					/opt/local/lib,
-					/usr/local/Cellar/flac/1.3.1/lib,
-					/usr/local/Cellar/freetype/2.6.3/lib,
-					/usr/local/Cellar/libvorbis/1.3.5/lib,
-					/usr/local/Cellar/libogg/1.3.2/lib,
+					/usr/local/Cellar/allegro/5.2.8.0/lib,
+					/usr/local/Cellar/freetype/2.12.1/lib,
+					/usr/local/Cellar/libogg/1.3.5/lib,
+					/usr/local/Cellar/libvorbis/1.3.7/lib,
+					/usr/local/Cellar/flac/1.3.4/lib,
+					/usr/local/Cellar/dumb/2.0.3/lib,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = malcolm.AtomulatorOSX;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.30;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PreferencesWindow/AtomulatorOSX-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
 		};
@@ -575,23 +711,42 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4W32SFN3CU;
+				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = AtomulatorOSX/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/lib,
 					/opt/X11/lib,
 					/opt/local/lib,
-					/usr/local/Cellar/flac/1.3.1/lib,
-					/usr/local/Cellar/freetype/2.6.3/lib,
-					/usr/local/Cellar/libvorbis/1.3.5/lib,
-					/usr/local/Cellar/libogg/1.3.2/lib,
+					/usr/local/Cellar/allegro/5.2.8.0/lib,
+					/usr/local/Cellar/freetype/2.12.1/lib,
+					/usr/local/Cellar/libogg/1.3.5/lib,
+					/usr/local/Cellar/libvorbis/1.3.7/lib,
+					/usr/local/Cellar/flac/1.3.4/lib,
+					/usr/local/Cellar/dumb/2.0.3/lib,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = malcolm.AtomulatorOSX;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.30;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
+				PRODUCT_BUNDLE_IDENTIFIER = kat.AtomulatorOSX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "PreferencesWindow/AtomulatorOSX-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
 		};

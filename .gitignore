@@ -1,3 +1,18 @@
-
+## Filtering out intermediate files and MMC directory, no need to put these in git
 *.o
 mmc/*
+
+## Because no one wants these in a git repo
+.DS_Store
+
+## User settings
+xcuserdata/
+
+## Xcode 8 and earlier
+*.xcscmblueprint
+*.xccheckout
+*.xcworkspace
+
+## emacs stuff
+*~
+\#*\#

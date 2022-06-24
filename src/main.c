@@ -4,6 +4,7 @@
 #define ALLEGRO_STATICLINK
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_primitives.h>
@@ -13,6 +14,7 @@
 #include <allegro5/allegro_image.h> // fixed font file is in an image format
 
 #include "atom.h"
+#include "buildversion.h"
 
 // called in uef.c and csw.c but not used
 void cataddname (char *s) { rpclog("%s\n", s); }
@@ -43,7 +45,7 @@ ALLEGRO_COLOR blackColour;
 
 extern ALLEGRO_MENU_INFO menu_info[]; 
 
-extern void update_gui();
+extern void update_gui(void);
 
 // On Debian, adding the menus to the display reduces the window size.
 // We have to look for a resize event and then resize the window on
@@ -53,7 +55,7 @@ int origwinsizey;
 int winMenuHeight = 0;
 bool displayjustcreated = true;
 
-bool initJoystick()
+bool initJoystick(void)
 {
 	int a, i;
 
@@ -87,7 +89,7 @@ bool initJoystick()
     return true;
 }
 
-bool allegro_init()
+bool allegro_init(void)
 {
 	// initialize allegro and required addons
     if (!(al_init() && al_init_image_addon() && al_init_primitives_addon() &&
@@ -209,7 +211,7 @@ void logDisplay(ALLEGRO_DISPLAY *d)
     rpclog ("Allegro display is of format %s\n", displayDesc[al_get_display_format(d)]);
 }
     
-bool allegro_create_display_and_menus()
+bool allegro_create_display_and_menus(void)
 {
    	/* ALLEGRO_GTK_TOPLEVEL is necessary for menus with GTK - ie Debian */
 
@@ -247,12 +249,18 @@ bool allegro_create_display_and_menus()
         rpclog("ERROR: Error creating Allegro menu\n");
         return false;
     }
-
-	al_set_window_title(display, ATOMULATOR_VERSION);
+    char title[60];
+    char version[40];
+    getVersionString(version);
+    
+    strcpy(title, "AtomulatorOSX ");
+    strcat(title, version);
+    rpclog(title);
+	al_set_window_title(display, title);
     return true;
 }
 
-bool allegro_create_timer_and_events()
+bool allegro_create_timer_and_events(void)
 {
     timer = al_create_timer(1.0/300);
     if (timer == NULL)
@@ -280,7 +288,7 @@ bool allegro_create_timer_and_events()
     return true;
 }
 
-void allegro_process_events()
+void allegro_process_events(void)
 {
     al_wait_for_event(events, &event);
     switch (event.type)
@@ -304,10 +312,17 @@ void allegro_process_events()
             break;
             
         case ALLEGRO_EVENT_KEY_CHAR:
+            al_get_keyboard_state(&keybd);
+            if (al_key_down(&keybd, ALLEGRO_KEY_RCTRL) || al_key_down(&keybd, ALLEGRO_KEY_LCTRL)) {
+                if (al_key_down(&keybd, ALLEGRO_KEY_R)) {
+                    atom_reset(0);
+                }
+            }
             if (debug == 0)
             {
-                if (event.keyboard.keycode == ALLEGRO_KEY_F12)
+                if (event.keyboard.keycode == ALLEGRO_KEY_F12) {
                     atom_reset(0);
+                }
             }
             else // check to see if the user is typing in the debugger console
             {
@@ -361,7 +376,7 @@ void allegro_process_events()
     }
 }
 
-void allegro_exit()
+void allegro_exit(void)
 {
     al_uninstall_joystick();
 	al_destroy_path(exepath);
@@ -373,14 +388,13 @@ void allegro_exit()
 
     al_set_display_menu(display, NULL);
 
-//    al_destroy_menu(menu); crashes on OSX
+    al_destroy_menu(menu);
 
 	al_destroy_event_queue(events);
 
-	al_set_target_bitmap(NULL);
+	al_destroy_bitmap(al_get_target_bitmap());
 
-	// MH - al_destroy_display() hangs .. FIXME
-	//al_destroy_display(display);
+	al_destroy_display(display);
 }
 
 extern int ddframes;

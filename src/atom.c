@@ -9,6 +9,7 @@
 #include "atommc.h"
 #include "sid_atom.h" // avoid compiler warnings on OSX
 #include "1770.h"
+#include "buildversion.h"
 
 int palnotntsc = 0;
 int colourboard = 1;
@@ -46,6 +47,8 @@ int vid_top;			//= ((vid_ramflag+1)*0x0400)+0x8000;	// Last video RAM address.
 int ramrom_enable = 1;
 
 int fasttape = 0;
+
+int overscan = 0;
 
 FILE *rlog;
 void rpclog(char *format, ...)
@@ -157,7 +160,9 @@ void atom_init(int argc, char **argv)
 	{
 		if (!strcasecmp(argv[c], "--help"))
 		{
-			printf("%s command line options :\n\n",ATOMULATOR_VERSION);
+            char version[40];
+            getVersionString(version);
+			printf("%s%s command line options :\n\n","Atomulator ", version);
 			printf("-disc disc.ssd  - load disc.ssd into drives :0/:2\n");
 			printf("-disc1 disc.ssd - load disc.ssd into drives :1/:3\n");
 			printf("-tape tape.uef  - load tape.uef\n");

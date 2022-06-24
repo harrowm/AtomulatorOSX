@@ -7,11 +7,13 @@
 #include <allegro5/allegro_audio.h>
 #include <stdio.h>
 #include "atom.h"
+#include "atommc.h"
 #include "roms.h"
 #include "resources.h"
 #include "sidtypes.h"
 #include "sid_atom.h"
 #include "debugger.h"
+#include "buildversion.h"
 
 int timerspeeds[] 	= { 5, 12, 25, 38, 50, 75, 85, 100, 150, 200, 250 };
 int frameskips[] = { 0,  0,  0,  0,  0,  0,  0,   1,   2,   3,   4 };
@@ -51,7 +53,7 @@ extern ALLEGRO_AUDIO_STREAM *stream;
 extern ALLEGRO_AUDIO_STREAM *ddstream;
 extern ALLEGRO_PATH *docpath;
 
-void gui_keydefine();
+void gui_keydefine(void);
 
 void setquit()
 {
@@ -62,6 +64,7 @@ void update_gui()
 {
     al_set_menu_item_flags(menu, IDM_TAPES_NORMAL, (!fasttape) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     al_set_menu_item_flags(menu, IDM_TAPES_FAST, (fasttape) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
+    al_set_menu_item_flags(menu, IDM_OVERSCAN, (overscan == 0) ? ALLEGRO_MENU_ITEM_CHECKED : 0);
     
     al_set_menu_item_caption(menu, IDM_DISC_EJECT_0, ejecttext[0]);
     al_set_menu_item_caption(menu, IDM_DISC_EJECT_1, ejecttext[1]);
@@ -252,6 +255,42 @@ static void gui_scrshot()
 		}
 		rpclog("Screen shot %s\n", scrshotname);
 	}
+    al_destroy_native_file_dialog(fc);
+}
+
+static void gui_open_settings()
+{
+    ALLEGRO_FILECHOOSER *fc;
+    
+    fc = al_create_native_file_dialog(BaseMMCPath, "Select AtoMMC Directory", "", ALLEGRO_FILECHOOSER_FOLDER);
+    
+    if (al_show_native_file_dialog(display, fc))
+    {
+        if (al_get_native_file_dialog_count(fc) == 1)
+        {
+            strlcpy(BaseMMCPath, al_get_native_file_dialog_path(fc, 0), MAXPATH - 1);
+            saveconfig();
+            loadconfig();
+            InitMMC();
+        }
+        rpclog("Updated AtoMMC Path to %s", BaseMMCPath);
+    }
+    al_destroy_native_file_dialog(fc);
+}
+
+static void about()
+{
+    extern ALLEGRO_DISPLAY *display;
+    char version[40];
+    getVersionString(version);
+    
+    char versioninfo[250];
+    strcpy(versioninfo, "AtomulatorOSX Version: ");
+    strcat(versioninfo, version);
+    strcat(versioninfo, "\n\nAtomulatorOSX created by Malcolm Harrow, updated by Katherine Cramer.\n Based on work done by David Banks, Phill Harvey-Smith, and Kees van Oss.");
+    
+    
+    al_show_native_message_box(NULL, "About AtomulatorOSX...", "About AtomulatorOSX", versioninfo, NULL, ALLEGRO_MESSAGEBOX_QUESTION);
 }
 
 void processMenuOption(intptr_t option)
@@ -261,6 +300,10 @@ void processMenuOption(intptr_t option)
 	switch (option)
 	{
 		// File menu
+        case IDM_ABOUT:
+            about();
+            break;
+            
 		case IDM_FILE_RESET:
 			atom_reset(0);
 			break;
@@ -268,6 +311,10 @@ void processMenuOption(intptr_t option)
 		case IDM_FILE_EXIT:
 			quited = true;
 			break;
+        
+        case IDM_SETTINGS:
+            gui_open_settings();
+            break;
 
 		// Tape Menu
 		case IDM_TAPE_LOAD:
@@ -296,6 +343,21 @@ void processMenuOption(intptr_t option)
 			fasttape = 1;
 			break;
 
+        case IDM_OVERSCAN:
+            if (overscan != 0)
+            {
+                overscan = 0;
+            }
+            else
+            {
+                overscan = 1;
+            }
+            break;
+        
+        case IDM_DUMP_VIA:
+            dumpvia();
+            break;
+            
 		// Disc menu
 		case IDM_DISC_LOAD_0:
 			gui_disc_load(0);
@@ -774,8 +836,12 @@ void processMenuOption(intptr_t option)
 
 ALLEGRO_MENU_INFO menu_info[] = {
     ALLEGRO_START_OF_MENU("File", (uint16_t)IDM_FILE_MENU),
+        // This does NOT work due to some sort of bug in Allegro with destroying displays...need to fix this.
+        {"About AtomulatorOSX...", IDM_ABOUT, 0, NULL},
+        ALLEGRO_MENU_SEPARATOR,
+        { "AtoMMC path...", IDM_SETTINGS, 0, NULL},
 		{ "Reset",    IDM_FILE_RESET, 0, NULL },
-		{ "Exit",          IDM_FILE_EXIT,  0, NULL },
+		{ "Exit",     IDM_FILE_EXIT,  0, NULL },
     ALLEGRO_END_OF_MENU,
 
     ALLEGRO_START_OF_MENU("Tape", (uint16_t)IDM_TAPE_MENU),
@@ -929,6 +995,11 @@ ALLEGRO_MENU_INFO menu_info[] = {
         { "Show emulator speed", IDM_SHOWSPEED, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
         { "Save screenshot", IDM_MISC_SCRSHOT, 0, NULL },
 		ALLEGRO_MENU_SEPARATOR,
+        ALLEGRO_START_OF_MENU("Debug Settings", (uint16_t)IDM_DEBUG_MENU),
+            {"Allow Overscan", IDM_OVERSCAN, ALLEGRO_MENU_ITEM_CHECKBOX, NULL},
+            {"Dump VIA to log", IDM_DUMP_VIA, 0, NULL},
+        ALLEGRO_END_OF_MENU,
+        ALLEGRO_MENU_SEPARATOR,
 		{ "Debugger", IDM_MISC_DEBUG, ALLEGRO_MENU_ITEM_CHECKBOX, NULL },
 		{ "Debug on BRK", IDM_MISC_DEBONBRK, 0, NULL },
 		{ "Break", IDM_MISC_BREAK, 0, NULL },

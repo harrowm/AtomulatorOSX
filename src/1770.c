@@ -11,14 +11,14 @@ extern int output;
 #endif
 extern int motoron,fdctime,disctime,motorspin;
 
-void callback1770();
+void callback1770(void);
 void data1770(uint8_t dat);
-void spindown1770();
-void finishread1770();
-void notfound1770();
-void datacrcerror1770();
-void headercrcerror1770();
-void writeprotect1770();
+void spindown1770(void);
+void finishread1770(void);
+void notfound1770(void);
+void datacrcerror1770(void);
+void headercrcerror1770(void);
+void writeprotect1770(void);
 int getdata1770(int last);
 /* PHS set status of interrupt lines */
 void setdrq(int state);
@@ -38,7 +38,7 @@ struct
 
 extern int byte;
 
-void reset1770()
+void reset1770(void)
 {
         nmi=0;
 		setintrq(0);
@@ -65,20 +65,20 @@ void reset1770()
 //		setintrq(1);
 }
 
-void spinup1770()
+void spinup1770(void)
 {
         wd1770.status |= ST_MOTOR; // flag motor on
         motoron=1;
         motorspin=0;
 }
 
-void spindown1770()
+void spindown1770(void)
 {
         wd1770.status &= ~ST_MOTOR; // flag motor off
         motoron=0;
 }
 
-void setspindown1770()
+void setspindown1770(void)
 {
         motorspin=45000;
 }
@@ -251,7 +251,7 @@ uint8_t read1770(uint16_t addr)
         return 0xFE;
 }
 
-void callback1770()
+void callback1770(void)
 {
 //        rpclog("FDC callback %02X\n",wd1770.command);
         fdctime=0;
@@ -336,12 +336,12 @@ void data1770(uint8_t dat)
 		setdrq(1);
 }
 
-void finishread1770()
+void finishread1770(void)
 {
         fdctime=200;
 }
 
-void notfound1770()
+void notfound1770(void)
 {
 //        rpclog("Not found\n");
         fdctime=0;
@@ -351,7 +351,7 @@ void notfound1770()
 		spindown1770();
 }
 
-void datacrcerror1770()
+void datacrcerror1770(void)
 {
 //        rpclog("Data CRC\n");
         fdctime=0;
@@ -386,7 +386,7 @@ int getdata1770(int last)
         return wd1770.data;
 }
 
-void writeprotect1770()
+void writeprotect1770(void)
 {
         fdctime=0;
 //        nmi=1;

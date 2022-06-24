@@ -23,6 +23,8 @@
 
 #define LABEL_FASTTAPE	"fasttape"
 
+#define LABEL_OVERSCAN  "overscan"
+
 #define LABEL_DEF_WP 	"defaultwriteprot"
 #define LABEL_DDVOL 	"ddvol"
 #define LABEL_DDTYPE 	"ddtype"
@@ -77,9 +79,13 @@ static int get_config_int(char *section, char *name, int def)
 
     s = al_get_config_value(atom_config, section, name);
     if (s == NULL)
+    {
         return def;
+    }
     else
+    {
         return (int)atoi(s);
+    }
 }
 
 static void set_config_int(char *section, char *key, int value)
@@ -150,6 +156,8 @@ void loadconfig()
 
 	fasttape 		= get_config_int(NULL, LABEL_FASTTAPE, 0);
 
+    overscan        = get_config_int(NULL, LABEL_OVERSCAN, 0);
+    
 	defaultwriteprot = get_config_int(NULL, LABEL_DEF_WP, 1);
 	if (defaultwriteprot)
 		writeprot[0] = writeprot[1] = 1;
@@ -240,6 +248,8 @@ void saveconfig()
 // end RAM config
 
 	set_config_int(NULL, LABEL_FASTTAPE, fasttape);
+    
+    set_config_int(NULL, LABEL_OVERSCAN, overscan);
 
 	set_config_int(NULL, LABEL_DEF_WP, defaultwriteprot);
 
